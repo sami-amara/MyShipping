@@ -1,0 +1,59 @@
+2026-06-07 14:58:03.714 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-07 14:58:15.853 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-07 14:58:16.146 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-07 14:58:16.182 +03:00 [INF] ▶️ API Login called for Wasan@gmail.com
+2026-06-07 14:58:17.615 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-07 14:58:17.684 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-07 14:58:17.992 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: Wasan@gmail.com | UserId: 9cfd03ad-f0e1-46ab-a4fa-23f76788325b | IP: ::1 | UserAgent: 
+2026-06-07 14:58:17.994 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for Wasan@gmail.com
+2026-06-07 16:35:06.353 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-07 16:35:14.528 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-07 16:35:14.775 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-07 16:35:14.786 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., RefreshToken=Jk2dwF72CR..., MyShipping.AuthCookie=CfDJ8KhqfN...
+2026-06-07 16:35:14.788 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Jk2dwF72CRY9Q/L2kVne...
+2026-06-07 16:35:15.891 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-06-07 16:35:15.893 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-06-07 16:35:15.896 +03:00 [INF] ✅ Step 4 passed: Token valid for 9983.029838278333 more minutes
+2026-06-07 16:35:16.043 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-06-07 18:48:36.954 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-07 18:48:58.471 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-07 18:48:58.709 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-07 18:48:58.759 +03:00 [INF] ▶️ API Login called for Samar@gmail.com
+2026-06-07 18:48:59.910 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-07 18:48:59.974 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-07 18:49:00.276 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: Samar@gmail.com | UserId: a15de792-42af-4512-942e-389c7fcef8bf | IP: ::1 | UserAgent: 
+2026-06-07 18:49:00.277 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for Samar@gmail.com
+2026-06-07 18:49:40.528 +03:00 [INF] ▶️ API Login called for ahmed@gamil.com
+2026-06-07 18:49:40.592 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-07 18:49:40.595 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-07 18:49:40.623 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: ahmed@gamil.com | UserId: eee2d80b-c668-4610-9e47-e7f5e79db8fe | IP: ::1 | UserAgent: 
+2026-06-07 18:49:40.624 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for ahmed@gamil.com
+2026-06-07 18:50:23.980 +03:00 [INF] ▶️ API Login called for moh@gmail.com
+2026-06-07 18:50:24.040 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-07 18:50:24.043 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-07 18:50:24.099 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: moh@gmail.com | UserId: 7c5fbfaf-ef08-4b3d-a726-f0a877f75892 | IP: ::1 | UserAgent: 
+2026-06-07 18:50:24.100 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for moh@gmail.com
+2026-06-07 18:54:19.006 +03:00 [INF] ▶️ API Login called for Wasan@gmail.com
+2026-06-07 18:54:19.074 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-07 18:54:19.077 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-07 18:54:19.109 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: Wasan@gmail.com | UserId: 9cfd03ad-f0e1-46ab-a4fa-23f76788325b | IP: ::1 | UserAgent: 
+2026-06-07 18:54:19.110 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for Wasan@gmail.com
+2026-06-07 18:54:32.449 +03:00 [INF] ▶️ API Login called for Wasan@gmail.com
+2026-06-07 18:54:32.507 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-07 18:54:32.510 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-07 18:54:32.533 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: Wasan@gmail.com | UserId: 9cfd03ad-f0e1-46ab-a4fa-23f76788325b | IP: ::1 | UserAgent: 
+2026-06-07 18:54:32.534 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for Wasan@gmail.com
+2026-06-07 20:26:49.990 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-07 20:27:00.648 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-07 20:27:00.886 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-07 20:27:00.907 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Culture=c=en|uic=e..., RefreshToken=0VxtA7pkX7..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-06-07 20:27:00.908 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: 0VxtA7pkX7GRvCa1GI/C...
+2026-06-07 20:27:02.114 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-06-07 20:27:02.115 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-06-07 20:27:02.118 +03:00 [INF] ✅ Step 4 passed: Token valid for 9987.506552038334 more minutes
+2026-06-07 20:27:02.285 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-06-07 20:27:17.936 +03:00 [INF] ▶️ API Login called for ahmed@gamil.com
+2026-06-07 20:27:18.050 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-07 20:27:18.061 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-07 20:27:18.344 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: ahmed@gamil.com | UserId: eee2d80b-c668-4610-9e47-e7f5e79db8fe | IP: ::1 | UserAgent: 
+2026-06-07 20:27:18.346 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for ahmed@gamil.com

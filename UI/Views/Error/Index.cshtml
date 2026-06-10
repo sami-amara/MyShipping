@@ -1,0 +1,53 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h1 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error @(Model.StatusCode ?? 500)
+                    </h1>
+                </div>
+                <div class="card-body">
+                    <h4 class="text-danger">@Model.ErrorMessage</h4>
+
+                    @if (Model.ShowRequestId)
+                    {
+                        <p class="text-muted mt-3">
+                            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                        </p>
+                        <p class="text-muted small">
+                            Please include this Request ID when contacting support.
+                        </p>
+                    }
+
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Go to Home Page
+                        </a>
+                        <a href="javascript:history.back()" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Go Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            @if (Context.Request.Host.Host == "localhost" || Context.Request.Host.Host == "127.0.0.1")
+            {
+                <div class="alert alert-warning mt-3">
+                    <h5>Development Mode</h5>
+                    <p>
+                        This detailed error page is only visible in development.
+                        In production, users will see a friendly error message.
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+require.define("component~tip@2.1.2", "<div class=\"tip tip-hide\">\n  <div class=\"tip-arrow\"></div>\n  <div class=\"tip-inner\"></div>\n</div>");
+
+require.define("./lib/reset", "<div class=\"clear\"></div>\n");
+
+require.define("./lib/stuff", "<div class=\"tip tip-hide\">\n  <div class=\"tip-arrow\"></div>\n  <div class=\"tip-inner\"></div>\n</div>\n<footer> Footer </footer>\n\n");
+
+require.define("./lib/stuff/footer.html", "<footer> Footer </footer>\n");
+
+require.define("./lib/boot", "<h1> Test </h1>\n\n<div class=\"clear\"></div>\n\n<div class=\"tip tip-hide\">\n  <div class=\"tip-arrow\"></div>\n  <div class=\"tip-inner\"></div>\n</div>\n<footer> Footer </footer>\n\n\n");

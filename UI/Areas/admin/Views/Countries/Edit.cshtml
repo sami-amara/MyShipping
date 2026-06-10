@@ -1,0 +1,66 @@
+﻿@model CountryDto
+
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-danger">
+        <div asp-validation-summary="All" class="mb-0"></div>
+    </div>
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> @Labels.Countries </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#"></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+            </ol>
+        </nav>
+    </div>
+    <form id="countryForm" class="forms-sample" method="post" enctype="multipart/form-data"
+          asp-controller="Countries" asp-action="Save" role="form">
+        <div class="row">
+
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">@Labels.Countries</h4>
+                        <p class="card-description">  </p>
+
+                        <input asp-for="Id" type="hidden" />
+                        <div class="form-group">
+                            <label asp-for="CountryAname" class="form-label"></label>
+                            <input asp-for="CountryAname" type="text" class="form-control" placeholder="@Labels.NameAr">
+                            <span asp-validation-for="CountryAname" class="text-danger d-block mt-1"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CountryEname" class="form-label"></label>
+                            <input asp-for="CountryEname" type="text" class="form-control" placeholder="@Labels.NameEn">
+                            <span asp-validation-for="CountryEname" class="text-danger d-block mt-1"></span>
+                        </div>
+
+                         
+                        <button type="submit" class="btn btn-gradient-primary me-2">@Actions.Save</button>
+                        <button class="btn btn-light">@Actions.Clear</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@await Html.PartialAsync("_AlertMessage")
+
+@section Scripts {
+    <div id="admin-form-validator-config"
+         data-form-selector="#countryForm"
+         data-rule-key="countryForm"></div>
+    <script src="~/Admin/assets/js/admin-form-validator.js" asp-append-version="true"></script>
+}
+
+
+
+ 
+
+

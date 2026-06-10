@@ -1,0 +1,312 @@
+/* ═══════════════════════════════════════════════════════════════
+   SHIPMENTS MODULE - SHARED STYLES (ADMIN AREA)
+   Following admin theme colors: Purple gradient (#da8cff to #9a55ff)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* CSS Variables - inherits from admin theme */
+:root {
+    --admin-primary: #6571ff;
+    --admin-primary-light: #da8cff;
+    --admin-primary-dark: #9a55ff;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD HEADERS - Using admin gradient theme
+   ═══════════════════════════════════════════════════════════════ */
+
+.shipment-card .card-header, 
+.party-card .card-header, 
+.extras-card .card-header {
+    background: linear-gradient(to right, #da8cff, #9a55ff) !important;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Page header gradient icon */
+.page-header .page-title-icon.bg-gradient-primary,
+.bg-gradient-primary {
+    background: linear-gradient(to right, #da8cff, #9a55ff) !important;
+    background-color: #9a55ff !important;
+}
+
+.party-card .card-body {
+    font-size: 1.02rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════ */
+
+.shipment-header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.shipment-prop-row {
+    margin-bottom: .5rem;
+    line-height: 1.3;
+}
+
+.shipment-prop-row strong {
+    font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTONS - Following admin theme button styling
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Ensure gradient buttons are not overridden - 
+    Multiple selectors for higher specificity */
+/*.btn.btn-gradient-primary,
+button.btn-gradient-primary,
+a.btn-gradient-primary,
+.btn-gradient-primary,
+#btnApprove.btn-gradient-success,
+#btnMarkReady.btn-gradient-primary,
+#btnMakeReady.btn-gradient-primary,
+#btnMarkShipped.btn-gradient-success {
+    border: 0 !important;
+    color: #fff !important;
+}*/
+
+/* Primary gradient - Purple (Main admin color) */
+/*.btn.btn-gradient-primary,
+button.btn-gradient-primary,
+a.btn-gradient-primary,
+.btn-gradient-primary,
+#btnMarkReady.btn-gradient-primary,
+#btnMakeReady.btn-gradient-primary {
+    background: linear-gradient(to right, #da8cff, #9a55ff) !important;
+    background-color: #9a55ff !important;
+}*/
+
+/* Success gradient - Green */
+/*.btn.btn-gradient-success,
+button.btn-gradient-success,
+a.btn-gradient-success,
+.btn-gradient-success,
+#btnApprove.btn-gradient-success,
+#btnMarkShipped.btn-gradient-success {
+    background: linear-gradient(to right, #84d9d2, #07cdae) !important;
+    background-color: #07cdae !important;
+}*/
+
+/* Info gradient - Blue */
+/*.btn.btn-gradient-info,
+button.btn-gradient-info,
+a.btn-gradient-info,
+.btn-gradient-info {
+    background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
+    background-color: #047edf !important;
+}*/
+
+/* Danger gradient - Red/Orange */
+/*.btn.btn-gradient-danger,*/
+/*button.btn-gradient-danger,
+a.btn-gradient-danger,
+.btn-gradient-danger {
+    background: linear-gradient(to right, #ffbf96, #fe7096) !important;
+    background-color: #fe7096 !important;
+}*/
+
+/* Hover states for gradient buttons */
+/*.btn-gradient-primary:hover,
+.btn-gradient-primary:focus,
+.btn-gradient-primary:active,
+.btn.btn-gradient-primary:hover,
+button.btn-gradient-primary:hover,
+#btnMarkReady:hover,
+#btnMakeReady:hover {
+    background: linear-gradient(to right, #c77ef0, #8a45ef) !important;
+    background-color: #8a45ef !important;
+    color: #fff !important;
+}*/
+
+/*.btn-gradient-success:hover,
+.btn-gradient-success:focus,
+.btn-gradient-success:active,
+.btn.btn-gradient-success:hover,
+button.btn-gradient-success:hover,
+#btnApprove:hover,
+#btnMarkShipped:hover {
+    background: linear-gradient(to right, #74c9c2, #06bd9e) !important;
+    background-color: #06bd9e !important;
+    color: #fff !important;
+}*/
+
+/*.btn-gradient-info:hover,
+.btn-gradient-info:focus,
+.btn-gradient-info:active,
+.btn.btn-gradient-info:hover,
+button.btn-gradient-info:hover {
+    background: linear-gradient(to right, #80bae9, #036ecf 99%) !important;
+    background-color: #036ecf !important;
+    color: #fff !important;
+}*/
+
+/*.btn-gradient-danger:hover,*/
+/*.btn-gradient-danger:focus,
+.btn-gradient-danger:active,
+.btn.btn-gradient-danger:hover,
+button.btn-gradient-danger:hover {
+    background: linear-gradient(to right, #efaf86, #ee6086) !important;
+    background-color: #ee6086 !important;
+    color: #fff !important;
+}*/
+
+/* All buttons styling - consistent height and centering */
+.text-end .btn {
+    margin-bottom: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 34px;
+}
+
+.text-end .btn i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Workflow buttons - consistent sizing */
+/*.btn-workflow {
+    min-width: 130px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+}*/
+
+/* ═══════════════════════════════════════════════════════════════
+   BADGES - Following admin theme badge styling
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Status badge - same size as workflow buttons */
+.badge-status-large {
+    min-width: 130px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    cursor: default !important;
+    pointer-events: none;
+}
+
+/*.badge-status-large i {
+    font-size: 1.1rem;
+}
+
+.badge-status-large span {
+    display: inline;
+}*/
+
+/* ═══════════════════════════════════════════════════════════════
+   ICONS - Consistent alignment
+   ═══════════════════════════════════════════════════════════════ */
+
+.btn i, 
+.badge i {
+    font-size: 1.1rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WORKFLOW PAGES - Status Pills & Forms
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Status progress pills */
+/*.nav-pills .nav-item .btn {
+    cursor: default;
+    pointer-events: none;
+}
+*/
+/* Form controls in workflow pages */
+.shipping-form .form-control,
+.shipping-form .form-select {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+.shipping-form .form-control:focus,
+.shipping-form .form-select:focus {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 0.2rem rgba(101, 113, 255, 0.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIST PAGE - Table & Actions
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Table styling */
+.table-hover tbody tr:hover {
+    background-color: rgba(101, 113, 255, 0.05);
+}
+
+/* Action buttons in table */
+.table .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.table .dropdown-toggle::after {
+    margin-left: 0.5rem;
+}
+
+/* Page header styling */
+.page-title-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+
+
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ALERTS & NOTIFICATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+.alert-info {
+    background-color: rgba(101, 113, 255, 0.1);
+    border-color: var(--admin-primary);
+    color: #2c3e50;
+}
+
+.alert-info i {
+    color: var(--admin-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE ADJUSTMENTS
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .btn-workflow {
+        min-width: auto;
+        font-size: 0.875rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .badge-status-large {
+        min-width: auto;
+        font-size: 0.875rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

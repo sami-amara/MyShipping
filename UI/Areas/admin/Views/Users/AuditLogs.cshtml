@@ -1,0 +1,139 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Audit Logs";
+}
+
+<div class="container-fluid mt-5">
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <h2>📋 Account Audit Logs</h2>
+            <p class="text-muted">View all account activities for compliance and security monitoring</p>
+        </div>
+    </div>
+
+    <!-- Search/Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Search by Email</label>
+                    <input type="text" name="email" class="form-control" placeholder="user@example.com" 
+                           value="@ViewBag.SearchEmail" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Filter by Action</label>
+                    <select name="action" class="form-select">
+                        <option value="">-- All Actions --</option>
+                        @foreach (var act in ViewBag.AvailableActions)
+                        {
+                            <option value="@act" selected="@(ViewBag.SearchAction == act)">@act</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        🔍 Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Audit Logs Table -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User Email</th>
+                        <th>User Name</th>
+                        <th>Action</th>
+                        <th>Initiated By</th>
+                        <th>IP Address</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in Model)
+                    {
+                        var actionColor = GetActionBadgeColor(log.Action);
+                        <tr>
+                            <td>
+                                <small>@log.Timestamp?.ToString("MMM dd HH:mm:ss")</small>
+                            </td>
+                            <td><strong>@log.UserEmail</strong></td>
+                            <td>@log.UserName</td>
+                            <td>
+                                @log.Action
+                            </td>
+                            <td>@log.InitiatedBy</td>
+                            <td>@log.IpAddress</td>
+                            <td>
+                                <span class="badge @actionColor">
+                                    @GetActionBadgeText(log.Action)
+                                </span>
+                            </td>
+                        </tr>
+                        @if (!string.IsNullOrWhiteSpace(log.Reason))
+                        {
+                            <tr class="table-secondary">
+                                <td colspan="7">
+                                    <small class="text-muted">Reason: @log.Reason</small>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <strong>ℹ️ No Audit Logs Found</strong><br>
+            No account activities match your search criteria.
+        </div>
+    }
+</div>
+
+@functions {
+    string GetActionBadgeColor(string action)
+    {
+        return action switch
+        {
+            "SuccessfulLogin" => "bg-success",
+            "FailedLoginAttempt_InvalidPassword" => "bg-warning",
+            "FailedLoginAttempt_LockedOut" => "bg-danger",
+            "FailedLoginAttempt_Deactivated" => "bg-secondary",
+            "Deactivated" => "bg-danger",
+            "Reactivated" => "bg-success",
+            "PasswordChanged" => "bg-info",
+            "LockedByAdmin" => "bg-danger",
+            "UnlockedByAdmin" => "bg-warning",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetActionBadgeText(string action)
+    {
+        return action switch
+        {
+            "SuccessfulLogin" => "✅ Login",
+            "FailedLoginAttempt_InvalidPassword" => "❌ Bad Password",
+            "FailedLoginAttempt_LockedOut" => "🔒 Locked",
+            "FailedLoginAttempt_Deactivated" => "⛔ Deactivated",
+            "Deactivated" => "🗑️ Deactivated",
+            "Reactivated" => "✅ Reactivated",
+            "PasswordChanged" => "🔑 Password",
+            "LockedByAdmin" => "👮 Admin Lock",
+            "UnlockedByAdmin" => "👮 Admin Unlock",
+            _ => action
+        };
+    }
+}
+
+
+
+

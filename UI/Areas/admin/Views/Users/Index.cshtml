@@ -1,0 +1,123 @@
+@model IEnumerable<UserDto>
+@using UI.Constants
+
+@{
+    ViewData["Title"] = ResourceTextHelper.L("Users", "Users");
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> @ResourceTextHelper.L("Users", "Users") </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">@Labels.Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@ResourceTextHelper.L("Users", "Users")</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div>
+        <div>
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <a asp-area="admin" asp-controller="Users" asp-action="Edit" class="btn btn-gradient-primary me-2 mb-3"> 
+                                    <i class="mdi mdi-plus"></i> @Actions.AddNew
+                                </a>
+
+                                <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="order-listing" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@ResourceTextHelper.L("FirstName", "First Name")</th>
+                                                        <th>@ResourceTextHelper.L("LastName", "Last Name")</th>
+                                                        <th>@Labels.Email</th>
+                                                        <th>@Labels.Phone</th>
+                                                        <th>@ResourceTextHelper.L("Role", "Role")</th>
+                                                        <th>@Labels.Status</th>
+                                                        <th>@Labels.Actions</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    @foreach (var user in Model)
+                                                    {
+                                                        <tr>
+                                                            <td>@user.FirstName</td>
+                                                            <td>@user.LastName</td>
+                                                            <td>@user.Email</td>
+                                                            <td>@user.Phone</td>
+                                                            <td>
+                                                                <label class="badge badge-info">@ResourceTextHelper.L(user.Role, user.Role)</label>
+                                                            </td>
+                                                            <td>
+                                                                @if (user.IsLockedOut)
+                                                                {
+                                                                    <label class="badge badge-danger">
+                                                                        @ResourceTextHelper.L("Locked", "Locked")
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="badge badge-success">
+                                                                        @Labels.Active
+                                                                    </label>
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                <a asp-area="admin" asp-controller="Users" asp-action="Edit" 
+                                                                   asp-route-id="@user.Id" class="btn btn-info btn-sm">
+                                                                    <i class="mdi mdi-pencil"></i> @Actions.Edit
+                                                                </a>
+
+                                                                @if (user.IsLockedOut)
+                                                                {
+                                                                    <button type="button" class="btn btn-success btn-sm btn-unlock" 
+                                                                            data-id="@user.Id">
+                                                                        <i class="mdi mdi-lock-open"></i> @ResourceTextHelper.L("Unlock", "Unlock")
+                                                                    </button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button type="button" class="btn btn-warning btn-sm btn-lock" 
+                                                                            data-id="@user.Id">
+                                                                        <i class="mdi mdi-lock"></i> @ResourceTextHelper.L("Lock", "Lock")
+                                                                    </button>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_AlertMessage")
+
+@section Scripts
+{
+    <link rel="stylesheet" href="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css" />
+    <script src="~/Admin/assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/Admin/assets/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="~/Admin/assets/js/data-table.js"></script>
+
+    <div id="user-management-config"
+         data-lock-url="@Url.Action("Lock", "Users", new { area = "admin" })"
+         data-unlock-url="@Url.Action("Unlock", "Users", new { area = "admin" })"></div>
+    <script src="~/Admin/assets/js/users-management-bootstrap.js" asp-append-version="true"></script>
+    <script src="~/Admin/assets/js/users-management.js"></script>
+}

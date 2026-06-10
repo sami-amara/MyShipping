@@ -1,0 +1,288 @@
+@using System.Text.Json
+@using Business.DTOS
+@using Business.Services.Shipment
+@using UI.Constants
+@model Business.DTOS.ShippmentDto
+
+@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = AppResource.Labels.ShipmentDetails ?? "Shipment Details";
+
+    // ✅ Get current status
+    var currentState = Model?.CurrentState ?? 0;
+    var isCreated = currentState == (int)ShipmentStatusEnum.Created;
+    var canEdit = Enum.IsDefined(typeof(ShipmentStatusEnum), currentState) && currentState <= (int)ShipmentStatusEnum.ReadyForShipping;
+
+    // ✅ Check user permissions
+    var isAdmin = User.IsInRole(RoleNames.Admin);
+    var isReviewer = User.IsInRole(RoleNames.Reviewer);
+    var isOperation = User.IsInRole(RoleNames.Operation);
+    var isOperationManager = User.IsInRole(RoleNames.OperationManager);
+}
+
+
+
+<link rel="stylesheet" href="~/Admin/assets/css/shipments.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/Admin/assets/css/shipment-show.css" asp-append-version="true" />
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="page-header mb-3">
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                    <i class="mdi mdi-file-document-box"></i>
+                </span> @((AppResource.Labels.ShipmentDetails) ?? "Shipment Details")
+            </h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="List" asp-controller="Shipments">Shipments</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Details</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h4 class="card-title mb-0 shipment-header-title">@((AppResource.Labels.ShipmentDetails) ?? "Shipment Details")</h4>
+                                <small id="trackingSmall" class="text-muted">#@(Model?.TrackingNumber?.ToString() ?? "-")</small>
+                            </div>
+
+                            <div class="text-end">
+                                @* ✅ Hidden input for shipment ID *@
+                                <input type="hidden" id="shipmentId" value="@Model?.Id" />
+                                
+                                <a class="btn btn-sm btn-outline-secondary me-1" asp-action="List" asp-controller="Shipments">
+                                    <i class="mdi mdi-arrow-left"></i>
+                                    <span>@((AppResource.Labels.Back) ?? "Back")</span>
+                                </a>
+
+                                @* ✅ Workflow action buttons - navigate to their pages *@
+                                <div class="d-inline-block">
+                                    @* Approve: Navigate to Approve page - Only show if paid *@
+                                    @if ((currentState == (int)ShipmentStatusEnum.Created || 
+                                    currentState == (int)ShipmentStatusEnum.Updated) && 
+                                    (Model?.IsPaid ?? false) && 
+                                    (isAdmin || isReviewer))
+                                    {
+
+                                        <a asp-action="Approve" asp-controller="Shipments" asp-route-id="@Model?.Id"
+                                               class="btn btn-sm btn-gradient-primary btn-workflow me-1" title="Approve Shipment">
+                                            <i class="mdi mdi-check-circle"></i>
+                                            <span>@((AppResource.Labels.Approved) ?? "Approve")</span>
+                                        </a>
+                                    }
+
+
+                                    @* Mark Ready: Navigate to Ready page - Only show if paid *@
+                                    @if (currentState == (int)ShipmentStatusEnum.Approved && 
+                                        (Model?.IsPaid ?? false) && 
+                                        (isAdmin || isOperation))
+                                    {
+                                        <a asp-action="MakeShipmentReadyForShipp" asp-controller="Shipments" asp-route-id="@Model?.Id"
+                                           class="btn btn-sm btn-gradient-primary btn-workflow me-1" title="Mark Ready for Shipping">
+                                            <i class="mdi mdi-truck-fast"></i>
+                                            <span>@AppResource.Labels.MarkReady</span>
+                                        </a>
+                                    }
+
+                                    @* Ship: Navigate to Shipped page - Only show if paid *@
+                                    @if (currentState == (int)ShipmentStatusEnum.ReadyForShipping && 
+                                        (Model?.IsPaid ?? false) && 
+                                        (isAdmin || isOperationManager))
+                                    {
+                                        <a asp-action="Shipped" asp-controller="Shipments" asp-route-id="@Model?.Id"
+                                           class="btn btn-sm btn-gradient-primary btn-workflow me-1" title="Mark as Shipped">
+                                            <i class="mdi mdi-truck-delivery"></i>
+                                            <span>@AppResource.Labels.MarkShipped</span>
+                                        </a>
+                                    }
+
+                                    @* Deliver: Navigate to Deliver page - Only show if paid *@
+                                    @if (currentState == (int)ShipmentStatusEnum.Shipped && 
+                                        (Model?.IsPaid ?? false) && 
+                                        (isAdmin || isOperationManager))
+                                    {
+                                        <a asp-action="Deliver" asp-controller="Shipments" asp-route-id="@Model?.Id"
+                                           class="btn btn-sm btn-gradient-success btn-workflow me-1" title="Mark as Delivered">
+                                            <i class="mdi mdi-package-check"></i>
+                                            <span>@(AppResource.Labels.Delivered ?? "Mark Delivered")</span>
+                                        </a>
+                                    }
+
+                                    @if ((Model?.IsPaid ?? false)
+                                        && isAdmin
+                                        && currentState != (int)ShipmentStatusEnum.Shipped
+                                        && currentState != (int)ShipmentStatusEnum.Delivered
+                                        && currentState != (int)ShipmentStatusEnum.Cancelled
+                                        && currentState != (int)ShipmentStatusEnum.Returned)
+                                    {
+                                        <a asp-action="Refund" asp-controller="Shipments" asp-route-id="@Model?.Id"
+                                           id="btnCancelShipment"
+                                           class="btn btn-sm btn-gradient-warning btn-workflow me-1" title="Cancel Shipment">
+                                            <i class="mdi mdi-close-circle"></i>
+                                            <span>@(AppResource.Labels.Cancell ?? "Cancell")</span>
+                                        </a>
+                                    }
+                                    @* ✅ Current status badge - same size as buttons *@
+                                    @{
+                                        string statusClass;
+                                        string statusText;
+                                        string statusIcon;
+
+                                        switch (currentState)
+                                        {
+                                            case 0:
+                                                statusClass = "btn btn-sm badge bg-secondary badge-status-large";
+                                                statusText = AppResource.Labels.Deleted ?? "Deleted";
+                                                statusIcon = "mdi-delete";
+                                                break;
+                                            case 1:
+                                                statusClass = "btn btn-sm badge bg-warning text-dark badge-status-large";
+                                                statusText = AppResource.Labels.Created ?? "Created";
+                                                statusIcon = "mdi-file-document-outline";
+                                                break;
+                                            case 2:
+                                                statusClass = "btn btn-sm badge bg-info text-dark badge-status-large";
+                                                statusText = AppResource.Labels.Updated ?? "Updated";
+                                                statusIcon = "mdi-update";
+                                                break;
+                                            case 3:
+                                                statusClass = "btn btn-sm badge bg-primary badge-status-large";
+                                                statusText = AppResource.Labels.Approved ?? "Approved";
+                                                statusIcon = "mdi-check-circle";
+                                                break;
+                                            case 4:
+                                                statusClass = "btn btn-sm badge bg-info text-dark badge-status-large";
+                                                statusText = AppResource.Labels.ReadyForShipping ?? "Ready for Shipping";
+                                                statusIcon = "mdi-package-variant";
+                                                break;
+                                            case 5:
+                                                statusClass = "btn btn-sm badge bg-success badge-status-large";
+                                                statusText = AppResource.Labels.Shipped ?? "Shipped";
+                                                statusIcon = "mdi-truck-delivery";
+                                                break;
+                                            case 6:
+                                                statusClass = "btn btn-sm badge bg-success badge-status-large";
+                                                statusText = AppResource.Labels.Delivered ?? "Delivered";
+                                                statusIcon = "mdi mdi-inbox-arrow-down";
+                                                break;
+                                            case 7:
+                                                statusClass = "btn btn-sm badge bg-danger badge-status-large";
+                                                statusText = AppResource.Labels.Cancelled ?? "Cancelled";
+                                                statusIcon = "mdi-close-circle";
+                                                break;
+                                            case 8:
+                                                statusClass = "btn btn-sm badge bg-dark badge-status-large";
+                                                statusText = AppResource.Labels.Returned ?? "Returned";
+                                                statusIcon = "mdi-keyboard-return";
+                                                break;
+                                            case 9:
+                                                statusClass = "btn btn-sm badge bg-dark badge-status-large";
+                                                statusText = AppResource.Labels.Refunded ?? "Refunded";
+                                                statusIcon = "mdi-keyboard-return";
+                                                break;
+                                            default:
+                                                statusClass = "btn btn-sm badge bg-secondary badge-status-large";
+                                                statusText = "Unknown";
+                                                statusIcon = "mdi-help-circle";
+                                                break;
+                                        }
+                                    }
+                                    <span class="@statusClass">
+                                        <i class="mdi @statusIcon"></i>
+                                        <span>@statusText</span>
+                                    </span>
+
+                                    @* ✅ Payment status badge *@
+                                    @{
+                                        var isTerminalState = currentState == (int)ShipmentStatusEnum.Deleted
+                                                           || currentState == (int)ShipmentStatusEnum.Cancelled
+                                                           || currentState == (int)ShipmentStatusEnum.Returned
+                                                           || currentState == (int)ShipmentStatusEnum.Refunded;
+                                    }
+                                    @if (Model?.IsPaid ?? false)
+                                    {
+                                        <span class="btn btn-sm badge bg-success badge-status-large ms-2">
+                                            <i class="mdi mdi-check-circle"></i>
+                                            <span>@(AppResource.Labels.Active ?? "Active")</span>
+                                        </span>
+                                    }
+                                    else if (isTerminalState)
+                                    {
+                                        <span class="btn btn-sm badge bg-secondary badge-status-large ms-2">
+                                            <i class="mdi mdi-close-circle-outline"></i>
+                                            <span>@(AppResource.Labels.Inactive ?? "Inactive")</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="btn btn-sm badge bg-warning text-dark badge-status-large ms-2">
+                                            <i class="mdi mdi-alert-circle"></i>
+                                            <span>@(AppResource.Labels.UnPaid ?? "Unpaid")</span>
+                                        </span>
+                                    }
+                                </div>
+
+                                @* ✅ Admin controls on separate line *@
+                                <div class="d-block mt-2">
+                                    @* Only show Delete for Created status and Admin only *@
+                                    @if (isCreated && isAdmin)
+                                    {
+                                        <button type="button" id="btnDeleteShipment" class="btn btn-sm btn-gradient-danger me-1" title="Delete Shipment">
+                                            <i class="mdi mdi-delete"></i>
+                                            <span>@((AppResource.Labels.DeleteShipment) ?? "Delete")</span>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="show-details" class="row gy-3">
+                            <div id="shipment-block" class="col-12 grid-margin stretch-card"></div>
+                            <div id="sender-block" class="col-md-6 grid-margin stretch-card"></div>
+                            <div id="receiver-block" class="col-md-6 grid-margin stretch-card"></div>
+                        </div>
+
+                        <div id="show-extras" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_AlertMessage")
+@Html.AntiForgeryToken()
+
+<textarea id="shipment-show-server-dto" class="d-none">@Html.Raw(Model != null ? JsonSerializer.Serialize(Model) : "null")</textarea>
+<div id="shipment-show-config"
+     data-redirect-url="/admin/Shipments/List"
+     data-enable-delete="@Json.Serialize(isCreated && isAdmin)"
+     data-enable-edit="@Json.Serialize(canEdit && isAdmin)"></div>
+
+@* ✅ Include Payment Method Selector Modal for admin (optional, if admin can also pay) *@
+@await Html.PartialAsync("_PaymentMethodSelector", Model.Id)
+@await Html.PartialAsync("_StripePaymentModal")
+
+@section Scripts {
+    @* ✅ Stripe Payment Integration - Load Stripe.js first without defer *@
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script src="~/Modules/ApiClient.js" asp-append-version="true"></script>
+    <script src="~/Modules/AppHelper.js"></script>
+    <script src="~/Modules/ShipmentApiClient.js" asp-append-version="true"></script>
+    <script src="~/App/Shared/AlertAdapter.js" defer></script>
+    <script src="~/App/Shared/showAlert.js" asp-append-version="true"></script>
+    <script src="~/Modules/ShipmentService.js" asp-append-version="true"></script>
+
+    <script src="~/Modules/ShipmentShow.js" asp-append-version="true"></script>
+    <script src="~/Modules/AdminListShipments.js" asp-append-version="true"></script>
+
+    @* ✅ Stripe Payment Module *@
+    <script src="~/Modules/StripePayment.js" asp-append-version="true"></script>
+    <script src="~/Admin/assets/js/shipment-show-bootstrap.js" asp-append-version="true"></script>
+}

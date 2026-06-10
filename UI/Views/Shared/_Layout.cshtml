@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="Bootstrap4, Multipurpose, responsive, Business, template,Shipping, Cargo, logistic, html5, css, javascript, web24service" />
+    <meta name="author" content="web24service">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>@(ResourceTextHelper.L("Home", "Home")) - @(ResourceTextHelper.L("Shipments", "Shipping"))</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="~/assets/images/fevicon.png">
+
+    <!-- Bootstrap LTR CSS -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+
+    <!-- Font awesome CSS -->
+    <link rel="stylesheet" href="~/assets/css/fontawesome.all.min.css">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="~/assets/css/animate.min.css">
+
+    <!-- OwlCarousel CSS -->
+    <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+
+    <!-- Magnific popup CSS -->
+    <link rel="stylesheet" href="~/assets/css/fancybox.min.css">
+
+    <!-- chat CSS -->
+    <link rel="stylesheet" href="~/assets/css/chat.css">
+
+    <!-- Slicknav CSS -->
+    <link rel="stylesheet" href="~/assets/css/slicknav.min.css">
+
+    <!-- Date picker CSS -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap-datetimepicker.min.css">
+
+
+    <!-- Date picker CSS -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap-datetimepicker.min.css">
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet" href="~/assets/css/style.css"/>
+    <link rel="stylesheet" href="~/css/site-custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shipment-search.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shipments.css" asp-append-version="true" />
+
+
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="~/assets/css/responsive.css">
+
+    @* Page-specific styles *@
+    @await RenderSectionAsync("Styles", required: false)
+
+    @* <!-- RTL CSS -->
+    <script src="~/assets/js/jquery-3.4.1.min.js"></script> *@
+</head>
+<body>
+    <!-- Main Wrapper Start -->
+    <div class="main-wrapper">
+
+        <!-- skiptocontent start ( This section for blind and Google SEO, Also for page speed )-->
+        <a id="skiptocontent" href="#maincontent">@(ResourceTextHelper.L("SkipNavigation", "skip navigation"))</a>
+        <!-- skiptocontent End -->
+        <!-- Preloader start -->
+        <div class="wshipping-site-preloader-wrapper">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+        <!-- Preloader End -->
+
+        <header class="for-sticky">
+            <!-- Header top area start -->
+            <div class="header-top-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-8">
+                            <div class="top-contact"> <a href="#"><i class="fa fa-envelope"></i> info@company.com</a> <a href="#"><i class="fa fa-phone"></i> +88 01xxx 8xxx04</a> <a href="#"><i class="far fa-clock"></i> @(ResourceTextHelper.L("BusinessHours", "9:00AM to 8:00PM"))</a> </div>
+                        </div>
+                        <div class="col-12 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+                            <div class="top-menu">
+                             
+                                <ul>
+                                    <li><a href="/Account/Login"><i class="fas fa-sign-in-alt"></i> @(ResourceTextHelper.L("Login", "Login"))</a></li>
+
+                                     <li><a href="/Account/Logout"><i class="fa fa-unlock-alt"></i> @(ResourceTextHelper.L("Logout", "Logout"))</a></li>
+                                    <li><a href="/Account/Register"><i class="fa fa-unlock-alt"></i> @(ResourceTextHelper.L("Register", "Registration"))</a></li>
+                                    <li><a href="/Account/Settings"><i class="fa fa-cog"></i> @(ResourceTextHelper.L("Settings", "Settings"))</a></li>
+                                </ul>
+                            </div>
+                            <div class="language">
+                                <ul>
+                                    <li>
+                                        <a href="#" title="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <img src="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? Url.Content("~/assets/images/flag-2.png") : Url.Content("~/assets/images/flag-1.png"))" alt="" />
+                                            @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "AR" : "EN")
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a asp-area="" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")" title="">
+                                                    <img src="~/assets/images/flag-1.png" alt="" /> EN
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="ar" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")" title="">
+                                                    <img src="~/assets/images/flag-2.png" alt="" /> AR
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Header top area End -->
+            <!-- Header area start -->
+            <div class="header-area">
+                <div class="container">
+                    <!-- Site logo Start -->
+                    <div class="logo"> <a href="index.html" title="W-shipping"><img src="~/assets/images/logo.png" alt="W-shipping" /></a> </div>
+                    <!-- Site logo end -->
+                    <div class="mobile-menu-wrapper"></div>
+                    <!-- Search Start -->
+                    <!-- <div class="dropdown header-search-bar">
+                      <form action="index.html">
+                        <span class="" data-toggle="dropdown"><i class="fa fa-search" aria-hidden="true"></i></span>
+                        <input type="search" placeholder="kyewords.." class="dropdown-menu search-box">
+                      </form>
+                    </div> -->
+                    <!-- Search End -->
+                    <!-- Main menu start -->
+                    <nav class="mainmenu">
+                        <ul id="navigation">
+                            <li class="nav-active">
+                                <a href="/Home/Index">@(AppResource.Labels.Home ?? "Home")</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Home" asp-action="AboutUs">@(ResourceTextHelper.L("AboutUs", "About Us"))</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Home" asp-action="Services">@(ResourceTextHelper.L("Services", "Services"))</a>
+                            </li>
+                            <li>
+                                <a href="/Shipments/Create">@(ResourceTextHelper.L("Shipping", "Shipping"))</a>
+                            </li>
+
+                            <li>
+                                <a href="/Shipments/List">@(ResourceTextHelper.L("ViewAllShipments", "List"))</a>
+                            </li>
+
+                            <li>
+                                <a href="/PaymentTransactions/Index"><i class="fas fa-receipt"></i> @(ResourceTextHelper.L("PaymentHistory", "Payments"))</a>
+                            </li>
+
+                       @*      <li>
+                                <a href="blog.html">@(ResourceTextHelper.L("Blog", "Blog"))</a>
+                            </li> *@
+                            <li>
+                                <a asp-controller="Home" asp-action="ContactUs">@(AppResource.Labels.Contact ?? "Contact Us")</a>
+                            </li>
+                           @*  <li>
+                                <a href="profile.html"><img class="header-profile-pic" src="~/assets/images/profile.jpg"> @(ResourceTextHelper.L("Profile", "Profile"))</a>
+                            </li> *@
+                        </ul>
+                    </nav>
+                    <!-- Main menu end -->
+                </div>
+            </div>
+            <!-- Header area End -->
+        </header>
+        @RenderBody()
+        <!-- Footer start -->
+        <footer class="site-footer">
+            <!-- Footer Top start -->
+            <div class="footer-top-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="footer-wiz">
+                                <h3 class="footer-logo"><img src="~/assets/images/footer-logo.png" alt="footer logo" /></h3>
+                                <p>@(ResourceTextHelper.L("FooterCompanyDescription", "It was popularised in the 1960s with the release of Letraset sheets containing."))</p>
+                                <ul class="footer-contact">
+                                    <li><i class="fa fa-phone"></i> +88 01xxx 8xxx04</li>
+                                    <li><i class="fa fa-envelope"></i> info@companyname.com</li>
+                                    <li><i class="fa fa-fax"></i> +88 x2 1xx4x6</li>
+                                </ul>
+                            </div>
+                            <div class="top-social bottom-social"> <a href="#"><i class="fab fa-facebook-f"></i></a> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-youtube"></i></a> <a href="#"><i class="fa fa-rss"></i></a> </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="footer-wiz footer-menu">
+                                <h3 class="footer-wiz-title">@(ResourceTextHelper.L("QuickLinks", "Quick Links"))</h3>
+                                <ul class="footer-menu">
+                                    <li><a href="about.html">@(ResourceTextHelper.L("CompanyOverview", "Company Overview"))</a></li>
+                                    <li><a href="services.html">@(ResourceTextHelper.L("Services", "Our Services"))</a></li>
+                                    <li><a href="blog.html">@(ResourceTextHelper.L("Blog", "Blog"))</a></li>
+                                    <li><a href="contact.html">@(ResourceTextHelper.L("Contact", "Contact Us"))</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="footer-wiz footer-menu">
+                                <h3 class="footer-wiz-title">@(ResourceTextHelper.L("UsefulLinks", "Useful Links"))</h3>
+                                <ul class="footer-menu">
+                                    <li><a href="create-shipping.html">@(ResourceTextHelper.L("CreateShipment", "Create Shipping"))</a></li>
+                                    <li><a href="tracking.html">@(ResourceTextHelper.L("TrackingNumber", "Tracking"))</a></li>
+                                    <li><a href="shipment-history.html">@(ResourceTextHelper.L("ViewAllShipments", "Shipment History"))</a></li>
+                                    <li><a href="tracking-result.html">@(ResourceTextHelper.L("TrackingReference", "Tracking Result"))</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="footer-wiz">
+                                <h3 class="footer-wiz-title">@(ResourceTextHelper.L("OpeningHours", "Opening Hours"))</h3>
+                                <ul class="opening-hours">
+                                    <li><span>@(ResourceTextHelper.L("MonToFri", "Mon to Fri")):</span> <span class="text-right">@(ResourceTextHelper.L("WeekdayHours", "09:30AM to 05:30PM"))</span></li>
+                                    <li><span>@(ResourceTextHelper.L("Sun", "Sun")):</span> <span class="text-right">@(ResourceTextHelper.L("Closed", "Closed"))</span></li>
+                                </ul>
+                                <div class="newsletter">
+                                    <form action="index.html">
+                                        <input type="text" placeholder="Enter your email" value="" class="news-input">
+                                        <button type="submit" value="" class="news-btn"><i class="fa fa-location-arrow"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- footer top end -->
+            <!-- copyright start -->
+            <div class="footer-bottom-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 wow fadeInLeft">@(ResourceTextHelper.L("Copyright", "Copyright")) © 2024 <span>@(ResourceTextHelper.L("WorldShipping", "World shipping"))</span>. @(ResourceTextHelper.L("AllRightsReserved", "All Rights Reserved"))</div>
+                        <div class="col-12 col-lg-6 text-right wow fadeInRight">@(ResourceTextHelper.L("DesignAndDevelopmentBy", "Design & Development By")): <a href="#" title="companytitle" target="_blank">@(ResourceTextHelper.L("CompanyTitle", "Company Title"))</a></div>
+                    </div>
+                </div>
+            </div>
+            <!-- copyright end -->
+        </footer>
+        <!-- Footer end -->
+    </div>
+
+                                                            
+
+    <!-- Main Wrapper end -->
+    <!-- Start scroll top -->
+    <div class="scrollup"><i class="fas fa-chevron-up"></i></div>
+    <!-- End scroll top -->
+            @Html.AntiForgeryToken()
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="~/shared/js/signalr-client.js"></script>
+    
+    <!-- jQuery (single include, required by plugins below) -->
+    <script src="~/assets/js/jquery-3.4.1.min.js"></script>
+
+    <script src="~/assets/js/tether.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="~/assets/js/popper.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="~/assets/js/bootstrap.min.js"></script>
+
+    <!-- OwlCarousel JS -->
+    <script src="~/assets/js/owl.carousel.min.js"></script>
+
+    <!-- Bootstrap dateTimePicker -->
+    <script src="~/assets/js/datetimepicker-moment.min.js"></script>
+
+    <script src="~/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- SlickNav JS -->
+    <script src="~/assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- fancybox Popup JS -->
+    <script src="~/assets/js/jquery.fancybox.min.js"></script>
+
+    <!-- WOW JS -->
+    <script src="~/assets/js/wow-1.3.0.min.js"></script>
+    <!-- Step Form with validate -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+
+    <script src="~/assets/js/form-step.js"></script>
+
+    <!-- SlickNav JS -->
+    <script src="~/assets/js/youtube-background.js"></script>
+
+    <!-- Gallery Filter -->
+    <script src="~/assets/js/jquery.filterizr.min.js"></script>
+
+    <!-- Chat JS -->
+    <script src="~/assets/js/chat.js"></script>
+
+    <!-- Coming Soon JS -->
+    <script src="~/assets/js/coming-soon.js"></script>
+
+    <!-- Active JS -->
+    <script src="~/assets/js/active.js"></script>
+    <!-- Code injected by live-server -->
+
+
+
+    @await Html.PartialAsync("_ClientResourceScripts")
+
+    <script src="~/App/Shared/showAlert.js"></script>
+    <script src="~/js/site-view-bridges.js" asp-append-version="true"></script>
+    <script src="~/js/payment-method-selector.js" asp-append-version="true"></script>
+    <script src="~/App/Shared/AlertAdapter.js" defer></script>
+    <script src="~/App/Shared/ToastShim.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
+    <script src="~/shared/js/ScrollHelper.js"></script>
+    <script src="~/shared/js/validation.js"></script>
+    <script src="~/Modules/ShipmentValidationRules.js"></script>
+    <script src="~/shared/js/Credentials.js"></script>
+
+    <script src="~/Shared/js/ValidationMethodShims.js" defer></script>
+
+    <script src="~/Modules/ApiClient.js"></script>
+
+    <script src="~/Modules/Helpers.js"></script>
+    <script src="~/Modules/BaseServiceFactory.js"></script>
+
+    <script src="~/Shared/js/rate-limit-countdown.js"></script>
+                                              
+
+    @* ✅ ADD THIS: AntiForgery token for AJAX requests *@
+    @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+    @{
+        var tokens = Antiforgery.GetAndStoreTokens(Context);
+     }
+     <input type="hidden" id="RequestVerificationToken"
+     name="__RequestVerificationToken"
+     value="@tokens.RequestToken" />
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

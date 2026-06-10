@@ -1,0 +1,273 @@
+@using Business.DTOS
+@using Business.Services.Shipment
+@model UI.Models.ShipmentsIndexViewModel
+@using UI.Constants
+
+@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = AppResource.Labels.Shipments ?? "Shipments";
+    var paged = Model?.Paged ?? new DataAccessLayer.Model.PagedResult<ShippmentDto>();
+    var pager = Model?.Pager ?? new UI.Models.PaginationInfo();
+    var q = Model?.Search ?? string.Empty;
+    var selectedStatus = Model?.StatusFilter;
+    var selectedPaymentStatus = Model?.IsPaidFilter;
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-truck-delivery"></i>
+            </span> @ViewData["Title"]
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>@(AppResource.Labels.Overview ?? "Overview")
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">@ViewData["Title"]</h4>
+
+                    @* ✅ Enhanced search with consistent sizing and spacing *@
+                    <form asp-action="List" asp-controller="Shipments" method="get" class="mb-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-md-4">
+                                <input type="text" name="q" class="form-control shipment-search-control" 
+                                       placeholder="Search by sender, receiver, or tracking number..." 
+                                       value="@q" />
+                            </div>
+                            <div class="col-md-4">
+                                @await Html.PartialAsync("_StatusFilterDropdown", (selectedStatus, selectedPaymentStatus))
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-gradient-primary d-inline-flex align-items-center justify-content-center w-100 shipment-search-btn">
+                                    <i class="mdi mdi-magnify shipment-search-icon"></i>
+                                    <span>@((AppResource.Labels.Search) ?? "Search")</span>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <a asp-action="List" asp-controller="Shipments" 
+                                   class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center w-100 shipment-search-btn">
+                                    <i class="mdi mdi-refresh shipment-search-icon"></i>
+                                    <span>@((AppResource.Labels.Clear ?? "Clear"))</span>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>@AppResource.Labels.TrackingNumber</th>
+                                    <th>@AppResource.Labels.OrderDate</th>
+                                    <th>@AppResource.Labels.ShippingValue</th>
+                                    <th>@AppResource.Labels.SenderName</th>
+                                    <th>@AppResource.Labels.ReceiverName</th>
+                                    <th>@(AppResource.Labels.PaymentStatus ?? "Payment")</th>
+                                    <th>@AppResource.Labels.Status</th>
+                                    <th>@AppResource.Labels.Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int counter = (pager.Page - 1) * pager.PageSize + 1;
+                                }
+                                @if (!paged.Items.Any())
+                                {
+                                    <tr><td colspan="9" class="text-center">@((AppResource.Labels.NoRecordsFound) ?? "No records found")</td></tr>
+                                }
+                                else
+                                {
+                                    foreach (var shipment in paged.Items)
+                                    {
+                                        <tr data-id="@shipment?.Id">
+                                            <td>@counter</td>
+                                            <td>@(shipment?.TrackingNumber.HasValue == true ? shipment.TrackingNumber.Value.ToString() : "-")</td>
+                                            <td>@(shipment?.ShippingDate.ToString("MMMM dd, yyyy") ?? "-")</td>
+                                            <td>@(shipment?.PackageValue != null ? string.Format(System.Globalization.CultureInfo.GetCultureInfo("en-US"), "{0:C}", shipment.PackageValue) : "-")</td>
+                                            <td>@(shipment?.UserSender?.SenderName ?? "-")</td>
+                                            <td>@(shipment?.UserReceiver?.ReceiverName ?? "-")</td>
+                                            <td class="align-middle">
+                                                @if (shipment?.IsPaid ?? false) 
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="mdi mdi-check-circle"></i> @(AppResource.Labels.Active ?? "Active")
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">
+                                                        <i class="mdi mdi-close-circle-outline"></i> @(AppResource.Labels.Inactive ?? "Inactive")
+                                                    </span>
+                                                }
+                                            </td>
+                                            
+                                            @* ✅ NEW: Use Tag Helper instead of function *@
+                                          @*   <td><shipment-status-badge shipment="@shipment" /></td> *@
+                                            <td class="align-middle">
+                                                <div class="admin-shipments-status-wrapper">
+                                                    @ShipmentHelpers.StatusBadge(shipment)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="btn-group" role="group">
+                                                    <a asp-action="Show" asp-controller="Shipments" asp-route-id="@shipment.Id"
+                                                           class="btn btn-sm btn-outline-secondary ms-1" title="Show">
+                                                        <i class="mdi mdi-file-document-box"></i>
+                                                    </a>
+
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Updated)
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-outline-info ms-1" title="Updated" disabled>
+                                                            <i class="mdi mdi-update"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Shipped)
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-outline-primary ms-1" title="Shipped" disabled>
+                                                            <i class="mdi mdi-truck-delivery"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Delivered)
+                                                    {
+                                                    
+                                                        <button type="button" class="btn btn-sm btn-outline-danger ms-1" title="Delivered" disabled>
+                                                            <i class="mdi mdi-inbox-arrow-down"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Cancelled)
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-outline-danger ms-1" title="Cancelled" disabled>
+                                                            <i class="mdi mdi-close-circle"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Deleted)
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-1" title="Deleted" disabled>
+                                                            <i class="mdi mdi-delete"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Returned)
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-dark ms-1" title="Returned" disabled>
+                                                            <i class="mdi mdi-keyboard-return"></i>
+                                                        </button>
+                                                    }
+
+
+                                                    @* ✅ Only allow approval if Created/Updated AND isPaid *@
+                                                    @if (((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Created || 
+                                                    (shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Updated)
+                                                        && (shipment?.IsPaid ?? false)
+                                                        && (User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.Reviewer)))
+                                                    {
+                                                        <a asp-action="Approve" asp-controller="Shipments" asp-route-id="@shipment.Id"
+                                                               class="btn btn-sm btn-gradient-success ms-1" title="Approve">
+                                                            <i class="mdi mdi-check"></i>
+                                                        </a>
+                                                    }
+                                                    else if (((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Created || 
+                                                     (shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Updated)
+                                                        && !(shipment?.IsPaid ?? false)
+                                                        && (User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.Reviewer)))
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-1" title="Payment Required" disabled>
+                                                            <i class="mdi mdi-lock"></i>
+                                                        </button>
+                                                    }
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Approved &&
+                                                        (User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.Operation)))
+                                                    {
+                                                        <a asp-action="MakeShipmentReadyForShipp" asp-controller="Shipments" asp-route-id="@shipment.Id"
+                                                               class="btn btn-sm btn-gradient-primary ms-1" title="Mark Ready">
+                                                            <i class="mdi mdi-truck-fast"></i>
+                                                        </a>
+                                                    }
+
+                                                    @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.ReadyForShipping &&
+                                                        (User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.OperationManager)))
+                                                    {
+                                                        <a asp-action="Shipped" asp-controller="Shipments" asp-route-id="@shipment.Id"
+                                                               class="btn btn-sm btn-gradient-success ms-1" title="Mark Shipped">
+                                                            <i class="mdi mdi-truck-check"></i>
+                                                        </a>
+                                                    }
+                                                
+                                                @*     @if (User.IsInRole(RoleNames.Admin))
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-gradient-danger ms-1 btn-delete"
+                                                                data-id="@shipment.Id" title="Delete">
+                                                            <i class="mdi mdi-delete"></i>
+                                                        </button>
+                                                    } *@
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        counter++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <nav aria-label="Shipment pagination" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            @if (pager.HasPrevious)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="List" asp-route-page="@(pager.Page - 1)" asp-route-q="@q" asp-route-status="@selectedStatus">@((AppResource.Labels.Previous) ?? "Previous")</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled"><span class="page-link">@((AppResource.Labels.Previous) ?? "Previous")</span></li>
+                            }
+
+                            @for (int i = pager.Start; i <= pager.End; i++)
+                            {
+                                <li class="page-item @(i == pager.Page ? "active" : "")">
+                                    <a class="page-link" asp-action="List" asp-route-page="@i" asp-route-q="@q" asp-route-status="@selectedStatus">@i</a>
+                                </li>
+                            }
+
+                            @if (pager.HasNext)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="List" asp-route-page="@(pager.Page + 1)" asp-route-q="@q" asp-route-status="@selectedStatus">@((AppResource.Labels.Next) ?? "Next")</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled"><span class="page-link">@((AppResource.Labels.Next) ?? "Next")</span></li>
+                            }
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/Modules/AdminListShipments.js"></script>
+    <script src="~/Modules/ChangeStatus.js"></script>
+    <script src="~/Modules/UpdateStatus.js"></script>
+    <script src="~/Shared/js/signalr-client.js"></script>
+    <script src="~/Modules/AdminListShipmentsSignalR.js"></script>
+}

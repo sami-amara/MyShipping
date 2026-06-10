@@ -1,0 +1,259 @@
+﻿@using System.Text.Json
+@using Business.DTOS
+@using Business.Services.Shipment
+@model Business.DTOS.ShippmentDto
+
+@{
+    ViewData["Title"] = AppResource.Labels.ShipmentDetails ?? "Shipment Details";
+
+    // ✅ Get current status
+    var currentState = Model?.CurrentState ?? 0;
+    var isCreated = currentState == (int)ShipmentStatusEnum.Created;
+    var canEdit = Enum.IsDefined(typeof(ShipmentStatusEnum), currentState) && currentState <= (int)ShipmentStatusEnum.ReadyForShipping;
+    var updated = Enum.IsDefined(typeof(ShipmentStatusEnum), currentState) && currentState <= (int)ShipmentStatusEnum.Updated;
+}
+
+
+<div class="wshipping-content-block py-4">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+                <h2 class="mb-0 shipment-header-title">@((AppResource.Labels.ShipmentDetails) ?? "Shipment Details")</h2>
+                <small id="trackingSmall" class="text-muted">#@(Model?.TrackingNumber?.ToString() ?? "-")</small>
+            </div>
+
+            <div class="text-end">
+                <a class="btn btn-sm btn-outline-secondary me-1" asp-action="List" asp-controller="Shipments">@((AppResource.Labels.Back) ?? "Back")</a>
+
+
+                @* ✅ Only show Edit for non-finalized shipments *@
+                @if (canEdit)
+                {
+                    <a id="editLink" class="btn btn-sm btn-primary me-1" href="@Url.Action("Edit", "Shipments", new { id = Model?.Id })">
+                        @(AppResource.Labels.Edit ?? "Edit")
+                    </a>
+                }
+
+                @* ✅ Only show Delete for Created status *@
+                @if (isCreated || updated)
+                {
+                    <input type="hidden" id="deleteForm_Id" value="@Model?.Id" />
+                    <button id="btnDelete" type="button" class="btn btn-sm btn-danger btn-delete" data-id="@Model?.Id">
+                        <i class="far fa-trash-alt me-1"></i> @((AppResource.Labels.DeleteShipment) ?? "Delete")
+                    </button>
+                }
+
+                @* ✅ Add Pay button for Created/Unpaid shipments *@
+                @if ((isCreated || updated) && !(Model?.IsPaid ?? false))
+                {
+                    <button id="btnPay" type="button" class="btn btn-sm btn-success ms-2" data-id="@Model?.Id" data-tracking="@Model?.TrackingNumber">
+                        <i class="fa fa-credit-card me-1"></i> @((AppResource.Labels.Pay) ?? "Pay")
+                    </button>
+                }
+
+                @* ✅ Show current status *@
+                <div class="d-inline-block ms-2">
+                    @{
+                        string statusClass;
+                        string statusText;
+
+                        switch (currentState)
+                        {
+                            case 0:
+                                statusClass = "badge bg-secondary";
+                                statusText = AppResource.Labels.Deleted ?? "Deleted";
+                                break;
+                            case 1:
+                                statusClass = "badge bg-warning text-dark";
+                                statusText = AppResource.Labels.Created ?? "Created";
+                                break;
+                            case 2:
+                                statusClass = "badge bg-info text-dark";
+                                statusText = AppResource.Labels.Updated ?? "Updated";
+                                break;
+                            case 3:
+                                statusClass = "badge bg-primary";
+                                statusText = AppResource.Labels.Approved ?? "Approved";
+                                break;
+                            case 4:
+                                statusClass = "badge bg-info text-dark";
+                                statusText = AppResource.Labels.ReadyForShipping ?? "Ready for Shipping";
+                                break;
+                            case 5:
+                                statusClass = "badge bg-success";
+                                statusText = AppResource.Labels.Shipped ?? "Shipped";
+                                break;
+                            case 6:
+                                statusClass = "badge bg-success";
+                                statusText = AppResource.Labels.Delivered ?? "Delivered";
+                                break;
+                            case 7:
+                                statusClass = "badge bg-danger";
+                                statusText = AppResource.Labels.Cancelled ?? "Cancelled";
+                                break;
+                            case 8:
+                                statusClass = "badge bg-dark";
+                                statusText = AppResource.Labels.Returned ?? "Returned";
+                                break;
+                            default:
+                                statusClass = "badge bg-secondary";
+                                statusText = "Unknown";
+                                break;
+                        }
+                    }
+                    <span class="@statusClass badge-status-header">
+
+                        <strong>Status: @statusText</strong>
+                    </span>
+
+                    @* ✅ Show payment status badge *@
+                    @if (Model?.IsPaid ?? false)
+                    {
+                        <span class="badge bg-success badge-status-header ms-2">
+                          
+                            <i class="fa fa-check-circle me-1"></i> @((AppResource.Labels.HasPaid) ?? "HasPaid")
+                        </span>
+                    }
+                    else if (isCreated || updated)
+                    {
+                        <span class="badge bg-warning text-dark badge-status-header ms-2">
+                        
+                            <i class="fa fa-exclamation-circle me-1"></i> @((AppResource.Labels.UnPaid) ?? "UnPaid")
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div id="show-details" class="row gy-3">
+            <div id="shipment-block" class="col-12 grid-margin stretch-card"></div>
+            <div id="sender-block" class="col-md-6 grid-margin stretch-card"></div>
+            <div id="receiver-block" class="col-md-6 grid-margin stretch-card"></div>
+        </div>
+
+        <div id="show-extras" class="mt-3"></div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_AlertMessage")
+@Html.AntiForgeryToken()
+
+<textarea id="shipment-show-server-dto" class="d-none">@Html.Raw(Model != null ? JsonSerializer.Serialize(Model) : "null")</textarea>
+<div id="shipment-show-config" data-redirect-url="/Shipments/List"></div>
+
+@* ✅ Include Payment Method Selector Modal *@
+@if ((isCreated || updated) && !(Model?.IsPaid ?? false))
+{
+    @await Html.PartialAsync("_PaymentMethodSelector", Model.Id)
+    @await Html.PartialAsync("_StripePaymentModal")
+}
+
+@section Scripts {
+    <script src="~/Modules/ApiClient.js" asp-append-version="true"></script>
+    <script src="~/Modules/AppHelper.js"></script>
+    <script src="~/Modules/ShipmentApiClient.js" asp-append-version="true"></script>
+    <script src="~/App/Shared/AlertAdapter.js" defer></script>
+    <script src="~/Modules/ShipmentService.js" asp-append-version="true"></script>
+    <script src="~/Modules/DiagnosticsService.js" asp-append-version="true"></script>
+    <script src="~/Shared/js/ValidationErrorMapper.js" asp-append-version="true"></script>
+    <script src="~/Modules/CountryService.js" asp-append-version="true"></script>
+    <script src="~/Modules/CitiesService.js" asp-append-version="true"></script>
+    <script src="~/Modules/ShippingPackageService.js" asp-append-version="true"></script>
+    <script src="~/Modules/ShippingTypeService.js" asp-append-version="true"></script>
+    <script src="~/Modules/CarriersService.js" asp-append-version="true"></script>
+    <script src="~/Modules/ManagePageControlls.js" asp-append-version="true"></script>
+    <script src="~/Modules/PageEvents.js" asp-append-version="true"></script>
+    <script src="~/Modules/Edit.js" defer></script>
+    <script src="~/Modules/UserListShipments.js"></script>
+    <script src="~/Modules/ShipmentShow.js" asp-append-version="true"></script>
+
+    @* ✅ Stripe Payment Integration - Always load if payment modals are included *@
+    @if ((isCreated || updated) && !(Model?.IsPaid ?? false))
+    {
+        <script src="https://js.stripe.com/v3/"></script>
+        <script src="~/Modules/StripePayment.js" asp-append-version="true"></script>
+    }
+
+    <script src="~/js/shipments-show-bootstrap.js" asp-append-version="true"></script>
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

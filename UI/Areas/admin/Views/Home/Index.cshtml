@@ -1,0 +1,255 @@
+@model Business.DTOS.DashboardDto
+
+<div class="content-wrapper">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+            </span> @AppResource.Labels.Dashboard
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Statistics Cards Row -->
+    <div class="row">
+        <!-- Shipments This Month Card -->
+        <div class="col-md-3 grid-margin">
+            <div class="card bg-gradient-primary card-img-holder text-white">
+                <div class="card-body py-3 px-3">
+                    <img src="~/Admin/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h6 class="font-weight-normal mb-2">
+                        @AppResource.Labels.ShipmentsThisMonth <i class="mdi mdi-package-variant mdi-18px float-end"></i>
+                    </h6>
+                    <h3 class="mb-3">@Model.TotalShipmentsThisMonth.ToString("N0")</h3>
+                    <small class="card-text">
+                        @if (Model.ShipmentsChangePercentage >= 0)
+                        {
+                            <span>↑ @Model.ShipmentsChangePercentage%</span>
+                        }
+                        else
+                        {
+                            <span>↓ @Math.Abs(Model.ShipmentsChangePercentage)%</span>
+                        }
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue This Month Card -->
+        <div class="col-md-3 grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body py-3 px-3">
+                    <img src="~/Admin/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h6 class="font-weight-normal mb-2">
+                        @AppResource.Labels.RevenueThisMonth <i class="mdi mdi-currency-usd mdi-18px float-end"></i>
+                    </h6>
+                    <h3 class="mb-3">$@Model.TotalRevenueThisMonth.ToString("N2")</h3>
+                    <small class="card-text">
+                        @if (Model.RevenueChangePercentage >= 0)
+                        {
+                            <span>↑ @Model.RevenueChangePercentage%</span>
+                        }
+                        else
+                        {
+                            <span>↓ @Math.Abs(Model.RevenueChangePercentage)%</span>
+                        }
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Users Card -->
+        <div class="col-md-3 grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body py-3 px-3">
+                    <img src="~/Admin/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h6 class="font-weight-normal mb-2">
+                        @AppResource.Labels.TotalUsers <i class="mdi mdi-account-multiple mdi-18px float-end"></i>
+                    </h6>
+                    <h3 class="mb-3">@Model.TotalUsers.ToString("N0")</h3>
+                    <small class="card-text">@Model.NewUsersThisMonth new this month</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Shipments Card -->
+        <div class="col-md-3 grid-margin">
+            <div class="card bg-gradient-warning card-img-holder text-white">
+                <div class="card-body py-3 px-3">
+                    <img src="~/Admin/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h6 class="font-weight-normal mb-2">
+                        @AppResource.Labels.ActiveShipments <i class="mdi mdi-truck-delivery mdi-18px float-end"></i>
+                    </h6>
+                    <h3 class="mb-3">@Model.ActiveShipments.ToString("N0")</h3>
+                    <small class="card-text">In transit now</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Activity Row - Combined -->
+    <div class="row">
+        <!-- Shipments Trend Chart -->
+        <div class="col-md-6 grid-margin">
+            <div class="card admin-dashboard-chart-card">
+                <div class="card-body py-1 px-2">
+                    <h6 class="card-title mb-1 admin-dashboard-chart-title">@AppResource.Labels.ShipmentsRevenue30Days</h6>
+                    <div class="admin-dashboard-chart-container">
+                        <canvas id="shipments-revenue-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipments By Status Chart -->
+        <div class="col-md-3 grid-margin">
+            <div class="card admin-dashboard-chart-card">
+                <div class="card-body py-1 px-2">
+                    <h6 class="card-title mb-1 admin-dashboard-chart-title">@AppResource.Labels.ShipmentsByStatus</h6>
+                    <div class="admin-dashboard-chart-container">
+                        <canvas id="status-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Cities -->
+        <div class="col-md-3 grid-margin">
+            <div class="card admin-dashboard-chart-card">
+                <div class="card-body py-1 px-2">
+                    <h6 class="card-title mb-1 admin-dashboard-chart-title">@AppResource.Labels.TopDestinationCities</h6>
+                    <div class="admin-dashboard-chart-container">
+                        <canvas id="top-cities-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Row - Compact -->
+    <div class="row">
+        <!-- Recent Shipments -->
+        <div class="col-lg-6 grid-margin">
+            <div class="card admin-dashboard-chart-card">
+                <div class="card-body py-2 px-3">
+                    <h6 class="card-title mb-2 admin-dashboard-chart-title">@AppResource.Labels.RecentShipments</h6>
+                    <div class="admin-dashboard-scroll-container">
+                        <table class="table table-sm table-hover mb-0 admin-dashboard-compact-table">
+                            <thead>
+                                <tr>
+                                    <th>@AppResource.Labels.From</th>
+                                    <th>@AppResource.Labels.To</th>
+                                    <th>@AppResource.Labels.Date</th>
+                                    <th>@AppResource.Labels.Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.RecentShipments.Any())
+                                {
+                                    @foreach (var shipment in Model.RecentShipments)
+                                    {
+                                        <tr>
+                                            <td>@(shipment.UserSender?.SenderName ?? "N/A")</td>
+                                            <td>@(shipment.UserReceiver?.ReceiverName ?? "N/A")</td>
+                                            <td>@shipment.ShippingDate.ToString("MMM dd")</td>
+                                            <td>
+                                                @{
+                                                    var badgeClass = shipment.Status switch
+                                                    {
+                                                        "Approved" => "badge-gradient-success",
+                                                        "Shipped" => "badge-gradient-info",
+                                                        "Delivered" => "badge-gradient-primary",
+                                                        "Created" => "badge-gradient-warning",
+                                                        "Updated" => "badge-gradient-warning",
+                                                        _ => "badge-gradient-secondary"
+                                                    };
+                                                }
+                                                <span class="badge @badgeClass admin-dashboard-status-badge">@shipment.Status</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">@AppResource.Labels.NoRecentShipments</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Users -->
+        <div class="col-lg-6 grid-margin">
+            <div class="card admin-dashboard-chart-card">
+                <div class="card-body py-2 px-3">
+                    <h6 class="card-title mb-2 admin-dashboard-chart-title">@AppResource.Labels.RecentUsers</h6>
+                    <div class="admin-dashboard-scroll-container">
+                        <table class="table table-sm table-hover mb-0 admin-dashboard-compact-table">
+                            <thead>
+                                <tr>
+                                    <th>@AppResource.Labels.Name</th>
+                                    <th>@AppResource.Labels.Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.RecentUsers.Any())
+                                {
+                                    @foreach (var user in Model.RecentUsers)
+                                    {
+                                        <tr>
+                                            <td>@user.FirstName @user.LastName</td>
+                                            <td>@user.Email</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="2" class="text-center text-muted">@AppResource.Labels.NoRecentUsers</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <textarea id="dashboard-shipments-data" class="d-none">@Html.Raw(Json.Serialize(Model.ShipmentsPerDay.OrderBy(x => x.Key).Select(x => new { date = x.Key.ToString("MMM dd"), count = x.Value })))</textarea>
+    <textarea id="dashboard-revenue-data" class="d-none">@Html.Raw(Json.Serialize(Model.RevenuePerDay.OrderBy(x => x.Key).Select(x => new { date = x.Key.ToString("MMM dd"), revenue = x.Value })))</textarea>
+    <textarea id="dashboard-status-data" class="d-none">@Html.Raw(Json.Serialize(Model.ShipmentsByStatus))</textarea>
+    <textarea id="dashboard-cities-data" class="d-none">@Html.Raw(Json.Serialize(Model.TopDestinationCities))</textarea>
+    <textarea id="dashboard-labels-data" class="d-none">@Html.Raw(Json.Serialize(new
+    {
+        shipments = AppResource.Labels.Shipments,
+        revenue = AppResource.Labels.Revenue,
+        created = AppResource.Labels.Created,
+        updated = AppResource.Labels.Updated,
+        approved = AppResource.Labels.Approved,
+        readyForShipping = AppResource.Labels.ReadyForShipping,
+        shipped = AppResource.Labels.Shipped,
+        delivered = AppResource.Labels.Delivered,
+        cancelled = AppResource.Labels.Cancelled,
+        returned = AppResource.Labels.Returned,
+        refunded = AppResource.Labels.Refunded,
+        unknown = ResourceTextHelper.L("Unknown", "Unknown")
+    }))</textarea>
+    <script src="~/Admin/assets/js/home-dashboard-bootstrap.js" asp-append-version="true"></script>
+    <script src="~/Admin/assets/js/dashboard-charts.js"></script>
+}

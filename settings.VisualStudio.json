@@ -1,0 +1,6 @@
+/* Visual Studio Settings File */
+{
+  "copilot.general.chat.enableCopilotCodingAgent": true,
+  "textEditor.codeCompletions.general.enableNextEditSuggestionsCollapsedMode": false,
+  "copilot.general.chat.enableCustomInstructionsFiles": true
+}

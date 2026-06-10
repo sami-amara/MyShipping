@@ -1,0 +1,12 @@
+{
+  "scripts": [
+    "index.js"
+  ],
+  "templates": [
+    "template.html",
+    "footer.html"
+  ],
+  "dependencies": {
+    "component/tip": "^2.1.2"
+  }
+}

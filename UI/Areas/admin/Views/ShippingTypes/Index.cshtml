@@ -1,0 +1,118 @@
+﻿@model List<ShippingTypeDto>
+@using UI.Constants
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> @Shipping.ShippingTypes </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">@Shipping.ShippingTypes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Data table</li>
+            </ol>
+        </nav>
+    </div>
+     <div >
+        <div >
+            <div >
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                           
+                                @{
+                                    if (User.IsInRole(RoleNames.Admin))
+                                    {
+                                        <a asp-area="admin" asp-controller="ShippingTypes" asp-action="Edit" class="btn btn-gradient-primary me-2"> <i class="add-on my-xxl-4"></i>@Actions.AddNew</a>
+                                    }
+                                }
+    
+                                <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="order-listing" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@Labels.NameAr </th>
+                                                        <th>@Labels.NameEn </th>
+                                                        <th>@Labels.Factor</th>
+                                                        <th>@Labels.Actions </th>
+                                                    
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    @foreach (var cat in Model)
+                                                    {
+                                                        <tr>
+                                                          
+                                                            <td class="col-md-8"> @cat.ShippingTypeAname</td>
+                                                            <td class="col-md-8"> @cat.ShippingTypeEname</td>
+                                                            <td class="col-md-8"> @cat.ShippingFactor</td>
+                                                   
+                                              
+                                                            <td>
+
+                                                                @{
+                                                                    if (User.IsInRole(RoleNames.Admin))
+                                                                    {
+                                                                        <a asp-area="admin" asp-controller="ShippingTypes" asp-action="Edit" asp-route-Id="@cat.Id" class="btn btn-info btn-fw">@Actions.Edit</a>
+                                                                        <button type="button" class="btn btn-danger btn-fw" data-id="@cat.Id">@Actions.Delete</button>
+                                                                    }
+                                                                }
+                                                             
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    @await Html.PartialAsync("_AlertMessage")
+
+    <link rel="stylesheet" href="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css" />
+
+    <!-- plugins:js -->
+    <script src="~/Admin/assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/Admin/assets/vendors/datatables.net/jquery.dataTables.js"></script>
+
+    <script src="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page -->
+    <script src="~/Admin/assets/js/data-table.js"></script>
+    <!-- End custom js for this page -->
+
+    <div id="admin-delete-config"
+         data-selector=".btn-danger"
+         data-delete-url="@Url.Action("Delete", "ShippingTypes")"></div>
+    <script src="~/Admin/assets/js/admin-delete-handler.js" asp-append-version="true"></script>
+
+}
+
+        
+    
+
+
+

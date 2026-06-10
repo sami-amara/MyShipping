@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Too Many Requests";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Too Many Requests
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead">
+                        You have made too many requests. Please wait a few minutes and try again.
+                    </p>
+                    <p>
+                        For your security, we limit the number of login attempts from each IP address.
+                        This helps protect your account from unauthorized access.
+                    </p>
+                    <div class="alert alert-info">
+                        <strong>What can you do?</strong>
+                        <ul>
+                            <li>Wait 15 minutes and try again</li>
+                            <li>If you forgot your password, use the "Forgot Password" link</li>
+                            <li>Contact support if you continue having issues</li>
+                        </ul>
+                    </div>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

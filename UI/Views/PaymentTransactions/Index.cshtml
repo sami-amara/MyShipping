@@ -1,0 +1,151 @@
+@{
+    ViewData["Title"] = Labels.PaymentHistory;
+    var transactions = ViewBag.Transactions as DataAccessLayer.Model.PagedResult<Business.DTOS.PaymentTransactionDto>;
+    var pager = ViewBag.Pager;
+}
+
+<div class="container my-5">
+    <h2 class="payment-page-header">
+        <i class="fas fa-receipt"></i>@Labels.PaymentHistory
+    </h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped" id="payments-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>@Labels.TransactionID</th>
+                    <th>@Labels.DateTime</th>
+                    <th>@Labels.TrackingNumber</th>
+                    <th>@Labels.PaymentMethod</th>
+                    <th>@Labels.Amount</th>
+                    <th>@Labels.Status</th>
+                    <th class="text-center">@Labels.Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (transactions?.Items?.Any() == true)
+                {
+                    var index = (pager.Page - 1) * pager.PageSize;
+                    foreach (var transaction in transactions.Items)
+                    {
+                        index++;
+                        var statusClass = transaction.TransactionStatusName?.ToLower() ?? "unknown";
+                        var statusColor = statusClass switch
+                        {
+                            "completed" => "success",
+                            "pending" => "warning",
+                            "failed" => "danger",
+                            "refunded" => "secondary",
+                            _ => "secondary"
+                        };
+
+                        var localizedStatus = transaction.TransactionStatus switch
+                        {
+                            0 => Labels.Pending,
+                            1 => Labels.Completed,
+                            2 => Labels.Failed,
+                            3 => Labels.Refunded,
+                            4 => ResourceTextHelper.L("PartiallyRefunded", "Partially Refunded"),
+                            _ => ResourceTextHelper.L("Unknown", transaction.TransactionStatusName ?? "Unknown")
+                        };
+
+                        var paymentMethodName = transaction.PaymentMethodName ?? "-";
+                        var localizedPaymentMethod = paymentMethodName.Equals("PayPal", StringComparison.OrdinalIgnoreCase)
+                            ? ResourceTextHelper.L("PaymentMethodPayPal", "PayPal")
+                            : paymentMethodName.Equals("Stripe", StringComparison.OrdinalIgnoreCase)
+                                ? ResourceTextHelper.L("PaymentMethodStripe", "Stripe")
+                                : paymentMethodName.Equals("Cash", StringComparison.OrdinalIgnoreCase)
+                                    ? ResourceTextHelper.L("PaymentMethodCash", "Cash")
+                                    : paymentMethodName.Equals("Credit Card", StringComparison.OrdinalIgnoreCase)
+                                        ? ResourceTextHelper.L("PaymentMethodCreditCard", "Credit Card")
+                                        : paymentMethodName;
+
+                        <tr data-id="@transaction?.Id">
+                            <td class="align-middle">@index</td>
+                            <td class="align-middle">
+                                <small class="text-muted">@transaction.Id.ToString("N").Substring(0, 13)...</small>
+                            </td>
+                            <td class="align-middle">@transaction.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td class="align-middle">
+                                @if (!string.IsNullOrEmpty(transaction.ShipmentTrackingNumber))
+                                {
+                                    <span class="badge bg-info">@transaction.ShipmentTrackingNumber</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td class="align-middle">@localizedPaymentMethod</td>
+                            <td class="align-middle amount-display">@transaction.TotalAmount.ToString("C")</td>
+                            <td class="align-middle">
+                                <span class="badge bg-@statusColor status-badge">
+                                    @localizedStatus
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <a class="btn btn-sm btn-view-receipt" 
+                                   title="@Labels.ViewReceipt" 
+                                   href="@Url.Action("Details", new { id = transaction?.Id })" 
+                                   aria-label="@Labels.ViewReceipt">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state-row">
+                                <i class="fas fa-receipt d-block"></i>
+                                <h5>@Labels.NoTransactionsFound</h5>
+                                <p class="text-muted">@Labels.CreateYourFirstShipment</p>
+                                <a href="@Url.Action("Create", "Shipments")" class="btn btn-create-shipment mt-2">
+                                    <i class="fas fa-plus me-2"></i>@Labels.CreateShipment
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (pager != null && pager.TotalPages > 1)
+    {
+        <nav aria-label="Pagination" id="payments-pagination" class="mt-3">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(pager.HasPrevious ? "" : "disabled")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = pager.PrevPage })">&laquo; @Labels.Previous</a>
+                </li>
+
+                @for (int p = pager.Start; p <= pager.End; p++)
+                {
+                    if (p == pager.Page)
+                    {
+                        <li class="page-item active"><span class="page-link">@p</span></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = p })">@p</a></li>
+                    }
+                }
+
+                <li class="page-item @(pager.HasNext ? "" : "disabled")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = pager.NextPage })">@Labels.Next &raquo;</a>
+                </li>
+            </ul>
+
+            <div class="text-center mt-2">
+                <small class="text-muted">@Labels.Page @pager.Page @Labels.Of @pager.TotalPages — @Labels.Showing @transactions.Items.Count @Labels.Of @transactions.TotalCount</small>
+            </div>
+        </nav>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/payment-transactions-pages.js" asp-append-version="true"></script>
+}

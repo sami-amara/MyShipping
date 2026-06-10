@@ -1,0 +1,610 @@
+﻿
+
+@using Business.DTOS
+@model Business.DTOS.ShippmentDto
+@using UI.Constants
+
+
+@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+    if (ViewData != null)
+    {
+        ViewData["Title"] = (AppResource.Labels.ApproveShipment ?? "Approve Admin Shipment");
+    }
+
+}
+
+@{
+    var currentState = Model?.CurrentState ?? 0;
+    var statuses = Enum.GetValues(typeof(ShipmentStatusEnum)).Cast<ShipmentStatusEnum>().ToList();
+}
+
+<!-- Edit Shipment (admin layout wrapper) -->
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-truck-delivery"></i>
+            </span> @ViewData["Title"]
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/Shipments/List">@AppResource.Labels.Shipments</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@AppResource.Labels.Edit</li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h4 class="card-title mb-0">@ViewData["Title"]</h4>
+
+                        @* Payment Status Badge *@
+                        <div>
+                            @if (Model?.IsPaid ?? false)
+                            {
+                                <span class="badge bg-success">
+                                    <i class="mdi mdi-check-circle"></i>
+                                    <span>@(AppResource.Labels.Active ?? "Paid")</span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    <i class="mdi mdi-alert-circle"></i>
+                                    <span>@(AppResource.Labels.UnPaid ?? "Unpaid")</span>
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    @* Warning message if unpaid *@
+                    @if (!(Model?.IsPaid ?? false))
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            <i class="mdi mdi-alert-circle"></i>
+                            <strong>Warning:</strong> This shipment is not paid. Payment is required before approval.
+                        </div>
+                    }
+
+                    <div class="shipping-form-block">
+                        <!-- keep #createShipmentForm so existing page scripts bind correctly -->
+                        <form id="createShipmentForm" asp-action="Approve" asp-controller="Shipments" method="post" class="steps" accept-charset="UTF-8" enctype="multipart/form-data" novalidate>
+
+                            @Html.AntiForgeryToken()
+                            
+                              @*     <input type="hidden" asp-for="Id" /> *@
+                            <input type="hidden" asp-for="SenderId" />
+                            <input type="hidden" asp-for="ReceiverId" />
+                            <input type="hidden" asp-for="TrackingNumber" />
+                                                 
+                            <input type="hidden" asp-for="ShippingRate" />
+                            <input type="hidden" asp-for="PaymentMethodId" />
+                        @*     <input type="hidden" asp-for="IsPaid" /> *@
+                            <input type="hidden" asp-for="Id" name="Id" /> 
+                    <input type="hidden" name="SenderId" value="@((Model?.UserSender?.UserId != null) ? Model.UserSender.UserId.ToString() : "00000000-0000-0000-0000-000000000000")" />
+                    <input type="hidden" name="ReceiverId" value="@((Model?.UserReceiver?.UserId != null) ? Model.UserReceiver.UserId.ToString() : "00000000-0000-0000-0000-000000000000")" />
+           
+
+               
+
+                    <!-- Progress / status steps (uses ShipmentStatusEnum) -->
+                    <ul class="nav nav-pills mb-4">
+                        @foreach (var st in statuses)
+                        {
+                            var intVal = (int)st;
+                            var isCompleted = currentState > intVal;
+                            var isActive = currentState == intVal;
+                            var cls = isActive ? "btn btn-sm btn-gradient-info me-2" : (isCompleted ? "btn btn-sm btn-gradient-success me-2" : "btn btn-sm btn-outline-secondary me-2");
+                            <li class="nav-item">
+                                <span class="@cls" data-status-value="@intVal" title="@st.ToString()">@st.ToString()</span>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- fieldsets Shipping From Start (step 0) -->
+                    <fieldset data-step="0" class="active">
+
+                        <div class="shipping-form">
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderCountry">@AppResource.Labels.Country<sup>*</sup></label>
+                                        <select asp-for="UserSender.CountryName" id="senderCountry" name="SenderCountry" class="form-control" >
+                                            @if (Model?.UserSender?.CountryName != null)
+                                            {
+                                                <option value="@Model.UserSender.CountryName" selected>@(Model.UserSender.CountryName)</option>
+                                            }
+                                            <option value="">@AppResource.Labels.Country</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderName">@AppResource.Labels.CompanyOrName<sup>*</sup></label>
+                                        <input asp-for="UserSender.SenderName" type="text" class="form-control" id="senderName" name="SenderName"  />
+                                        <span asp-validation-for="UserSender.SenderName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderContact">@AppResource.Labels.Contact<sup>*</sup></label>
+                                        <input asp-for="UserSender.Contact" type="text" class="form-control" id="senderContact" name="SenderContact" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="senderAddress">@AppResource.Labels.Address<sup>*</sup></label>
+                                        <input asp-for="UserSender.Address" type="text" class="form-control" id="senderAddress" name="SenderAddress" placeholder="Street Address"  />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderAddress2">@AppResource.Labels.SenderAddress2</label>
+                                        <input asp-for="UserSender.Address2" type="text" class="form-control" id="senderAddress2" name="SenderAddress2" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderAddress3">@AppResource.Labels.SenderAddress3</label>
+                                        <input asp-for="UserSender.Address3" type="text" class="form-control" id="senderAddress3" name="SenderAddress3" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderPostalCode">@AppResource.Labels.PostalCode<sup>*</sup></label>
+                                        <input asp-for="UserSender.PostalCode" type="text" class="form-control" id="senderPostalCode" name="SenderPostalCode"  />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderCity">@AppResource.Labels.City<sup>*</sup></label>
+                                        <select asp-for="UserSender.CityId" id="senderCity" name="SenderCity" class="form-control">
+                                            @if (Model?.UserSender?.CityId != null && Model.UserSender.CityId != Guid.Empty)
+                                            {
+                                                <option value="@Model.UserSender.CityId" selected>@(Model.UserSender.CityName ?? Model.UserSender.CityId.ToString())</option>
+                                            }
+                                            <option value="">@AppResource.Labels.City</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderOtherAddress">@AppResource.Labels.OtherAddressInformation</label>
+                                        <input asp-for="UserSender.OtherAddress" type="text" class="form-control" id="senderOtherAddress" name="SenderOtherAddress" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="isDefaultSender" class="slide-label">@AppResource.Labels.AsUserDefaultAddress</label>
+                                        <div class="slide-redio">
+                                            <input asp-for="UserSender.IsDefault" type="checkbox" id="isDefaultSender" name="IsDefaultSender" />
+                                            <label for="isDefaultSender"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderEmail">@AppResource.Labels.Email <sup>*</sup></label>
+                                        <input asp-for="UserSender.Email" type="email" class="form-control" id="senderEmail" name="SenderEmail" placeholder="example@domain.com" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="senderPhone">@AppResource.Labels.Phone<sup>*</sup></label>
+                                        <input asp-for="UserSender.Phone" type="text" class="form-control" id="senderPhone" name="SenderPhone" required />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                            <button type="button" name="next" class="next btn btn-gradient-primary me-2">@AppResource.Labels.Continue</button>
+                            <button type="reset" name="cancel" class="btn btn-gradient-danger">@AppResource.Labels.CancelShipment</button>
+                    </fieldset>
+
+                    <fieldset data-step="1">
+                    
+                        <div class="shipping-form">
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverCountry">@AppResource.Labels.Country<sup>*</sup></label>
+                                        <select id="receiverCountry" name="ReceiverCountry" class="form-control" required>
+                                            <option value="">@AppResource.Labels.Country</option>
+                                            <option value="United States">United States</option>
+                                            <option value="Canada">Canada</option>
+                                            <option value="France">France</option>
+                                            <option value="Germany">Germany</option>
+                                            <option value="Greece">Greece</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverName">@AppResource.Labels.CompanyOrName<sup>*</sup></label>
+                                        <input asp-for="UserReceiver.ReceiverName" type="text" class="form-control" id="receiverName" name="ReceiverName" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverContact">@AppResource.Labels.Contact<sup>*</sup></label>
+                                        <input asp-for="UserReceiver.Contact" type="text" class="form-control" id="receiverContact" name="ReceiverContact" required />
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="receiverAddress">@AppResource.Labels.Address<sup>*</sup></label>
+                                        <input asp-for="UserReceiver.Address" type="text" class="form-control" id="receiverAddress" name="ReceiverAddress" placeholder="Street Address" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverPostalCode">@AppResource.Labels.PostalCode<sup>*</sup></label>
+                                        <input asp-for="UserReceiver.PostalCode" type="text" class="form-control" id="receiverPostalCode" name="ReceiverPostalCode" required />
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverCity">@AppResource.Labels.City<sup>*</sup></label>
+                                        <select asp-for="UserReceiver.CityId" id="receiverCity" name="ReceiverCity" class="form-control" required>
+                                            <option value="">@AppResource.Labels.City</option>
+                                            <!-- Cities will be dynamically loaded here -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverOtherAddress">@AppResource.Labels.OtherAddressInformation</label>
+                                        <input asp-for="UserReceiver.OtherAddress" type="text" class="form-control" id="receiverOtherAddress" name="ReceiverOtherAddress" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverEmail">@AppResource.Labels.Email <sup>*</sup></label>
+                                        <input asp-for="UserReceiver.Email" type="email" class="form-control" id="receiverEmail" name="ReceiverEmail" placeholder="example@domain.com" required />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="receiverPhone">@AppResource.Labels.Phone<sup>*</sup></label>
+                                        <input asp-for="UserReceiver.Phone" type="text" class="form-control" id="receiverPhone" name="ReceiverPhone" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label class="slide-label" for="isDefaultReceiver">@AppResource.Labels.AsUserDefaultAddress</label>
+                                        <div class="slide-redio">
+                                            <input asp-for="UserReceiver.IsDefault" type="checkbox" id="isDefaultReceiver" name="IsDefaultReceiver" />
+                                            <label for="isDefaultReceiver"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" name="previous" class="previous btn btn-outline-secondary me-2">@AppResource.Labels.Previous</button>
+                        <button type="button" name="next" class="next btn btn-gradient-primary me-2">@AppResource.Labels.Continue</button>
+                        <button type="reset" name="cancel" class="btn btn-danger">@AppResource.Labels.CancelShipment</button>
+                    </fieldset>
+
+                    <fieldset data-step="2">
+       
+                        <div class="shipping-form">
+                            <div class="row">
+                                <div class="col-12 col-lg-8">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="shippingPackging">@AppResource.Labels.PackagingPackage<sup>*</sup></label>
+                                                <div class="input-comment">
+                                                    <select asp-for="ShipingPackgingId" id="shippingPackging" name="ShippingPackging" class="form-control" required>
+                                                        <option value="">@AppResource.Labels.PackagingPackage</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="Weight">@AppResource.Labels.Weight<sup>*</sup></label>
+                                                <div class="input-comment">
+                                                    <span class="field-comment">lbs</span>
+                                                    <input asp-for="Weight" type="text" class="form-control" id="weight" name="Weight" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="Length">@AppResource.Labels.Length</label>
+                                                <div class="input-comment">
+                                                    <span class="field-comment">in</span>
+                                                    <input asp-for="Length" type="text" class="form-control" id="length" name="Length" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="Width">@AppResource.Labels.Width</label>
+                                                <div class="input-comment">
+                                                    <span class="field-comment">in</span>
+                                                    <input asp-for="Width" type="text" class="form-control" id="width" name="Width" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="Height">@AppResource.Labels.Height</label>
+                                                <div class="input-comment">
+                                                    <span class="field-comment">in</span>
+                                                    <input asp-for="Height" type="text" class="form-control" id="height" name="Height" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="packageValue">@AppResource.Labels.DeclaredValue</label>
+                                                <div class="input-comment">
+                                                    <span class="field-comment">USD</span>
+                                                    <input asp-for="PackageValue" type="text" class="form-control" id="packageValue" name="PackageValue" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="what-package"><img src="~/assets/images/package.jpg" alt="" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" name="previous" class="previous btn btn-outline-secondary me-2">@AppResource.Labels.Previous</button>
+                        <button type="button" name="next" class="next btn btn-gradient-primary me-2">@AppResource.Labels.Continue</button>
+                        <button type="reset" name="cancel" class="btn btn-gradient-danger">@AppResource.Labels.CancelShipment</button>
+                    </fieldset>
+
+                    <fieldset data-step="3">
+         
+                        <div class="shipping-form dropoff-block">
+                            <h3>@AppResource.Labels.PickupQuestion</h3>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item"><a class="nav-link active" href="#no-drop" aria-controls="no-drop" role="tab" data-toggle="tab">@AppResource.Labels.NoDrop</a></li>
+                                <li class="or-text">@AppResource.Labels.OrText</li>
+                                <li class="nav-item"><a class="nav-link" href="#yes-drop" aria-controls="yes-drop" role="tab" data-toggle="tab">@AppResource.Labels.YesPickUp</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="no-drop">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-4">
+                                            <div class="form-group">
+                                                <label>@AppResource.Labels.DropoffDate</label>
+                                                <div class="datepicker-group">
+                                                    <input asp-for="ShippingDate" type="text" class="form-control datetimepicker1" name="ShippingDate" placeholder="@AppResource.Labels.DropoffDate" />
+                                                    <div class="datepicker-icon"><i class="fa fa-calendar-alt"></i></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>@AppResource.Labels.DeliveryQuestion</h3>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-4">
+                                            <div class="form-group">
+                                                <label>@AppResource.Labels.DateAndDetails</label>
+                                                <input type="text" class="form-control" name="DelivryDate" placeholder="@AppResource.Labels.DateAndDetails" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="shippingTypes">@AppResource.Labels.ShippingType<sup>*</sup></label>
+                                                <div class="input-comment">
+                                                    <select asp-for="ShippingTypeId" id="shippingTypes" name="ShippingTypes" class="form-control" required>
+                                                        <option value="">@AppResource.Labels.ShippingType</option>
+                                                    </select>
+                                                    <span asp-validation-for="ShippingTypeId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                           
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="yes-drop">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-4">
+                                            <div class="form-group">
+                                                <label>@AppResource.Labels.PickupDate</label>
+                                                <div class="datepicker-group">
+                                                    <input type="text" class="form-control datetimepicker1" name="ShippingDate" placeholder="@AppResource.Labels.PickupDate" />
+                                                    <div class="datepicker-icon"><i class="fa fa-calendar-alt"></i></div>
+                                                    <span asp-validation-for="ShippingDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="review">
+                                        <h3>@AppResource.Labels.PickupAddress <a href="" title="Edit" class="btn-edit">Edit</a></h3>
+                                        <p>
+                                            Lorem Ipsum is simply dummy text<br>
+                                            of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                                        </p>
+                                    </div>
+                                    <div class="review">
+                                        <h3>@AppResource.Labels.PickupDetails <a href="" title="Edit" class="btn-edit">Edit</a></h3>
+                                        <p>
+                                            Your pickup window: 9:00AM - 7:00PM<br>
+                                            Pickup location: Front Door
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" name="previous" class="previous btn btn-outline-secondary me-2">@AppResource.Labels.Previous</button>
+                        <button type="button" name="next" class="next btn btn-gradient-primary me-2">@AppResource.Labels.Continue</button>
+                        <button type="reset" name="cancel" class="btn btn-gradient-danger">@AppResource.Labels.CancelShipment</button>
+                    </fieldset>
+                    <fieldset data-step="4">
+                        <h2 class="fs-title">@AppResource.Labels.ReviewTitle</h2>
+                        <div class="shipping-form">
+                            <!-- Review summary goes here -->
+                        </div>
+                        <button type="button" name="previous" class="previous btn btn-outline-secondary me-2">@AppResource.Labels.Previous</button>
+                        <button type="button" name="next" class="next btn btn-gradient-primary me-2">@AppResource.Labels.Continue</button>
+                    </fieldset>
+
+                    <fieldset data-step="5">
+                        <div class="shipping-form">
+                            <h1 class="tanks-message">@AppResource.Labels.ThankYouMessage</h1>
+                        </div>
+
+                        <button id="btnSave" name="command" value="Save" type="submit" class="btn btn-gradient-primary btn-submit-final">@((AppResource.Labels.Save) ?? (AppResource.Labels.Submit ?? "Save"))</button>
+
+
+
+
+                        @if ((User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.Reviewer)) && ((Model?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Created || (Model?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Updated))
+                        {
+                            // Use AJAX approve to call WebApi /api/Shipments/{id}/approved instead of posting to UI controller
+                            <button type="button" id="btnApprove" class="btn btn-gradient-primary me-2">@((AppResource.Labels.Approved) ?? "Approve")</button>
+                        }
+
+                         @if ((User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.Operation)) && (Model?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Approved)
+                        {
+                                    <button type="button" id="btnMarkReady" class="btn btn-gradient-primary ms-2">@AppResource.Labels.MarkReady</button>
+                        }
+
+                    </fieldset>
+                    <!-- Package details (step 2) -->
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ✅ Shipment data defaults - loaded by PageEvents.js to pre-select dropdowns from the shipment's saved values *@
+<textarea id="shipment-defaults-json" class="d-none">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(new
+{
+    defaultSenderCountryId   = (Model?.UserSender?.CountryId != null && Model.UserSender.CountryId != Guid.Empty) ? Model.UserSender.CountryId.ToString() : "",
+    defaultSenderCityId      = (Model?.UserSender?.CityId != null && Model.UserSender.CityId != Guid.Empty) ? Model.UserSender.CityId.ToString() : "",
+    defaultReceiverCountryId = (Model?.UserReceiver?.CountryId != null && Model.UserReceiver.CountryId != Guid.Empty) ? Model.UserReceiver.CountryId.ToString() : "",
+    defaultReceiverCityId    = (Model?.UserReceiver?.CityId != null && Model.UserReceiver.CityId != Guid.Empty) ? Model.UserReceiver.CityId.ToString() : "",
+    defaultShippingTypeId    = Model?.ShippingTypeId?.ToString() ?? "",
+    defaultShippingPackageId = Model?.ShipingPackgingId?.ToString() ?? ""
+}))</textarea>
+
+
+
+@section Scripts
+{
+    @await Html.PartialAsync("_AlertMessage")
+
+    <link rel="stylesheet" href="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css" />
+    <!-- plugins:js -->
+    <script src="~/Admin/assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/Admin/assets/vendors/datatables.net/jquery.dataTables.js"></script>
+
+    <script src="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page -->
+    <script src="~/Admin/assets/js/data-table.js"></script>
+    <!-- End custom js for this page -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+    <script src="~/Modules/AppHelper.js"></script>
+    <script src="~/Modules/ApiClient.js"></script>
+    <script src="~/Modules/ShipmentApiClient.js"></script>
+    <script src="~/Modules/DiagnosticsService.js"></script>
+    <script src="~/Shared/js/ValidationErrorMapper.js"></script>
+    <script src="~/Modules/ShipmentService.js"></script>
+    <script src="~/Modules/CountryService.js"></script>
+    <script src="~/Modules/CitiesService.js"></script>
+    <script src="~/Modules/ShippingPackageService.js"></script>
+    <script src="~/Modules/ShippingTypeService.js"></script>
+    <script src="~/Modules/CarriersService.js"></script>
+    <script src="~/Modules/ManagePageControlls.js"></script>
+    <script src="~/Modules/PageEvents.js"></script>
+    <script src="~/Modules/ChangeStatus.js"></script>
+
+    @*   Using Generic ChangeStatus endpoint
+
+    @* Using Approval endpoint  *@
+   @*  <script src="~/Modules/Approve.js"></script> *@
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

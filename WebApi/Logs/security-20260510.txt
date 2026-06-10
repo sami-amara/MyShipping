@@ -1,0 +1,183 @@
+2026-05-10 12:02:26.817 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 12:02:40.571 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 12:02:40.791 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 12:02:40.805 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., MyShipping.AuthCookie=CfDJ8KhqfN...
+2026-05-10 12:02:40.807 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 12:02:41.877 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 12:02:41.878 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 12:02:41.881 +03:00 [INF] ✅ Step 4 passed: Token valid for 3058.8792115833335 more minutes
+2026-05-10 12:02:41.993 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 12:39:59.975 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 12:40:37.687 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 12:40:50.931 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 12:40:51.128 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 12:40:51.142 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-10 12:40:51.144 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 12:40:52.172 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 12:40:52.173 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 12:40:52.178 +03:00 [INF] ✅ Step 4 passed: Token valid for 3020.707602515 more minutes
+2026-05-10 12:40:52.305 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 12:51:16.657 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 12:51:28.226 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 12:51:28.444 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 13:01:11.387 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 13:01:24.997 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 13:01:25.186 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 13:09:40.600 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 13:09:53.671 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 13:09:53.870 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 13:23:06.644 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., MyShipping.AuthCookie=CfDJ8KhqfN..., __stripe_mid=e21019f1-a..., __stripe_sid=e5dd6293-f..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-10 13:23:06.646 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 13:23:06.861 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 13:23:06.862 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 13:23:06.866 +03:00 [INF] ✅ Step 4 passed: Token valid for 2978.462797033333 more minutes
+2026-05-10 13:23:07.001 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 13:29:45.364 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 13:30:01.126 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 13:30:01.319 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 15:23:17.430 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 15:23:36.484 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 15:23:36.705 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 15:23:36.720 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., __stripe_mid=e21019f1-a..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-10 15:23:36.722 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 15:23:37.899 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 15:23:37.901 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 15:23:37.904 +03:00 [INF] ✅ Step 4 passed: Token valid for 2857.9454990333334 more minutes
+2026-05-10 15:23:38.011 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 15:36:32.054 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 15:36:45.584 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 15:36:45.818 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 15:43:31.466 +03:00 [ERR] An exception occurred in the database while saving changes for context type 'DataAccessLayer.DbContext.ShippingContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TbPaymentTransaction_TbPaymentMethods". The conflict occurred in database "Shipping", table "dbo.TbPaymentMethods", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:2391169e-d4b8-47ca-a2cd-b9fa58a2ab8e
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TbPaymentTransaction_TbPaymentMethods". The conflict occurred in database "Shipping", table "dbo.TbPaymentMethods", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:2391169e-d4b8-47ca-a2cd-b9fa58a2ab8e
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2026-05-10 15:43:36.138 +03:00 [ERR] main exception An error occurred while saving the entity changes. See the inner exception for details. developer custom exception Failed to add
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TbPaymentTransaction_TbPaymentMethods". The conflict occurred in database "Shipping", table "dbo.TbPaymentMethods", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:2391169e-d4b8-47ca-a2cd-b9fa58a2ab8e
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at DataAccessLayer.Repositories.GenericRepository`1.Add(T entity) in E:\MyShipping\DataAccessLayer\Repositories\GenericRepository.cs:line 74
+2026-05-10 15:56:08.797 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 15:58:55.531 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 15:59:07.233 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 15:59:07.466 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 15:59:07.480 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., __stripe_mid=e21019f1-a..., MyShipping.AuthCookie=CfDJ8KhqfN..., __stripe_sid=1d8402bb-b..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-10 15:59:07.482 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 15:59:08.093 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 15:59:08.094 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 15:59:08.097 +03:00 [INF] ✅ Step 4 passed: Token valid for 2822.442276521667 more minutes
+2026-05-10 15:59:08.224 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 16:50:21.231 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., __stripe_mid=e21019f1-a..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., MyShipping.AuthCookie=CfDJ8KhqfN...
+2026-05-10 16:50:21.232 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 16:50:21.270 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 16:50:21.271 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 16:50:21.273 +03:00 [INF] ✅ Step 4 passed: Token valid for 2771.2226814133332 more minutes
+2026-05-10 16:50:21.287 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 19:09:54.350 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 19:10:11.642 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 19:10:11.865 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 19:10:11.878 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., __stripe_mid=e21019f1-a..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., MyShipping.AuthCookie=CfDJ8KhqfN...
+2026-05-10 19:10:11.879 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 19:10:12.996 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 19:10:12.997 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 19:10:13.005 +03:00 [INF] ✅ Step 4 passed: Token valid for 2631.360513336667 more minutes
+2026-05-10 19:10:13.065 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., __stripe_mid=e21019f1-a..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., MyShipping.AuthCookie=CfDJ8KhqfN..., __stripe_sid=198722c8-b...
+2026-05-10 19:10:13.066 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 19:10:13.080 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 19:10:13.081 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 19:10:13.082 +03:00 [INF] ✅ Step 4 passed: Token valid for 2631.3591982333332 more minutes
+2026-05-10 19:10:13.234 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 19:10:13.234 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 20:38:28.277 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-10 20:38:47.223 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-10 20:38:47.416 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-10 20:38:47.428 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., __stripe_mid=e21019f1-a..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-10 20:38:47.430 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 20:38:48.601 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 20:38:48.602 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 20:38:48.608 +03:00 [INF] ✅ Step 4 passed: Token valid for 2542.7671120783334 more minutes
+2026-05-10 20:38:48.779 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 20:39:05.504 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., __stripe_mid=e21019f1-a..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-10 20:39:05.506 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-10 20:39:05.517 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-10 20:39:05.519 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-10 20:39:05.521 +03:00 [INF] ✅ Step 4 passed: Token valid for 2542.485219305 more minutes
+2026-05-10 20:39:05.527 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b

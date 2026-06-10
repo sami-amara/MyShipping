@@ -1,0 +1,32 @@
+{
+  "name": "faiton-build-daub",
+  "description": "Daub plugin for faiton.",
+  "version": "0.0.1",
+  "author": "Mushex Antaranian",
+  "license": "MIT",
+  "keywords": [
+    "faiton",
+    "daub"
+  ],
+  "homepage": "https://github.com/faiton/build-daub",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/faiton/build-daub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/faiton/build-daub/issues"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "daub": "^1.3.0"
+  },
+  "main": "index.js",
+  "devDependencies": {
+    "mocha": "^1.21.4",
+    "jshint": "^2.5.5",
+    "component-resolver": "^1.1.8",
+    "faiton-builder": "^1.1.10"
+  }
+}

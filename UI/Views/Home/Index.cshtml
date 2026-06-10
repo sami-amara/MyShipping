@@ -1,0 +1,521 @@
+<!-- Slider Start -->
+<div class="homepage-slides-wrapper">
+    <div class="owl-carousel homepage-slides text-center">
+        <!-- Slider item1 start-->
+        <div class="single-slide-item slider-overlay slide-bg-1">
+            <div class="item-table">
+                <div class="item-tablecell">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 offset-lg-1">
+                                <h3>@(ResourceTextHelper.L("HomeHeroTitle", "Home"))</h3>
+                                <h2>@(ResourceTextHelper.L("HomeHeroDemand", "To be always on demand"))</h2>
+                                <p>@(AppResource.Labels.ShipmentDetailsDesc ?? "Shipping services description")</p>
+                                <a href="#" class="wshipping-button slide-btn">@(AppResource.Labels.Contact ?? "Contact")</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slider item1 end-->
+        <!-- Slider item2 start-->
+        <div class="single-slide-item slider-overlay slide-bg-2">
+            <div class="item-table">
+                <div class="item-tablecell">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 offset-lg-1">
+                                <h3>@(ResourceTextHelper.L("HomeHeroActive", "We are active"))</h3>
+                                <h2>@(ResourceTextHelper.L("HomeHeroTrustedShipping", "To ship your product trusted"))</h2>
+                                <p>@(AppResource.Labels.ShipmentDetailsDesc ?? "Shipping services description")</p>
+                                <a href="#" class="wshipping-button slide-btn">@(AppResource.Labels.CreateShipment ?? "Get Free Quote")</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slider item2 end-->
+    </div>
+</div>
+<!-- Slider End -->
+<!-- Tracking start -->
+<div class="wshipping-content-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-6 offset-lg-3">
+                <div class="section-title wow fadeInUp">
+                    <h2>@(AppResource.Labels.TrackingNumber ?? "Track a shipment")</h2>
+                    <p>@(AppResource.Labels.TrackingReference ?? "Track shipment by tracking number")</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9">
+                <div class="tracking-block">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" href="#track-by-number" aria-controls="track-by-number" role="tab" data-toggle="tab">@(AppResource.Labels.TrackingNumber ?? "Track by Number")</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#track-by-reference" aria-controls="track-by-reference" role="tab" data-toggle="tab">@(AppResource.Labels.TrackingReference ?? "Track by Reference")</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="track-by-number">
+                            <h3>@(AppResource.Labels.ShippingTypes ?? "Air Freight Tracking")</h3>
+                            <div class="put-track-number">
+                                <form action="track.html">
+                                    <input type="text" class="form-control track-id" name="trackid" placeholder="@(AppResource.Labels.TrackingNumber ?? "Track ID")" />
+                                    <button type="submit" class="btn btn-track">@(AppResource.Labels.Search ?? "Track")</button>
+                                </form>
+                            </div>
+                            <div class="track-bottom-link"><a href="">@(AppResource.Labels.Details ?? "Need Help?")</a> <span>|</span> <a href="">@(AppResource.Labels.ViewAllShipments ?? "Your Order list")</a></div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="track-by-reference">
+                            <div class="put-reference-number">
+                                <form action="customer-register.html">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 col-lg-4">
+                                                <label>@(AppResource.Labels.TrackingReference ?? "Shipment Reference"):</label>
+                                                <input type="text" class="form-control" name="RefNumber" required />
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-4">
+                                                <label>@(AppResource.Labels.ShippingDate ?? "Shipment Date Start"):</label>
+                                                <div class="input-group date" data-provide="datepicker">
+                                                    <input type="text" class="form-control" name="startDate" required />
+                                                    <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-4">
+                                                <label>@(AppResource.Labels.DeliveryDate ?? "Shipment Date End"):</label>
+                                                <div class="input-group date" data-provide="datepicker">
+                                                    <input type="text" class="form-control" name="EndDate" required />
+                                                    <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 col-lg-6">
+                                                <label>@(AppResource.Labels.Country ?? "Origin Country"):</label>
+                                                <select class="form-control" name="OriginCountry">
+                                                    <option>@(ResourceTextHelper.L("UnitedState", "United State"))</option>
+                                                    <option>@(ResourceTextHelper.L("Canada", "Canada"))</option>
+                                                    <option>@(ResourceTextHelper.L("Mexico", "Mexico"))</option>
+                                                    <option>@(ResourceTextHelper.L("China", "China"))</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-6">
+                                                <label>@(AppResource.Labels.PostalCode ?? "Origin ZIP/Postal Code"):</label>
+                                                <input type="text" class="form-control" name="OriginZip" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 col-lg-6">
+                                                <label>@(AppResource.Labels.Country ?? "Destination Country"):</label>
+                                                <select class="form-control" name="dcountry">
+                                                    <option>@(ResourceTextHelper.L("UnitedState", "United State"))</option>
+                                                    <option>@(ResourceTextHelper.L("Canada", "Canada"))</option>
+                                                    <option>@(ResourceTextHelper.L("Mexico", "Mexico"))</option>
+                                                    <option>@(ResourceTextHelper.L("China", "China"))</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-6">
+                                                <label>@(AppResource.Labels.PostalCode ?? "Destination ZIP/Postal Code"):</label>
+                                                <input type="text" class="form-control" name="DZip" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-submit">@(AppResource.Labels.Search ?? "Track")</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Tracking end -->
+<!-- Service start -->
+<div class="wshipping-content-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-6 offset-lg-3">
+                <div class="section-title wow fadeInUp">
+                    <h2>@(AppResource.Labels.ShippingTypes ?? "Our Services")</h2>
+                    <p>@(AppResource.Labels.ShipmentDetailsDesc ?? "Shipping services description")</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="single-service-item wow fadeInUp">
+                    <div class="service-item-bg service-bg-1"></div>
+                    <div class="service-content">
+                        <h4>@(ResourceTextHelper.L("OceanFreight", "Ocean Freight Shipping"))</h4>
+                        <p>@(ResourceTextHelper.L("ShippingDescription", "Shipping services description"))</p>
+                        <a href="single-services.html" title="" class="readmore-btn">@(ResourceTextHelper.L("ReadMore", "Read more")) <i class="fa fa-angle-right"></i></a>
+                        <div class="location_map"><i class="fa fa-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="single-service-item wow fadeInUp">
+                    <div class="service-item-bg service-bg-2"></div>
+                    <div class="service-content">
+                        <h4>@(ResourceTextHelper.L("AirFreight", "Air Freight Shipping"))</h4>
+                        <p>@(ResourceTextHelper.L("ShippingDescription", "Shipping services description"))</p>
+                        <a href="single-services.html" title="" class="readmore-btn">@(ResourceTextHelper.L("ReadMore", "Read more")) <i class="fa fa-angle-right"></i></a>
+                        <div class="location_map"><i class="fa fa-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="single-service-item wow fadeInUp">
+                    <div class="service-item-bg service-bg-3"></div>
+                    <div class="service-content">
+                        <h4>@(ResourceTextHelper.L("CarShipping", "Car Shipping"))</h4>
+                        <p>@(ResourceTextHelper.L("ShippingDescription", "Shipping services description"))</p>
+                        <a href="single-services.html" title="" class="readmore-btn">@(ResourceTextHelper.L("ReadMore", "Read more")) <i class="fa fa-angle-right"></i></a>
+                        <div class="location_map"><i class="fa fa-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+<!-- we peovide start -->
+<div class="wshipping-content-block provided-block text-center">
+    <div class="item-table">
+        <div class="item-tablecell">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 wow fadeInUp">
+                        <h3 class="text-uppercase">@(ResourceTextHelper.L("WeProvide", "We Provide"))</h3>
+                        <h1 class="text-uppercase">@(ResourceTextHelper.L("BestSeaAirFreightServices", "the Best Sea and Air Freight Services"))</h1>
+                        <h2>@(ResourceTextHelper.L("BookShippingFromAnyCountry", "For Book Your Shipping From any Country"))</h2>
+                        <a href="contact.html" class="wshipping-button cta-btn">@(AppResource.Labels.Contact ?? "Contact Weth Us")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- we provide end -->
+<!-- Why Choose start -->
+<div class="wshipping-content-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-4 wow fadeInLeft"> <img src="~/assets/images/why-choose-us.jpg" alt="" /> </div>
+            <div class="col-12 col-lg-4">
+                <div class="why-choose-us-content wow fadeInUp">
+                    <h3 class="heading3-border text-uppercase">@(ResourceTextHelper.L("WhyChooseUs", "Why Choose Us?"))</h3>
+                    <p>@(ResourceTextHelper.L("WhyChooseUsDesc", "Description of why choose us"))</p>
+                    <a href="about.html" title="" class="readmore-btn">@(ResourceTextHelper.L("ReadMore", "Read more")) <i class="fa fa-angle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="why-choose-us wow fadeInRight">
+                    <div class="why-choose-us-icon"> <i class="far fa-handshake"></i> @(ResourceTextHelper.L("Trusted", "We Are Trusted")) </div>
+                    <div class="why-choose-us-icon"> <i class="fa fa-unlock-alt"></i> @(ResourceTextHelper.L("Security", "The Best Security")) </div>
+                    <div class="why-choose-us-icon"> <i class="far fa-thumbs-up"></i> @(ResourceTextHelper.L("Guarantee", "100% guarantee")) </div>
+                    <div class="why-choose-us-icon"> <i class="fas fa-map-marker-alt"></i> @(ResourceTextHelper.L("QuickLocation", "Quick Location")) </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- why choose End -->
+<!-- Service process start -->
+<div class="wshipping-content-block service-process">
+    <div class="container wow fadeInUp">
+        <div class="row">
+            <div class="col-12 col-lg-6 offset-lg-3">
+                <div class="section-title">
+                    <h2>@(ResourceTextHelper.L("ServiceProcess", "Our Service Process"))</h2>
+                    <p>@(ResourceTextHelper.L("ServiceProcessDesc", "Description of the service process"))</p>
+                </div>
+            </div>
+        </div>
+        <div class="process-row">
+            <div class="process-step">
+                <div class="process-icon"> <span>1</span> <img src="~/assets/images/process-icon1.png" alt="" /> </div>
+                <p>@(ResourceTextHelper.L("SelectFreight", "Select Freight"))</p>
+            </div>
+            <div class="process-step">
+                <div class="process-icon"> <span>2</span> <img src="~/assets/images/process-icon2.png" alt="" /> </div>
+                <p>@(ResourceTextHelper.L("CreateInvoice", "Create Invoice"))</p>
+            </div>
+            <div class="process-step">
+                <div class="process-icon"> <span>3</span> <img src="~/assets/images/process-icon3.png" alt="" /> </div>
+                <p>@(ResourceTextHelper.L("SecurePayment", "Secure Payment"))</p>
+            </div>
+            <div class="process-step">
+                <div class="process-icon"> <span>4</span> <img src="~/assets/images/process-icon4.png" alt="" /> </div>
+                <p>@(ResourceTextHelper.L("FastDelivery", "Fast Delivery"))</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- service process start -->
+<!-- Get Quote start -->
+<div class="wshipping-content-block home-quote">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 wow fadeInLeft">
+                <h2>@(ResourceTextHelper.L("GetAQuote", "GET A FREE QUOTE"))</h2>
+                <h6>@(ResourceTextHelper.L("BestAndFastestFleets", "we always use best & fastest fleets"))</h6>
+                <div class="quote-form">
+                    <form data-toggle="validator" action="index.html">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input class="form-control" data-error="Please enter name field." id="inputName" placeholder="@(ResourceTextHelper.L("FullName", "Full Name"))" type="text" required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="inputEmail" placeholder="@(ResourceTextHelper.L("Email", "Email"))" required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="inputMobile" placeholder="@(ResourceTextHelper.L("Mobile", "Mobile"))" required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="DestinationFrom" placeholder="@(ResourceTextHelper.L("DestinationFrom", "Destination From"))" required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="DestinationTo" placeholder="@(ResourceTextHelper.L("DestinationTo", "Destination To"))" required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="ShippingType" placeholder="@(ResourceTextHelper.L("ShippingType", "Shipping Type"))" required />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <div class="datepicker-group">
+                                        <input type="text" class="form-control datetimepicker1" placeholder="@(ResourceTextHelper.L("Date", "Date"))" />
+                                        <div class="datepicker-icon"><i class="fa fa-calendar-alt"></i></div>
+                                    </div>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea class="form-control text-area" data-error="Please enter Message." id="textMessage" placeholder="@(ResourceTextHelper.L("Message", "Message"))" required></textarea>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <button class="wshipping-button cta-btn" type="submit">@(ResourceTextHelper.L("SendQuote", "Send us quote"))</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Get quote End -->
+<!-- Latest blog start -->
+<div class="wshipping-content-block pb40">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-title wow fadeInUp">
+                    <h2>@(ResourceTextHelper.L("LatestBlogPost", "Latest Blog Post"))</h2>
+                    <p>@(ResourceTextHelper.L("LatestBlogPostDesc", "Description of latest blog posts"))</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="blog-item wow fadeInUp">
+                    <div class="blog-item-bg blog-bg-1"></div>
+                    <div class="blog-content">
+                        <h3>@(ResourceTextHelper.L("BlogTitle1", "Shipping container all international transport"))</h3>
+                        <div class="blog-post-by">
+                            <ul>
+                                <li><i class="fa fa-calendar"></i>18 @(ResourceTextHelper.L("March", "March")) 2017</li>
+                                <li><i class="fa fa-user"></i>@(ResourceTextHelper.L("ByAdmin", "By Admin"))</li>
+                            </ul>
+                        </div>
+                        <p>@(ResourceTextHelper.L("BlogExcerpt1", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor aeneanssa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.")) </p>
+                        <a href="single-blog.html" title="" class="readmore-btn">@(ResourceTextHelper.L("ReadMore", "Read more")) <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="blog-item wow fadeInUp">
+                    <div class="blog-item-bg blog-bg-2"></div>
+                    <div class="blog-content">
+                        <h3>@(ResourceTextHelper.L("BlogTitle2", "Lorem Ipsum is simply dummy text of the printing."))</h3>
+                        <div class="blog-post-by">
+                            <ul>
+                                <li><i class="fa fa-calendar"></i>18 @(ResourceTextHelper.L("March", "March")) 2017</li>
+                                <li><i class="fa fa-user"></i>@(ResourceTextHelper.L("ByAdmin", "By Admin"))</li>
+                            </ul>
+                        </div>
+                        <p>@(ResourceTextHelper.L("BlogExcerpt2", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor aeneanssa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.")) </p>
+                        <a href="single-blog.html" title="" class="readmore-btn">@(ResourceTextHelper.L("ReadMore", "Read more")) <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="blog-item wow fadeInUp">
+                    <div class="blog-item-bg blog-bg-3"></div>
+                    <div class="blog-content">
+                        <h3>@(ResourceTextHelper.L("BlogTitle3", "All Shipping container are international transport"))</h3>
+                        <div class="blog-post-by">
+                            <ul>
+                                <li><i class="fa fa-calendar"></i>18 @(ResourceTextHelper.L("March", "March")) 2017</li>
+                                <li><i class="fa fa-user"></i>@(ResourceTextHelper.L("ByAdmin", "By Admin"))</li>
+                            </ul>
+                        </div>
+                        <p>@(ResourceTextHelper.L("BlogExcerpt3", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor aeneanssa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.")) </p>
+                        <a href="single-blog.html" title="" class="readmore-btn">@(ResourceTextHelper.L("ReadMore", "Read more")) <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Latest blog End -->
+<!-- Counter start -->
+<div class="wshipping-content-block counter-section">
+    <div class="container wow fadeInUp">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="counter-block">
+                    <span class="counter-icon"><i class="fa fa-folder-open"></i></span>
+                    <p><span class="counter" data-count="578">0</span> @(ResourceTextHelper.L("ProjectsDone", "Project Done"))</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="counter-block">
+                    <span class="counter-icon"><i class="fas fa-users"></i></span>
+                    <p><span class="counter" data-count="347">0</span> @(ResourceTextHelper.L("PermanentClients", "Permanent Clients"))</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="counter-block">
+                    <span class="counter-icon"><i class="fa fa-truck"></i></span>
+                    <p><span class="counter" data-count="128">0</span> @(ResourceTextHelper.L("OwnedVehicles", "Owned Vehicles"))</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="counter-block">
+                    <span class="counter-icon"><i class="fa fa-male"></i></span>
+                    <p><span class="counter" data-count="67">0</span> @(ResourceTextHelper.L("SupportMembers", "Support Member"))</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Counter End -->
+<!-- News &amp; Testimonials Start -->
+<div class="wshipping-content-block news-testimonial-block">
+    <div class="container wow fadeInUp">
+        <div class="row">
+            <!-- Latest News Start -->
+            <div class="col-12 col-lg-5">
+                <h3 class="heading3-border text-uppercase">@(ResourceTextHelper.L("LatestNews", "Latest News"))</h3>
+                <div class="latest-news-section mt0 wow fadeInUp">
+                    <div class="news-date"> 28<span>@(ResourceTextHelper.L("Feb", "Feb"))</span> </div>
+                    <h4>@(ResourceTextHelper.L("NewsTitle", "News Title"))</h4>
+                    <div class="news-post-by">@(ResourceTextHelper.L("By", "By")) <span>@(ResourceTextHelper.L("Admin", "Admin"))</span></div>
+                    <p>@(ResourceTextHelper.L("NewsExcerpt", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."))</p>
+                </div>
+                <div class="latest-news-section wow fadeInUp">
+                    <div class="news-date"> 23<span>@(ResourceTextHelper.L("Mar", "Mar"))</span> </div>
+                    <h4>@(ResourceTextHelper.L("NewsTitle", "News Title"))</h4>
+                    <div class="news-post-by">@(ResourceTextHelper.L("By", "By")) <span>@(ResourceTextHelper.L("Admin", "Admin"))</span></div>
+                    <p>@(ResourceTextHelper.L("NewsExcerpt", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."))</p>
+                </div>
+            </div>
+            <!-- Latest News End -->
+            <!-- Testimonial start -->
+            <div class="col-12 col-lg-7 home-testimonial">
+                <h3 class="heading3-border text-uppercase">@(ResourceTextHelper.L("Testimonial", "Testimonial"))</h3>
+                <div class="owl-carousel testimonial">
+                    <div class="testimonial-item">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="testimonial-img-bg"></div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="testimonial-content">
+                                    <p>@(ResourceTextHelper.L("TestimonialText1", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-5">
+                                <div class="testimonial-img-bg"></div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-7">
+                                <div class="testimonial-content">
+                                    <p>@(ResourceTextHelper.L("TestimonialText2", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer."))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Testimonial end -->
+        </div>
+    </div>
+</div>
+<!-- News & Testimonials End -->
+<!-- Our client start -->
+<div class="wshipping-content-block client-block pt0">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="heading3-border text-uppercase">@(ResourceTextHelper.L("ValuableClient", "Our Valuable Client"))</h3>
+            </div>
+            <div class="owl-carousel our-client">
+                <div class="client-item"><img src="~/assets/images/client-1.jpg" alt="" /></div>
+                <div class="client-item"><img src="~/assets/images/client-2.jpg" alt="" /></div>
+                <div class="client-item"><img src="~/assets/images/client-3.jpg" alt="" /></div>
+                <div class="client-item"><img src="~/assets/images/client-4.jpg" alt="" /></div>
+                <div class="client-item"><img src="~/assets/images/client-5.jpg" alt="" /></div>
+                <div class="client-item"><img src="~/assets/images/client-6.jpg" alt="" /></div>
+                <div class="client-item"><img src="~/assets/images/client-1.jpg" alt="" /></div>
+                <div class="client-item"><img src="~/assets/images/client-2.jpg" alt="" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our client end --><!-- Our client end -->

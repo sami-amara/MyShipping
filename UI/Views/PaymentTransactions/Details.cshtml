@@ -1,0 +1,138 @@
+@{
+    ViewData["Title"] = Labels.PaymentReceipt;
+    var transaction = ViewBag.Transaction as Business.DTOS.PaymentTransactionDto;
+}
+
+<div class="wshipping-content-block">
+    <div class="container py-4">
+        @if (transaction != null)
+        {
+            <div class="receipt-container">
+            <!-- Receipt Header -->
+            <div class="receipt-header">
+                <h2><i class="fas fa-receipt me-2"></i>@Labels.PaymentReceipt</h2>
+                <div class="transaction-id">
+                    @Labels.TransactionID: @transaction.Id.ToString("N").ToUpper()
+                </div>
+                @{
+                    var statusColor = PaymentTransactionLocalizationHelper.GetStatusColor(transaction.TransactionStatusName);
+                    var localizedStatus = PaymentTransactionLocalizationHelper.GetLocalizedStatus(transaction.TransactionStatus, transaction.TransactionStatusName);
+                    var localizedPaymentMethod = PaymentTransactionLocalizationHelper.GetLocalizedPaymentMethod(transaction.PaymentMethodName);
+                }
+                <span class="badge bg-@statusColor status-badge-large">
+                    @localizedStatus
+                </span>
+            </div>
+
+            <!-- Receipt Body -->
+            <div class="receipt-body">
+                <!-- Transaction Details -->
+                <div class="receipt-section">
+                    <h5><i class="fas fa-info-circle me-2"></i>@Labels.TransactionDetails</h5>
+                    <div class="info-row">
+                        <span class="info-label">@Labels.DateTime</span>
+                        <span class="info-value">@((transaction.ProcessedDate ?? transaction.CreatedDate).ToString("MMMM dd, yyyy HH:mm:ss"))</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">@Labels.PaymentMethod</span>
+                        <span class="info-value">@localizedPaymentMethod</span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(transaction.TransactionReference))
+                    {
+                        <div class="info-row">
+                            <span class="info-label">@Labels.Reference</span>
+                            <span class="info-value">@transaction.TransactionReference</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- Shipment Details -->
+                <div class="receipt-section">
+                    <h5><i class="fas fa-box me-2"></i>@Labels.ShipmentInformation</h5>
+                    <div class="info-row">
+                        <span class="info-label">@Labels.TrackingNumber</span>
+                        <span class="info-value">
+                            @if (!string.IsNullOrEmpty(transaction.ShipmentTrackingNumber))
+                            {
+                                <span class="badge bg-info">@transaction.ShipmentTrackingNumber</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">@ResourceTextHelper.L("NotAvailable", "N/A")</span>
+                            }
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">@Labels.ShipmentID</span>
+                        <span class="info-value">@transaction.ShipmentId.ToString("N").Substring(0, 13)...</span>
+                    </div>
+                </div>
+
+                <!-- Payment Breakdown -->
+                <div class="receipt-section">
+                    <h5><i class="fas fa-calculator me-2"></i>@Labels.PaymentBreakdown</h5>
+                    <div class="amount-breakdown">
+                        <div class="amount-row">
+                            <span>@Labels.ShippingRate</span>
+                            <span>@transaction.ShippingRate.ToString("C")</span>
+                        </div>
+                        <div class="amount-row">
+                            <span>@Labels.Commission (@transaction.CommissionPercentage.ToString("F2")%)</span>
+                            <span>@transaction.CommissionAmount.ToString("C")</span>
+                        </div>
+                        <div class="amount-row amount-total">
+                            <span>@Labels.TotalAmount</span>
+                            <span>@transaction.TotalAmount.ToString("C")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes (if any) -->
+                @if (!string.IsNullOrEmpty(transaction.Notes))
+                {
+                    <div class="receipt-section">
+                        <h5><i class="fas fa-sticky-note me-2"></i>@Labels.Notes</h5>
+                        <p class="text-muted mb-0">@transaction.Notes</p>
+                    </div>
+                }
+
+                <!-- Educational Note -->
+                <div class="educational-note">
+                    <strong><i class="fas fa-graduation-cap me-2"></i>@Labels.EducationalSystem</strong>
+                    <p class="mb-0 mt-1">
+                        @Labels.EducationalPaymentDisclaimer
+                    </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="print-button text-center no-print">
+                    <button id="print-receipt-button" type="button" class="btn btn-print-receipt btn-lg me-2">
+                        <i class="fas fa-print me-2"></i>@Labels.PrintReceipt
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-back-history btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>@Labels.BackToPaymentHistory
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Transaction Not Found -->
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-exclamation-circle fa-4x not-found-icon mb-3"></i>
+                <h3>@Labels.TransactionNotFound</h3>
+                <p class="text-muted">@Labels.TransactionNotFoundMessage</p>
+                <a href="@Url.Action("Index")" class="btn btn-return-history mt-3">
+                    <i class="fas fa-arrow-left me-2"></i>@Labels.BackToPaymentHistory
+                </a>
+            </div>
+        </div>
+    }
+</div>
+</div>
+
+@section Scripts {
+    <script src="~/js/payment-transactions-pages.js" asp-append-version="true"></script>
+}

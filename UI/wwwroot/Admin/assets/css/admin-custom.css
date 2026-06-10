@@ -1,0 +1,53 @@
+/*
+ * Admin custom styles.
+ * Consolidated extracted inline styles from admin pages.
+ * Keep custom overrides here instead of editing vendor demo_1/style.css directly.
+ */
+
+/* Home dashboard extracted styles */
+.admin-dashboard-chart-card {
+    height: 250px;
+}
+
+.admin-dashboard-chart-title {
+    font-size: 11px;
+}
+
+.admin-dashboard-chart-container {
+    height: 200px;
+}
+
+.admin-dashboard-scroll-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.admin-dashboard-compact-table {
+    font-size: 11px;
+}
+
+.admin-dashboard-status-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+}
+
+/* Payment transaction details extracted styles */
+.payment-transaction-status-badge {
+    font-size: 1rem;
+}
+
+.payment-transaction-notes {
+    white-space: pre-wrap;
+}
+
+.payment-transaction-missing-icon {
+    font-size: 4rem;
+    color: #dc3545;
+}
+
+/* Admin shipments list extracted styles */
+.admin-shipments-status-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}

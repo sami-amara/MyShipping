@@ -1,0 +1,95 @@
+﻿@model CityDto
+
+
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div asp-validation-summary="All" class="text-danger"></div>
+}
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> @Labels.Cities </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">@Labels.Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Labels.Cities</li>
+            </ol>
+        </nav>
+    </div>
+
+    <form id="cityForm" class="forms-sample" method="post" enctype="multipart/form-data"
+          asp-controller="Cities" asp-action="Save" role="form">
+        <input asp-for="Id" type="hidden" />
+
+        <div class="form-group">
+            <label for="CityAname">@Labels.NameAr</label>
+            <input asp-for="CityAname" type="text" class="form-control" placeholder="@Labels.NameAr" />
+            <span asp-validation-for="CityAname" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="CityEname">@Labels.NameEn</label>
+            <input asp-for="CityEname" type="text" class="form-control" placeholder="@Labels.NameEn" />
+            <span asp-validation-for="CityEname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CountryId">@Shipping.CountryName</label>
+            <select asp-for="CountryId" class="form-control"
+                    asp-items="@(new SelectList(ViewBag.Countries, "Id", "CountryEname"))">
+                <option value="">@Labels.SelectCountry</option>
+            </select>
+            <span asp-validation-for="CountryId" class="text-danger"></span>
+        </div>
+       
+
+        <button type="submit" class="btn btn-gradient-primary me-2">@Actions.Save</button>
+        <button type="reset" class="btn btn-light">@Actions.Clear</button>
+    </form>
+</div>
+
+@await Html.PartialAsync("_AlertMessage")
+
+@section Scripts {
+    <div id="admin-form-validator-config"
+         data-form-selector="#cityForm"
+         data-rule-key="cityForm"></div>
+    <script src="~/Admin/assets/js/admin-form-validator.js" asp-append-version="true"></script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,463 @@
+/*
+ * Public site custom styles.
+ * Consolidates extracted inline styles from shared partials and public views.
+ */
+
+
+.site-accent-icon {
+    color: #eb0028;
+}
+
+.payment-method-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-method-card:hover {
+    border-color: #4285f4;
+    box-shadow: 0 8px 16px rgba(66, 133, 244, 0.2);
+    transform: translateY(-4px);
+}
+
+.payment-method-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(66, 133, 244, 0.15);
+}
+
+.payment-method-paypal-icon {
+    font-size: 48px;
+    color: #0070ba;
+}
+
+.payment-method-stripe-icon {
+    font-size: 48px;
+    color: #635bff;
+}
+
+#paymentMethodModal .modal-content,
+#stripePaymentModal .modal-content {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#paymentMethodModal .modal-header,
+#stripePaymentModal .modal-header {
+    border-bottom: none;
+    padding: 1.5rem;
+}
+
+.stripe-amount-display {
+    font-size: 1.5rem;
+}
+
+#stripe-card-element {
+    height: auto;
+    min-height: 45px;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    background-color: white;
+}
+
+#stripe-card-element.StripeElement--focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+#stripe-card-element.StripeElement--invalid {
+    border-color: #dc3545;
+}
+
+#stripe-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.stripe-brand-text {
+    color: #635bff;
+}
+
+.payment-page-header {
+    position: relative;
+    padding-bottom: 12px;
+    margin-bottom: 2rem;
+}
+
+.payment-page-header:before {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 30px;
+    height: 3px;
+    background-color: #a3001c;
+    content: "";
+}
+
+.payment-page-header:after {
+    position: absolute;
+    left: 30px;
+    bottom: 0px;
+    width: 70px;
+    height: 3px;
+    background-color: #eb0028;
+    content: "";
+}
+
+.payment-page-header i {
+    color: #eb0028;
+    margin-right: 10px;
+}
+
+.status-badge {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.amount-display {
+    font-weight: bold;
+    color: #eb0028;
+}
+
+.btn-view-receipt,
+.btn-create-shipment,
+.btn-print-receipt,
+.btn-return-history {
+    background-color: #eb0028;
+    border-color: #eb0028;
+    color: white;
+    font-weight: 500;
+}
+
+.btn-view-receipt:hover,
+.btn-create-shipment:hover,
+.btn-print-receipt:hover,
+.btn-return-history:hover {
+    background-color: #a3001c;
+    border-color: #a3001c;
+    color: white;
+}
+
+.btn-back-history {
+    border-color: #eb0028;
+    color: #eb0028;
+    font-weight: 500;
+}
+
+.btn-back-history:hover {
+    background-color: #eb0028;
+    border-color: #eb0028;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #eb0028;
+    border-color: #eb0028;
+}
+
+.pagination .page-link {
+    color: #eb0028;
+}
+
+.pagination .page-link:hover {
+    color: #a3001c;
+    background-color: #f8f9fa;
+}
+
+.empty-state-row {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state-row i {
+    font-size: 3rem;
+    color: #eb0028;
+    opacity: 0.3;
+    margin-bottom: 1rem;
+}
+
+.receipt-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.receipt-header {
+    background: linear-gradient(135deg, #eb0028 0%, #a3001c 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+}
+
+.receipt-header h2 {
+    margin: 0;
+    font-size: 2rem;
+    color: white;
+}
+
+.receipt-header .transaction-id {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.status-badge-large {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.receipt-body {
+    padding: 2rem;
+}
+
+.receipt-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px dashed #e9ecef;
+}
+
+.receipt-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.receipt-section h5 {
+    color: #eb0028;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.info-value {
+    color: #2c3e50;
+    font-weight: 600;
+    text-align: right;
+}
+
+.amount-breakdown {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border-left: 4px solid #eb0028;
+}
+
+.amount-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.amount-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #eb0028;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 2px solid #dee2e6;
+}
+
+.print-button {
+    margin-top: 2rem;
+}
+
+.educational-note {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    margin-top: 2rem;
+    border-radius: 4px;
+}
+
+.educational-note strong {
+    color: #856404;
+}
+
+.not-found-icon {
+    color: #eb0028;
+}
+
+.review-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.review-section h3 {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-section .btn-edit {
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.review-section .btn-edit:hover {
+    text-decoration: underline;
+}
+
+.completion-message {
+    padding: 40px 20px;
+}
+
+.completion-success-icon {
+    font-size: 64px;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.tanks-message {
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+#confirmation-summary {
+    max-width: 600px;
+    margin: 30px auto 0;
+    text-align: left;
+}
+
+.payment-processing-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.payment-processing-overlay.active {
+    display: flex;
+}
+
+.payment-processing-content {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.payment-processing-note {
+    font-size: 0.9em;
+    margin-top: 15px;
+}
+
+.payment-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: site-spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes site-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.site-paypal-button-container,
+.site-modal-paypal-button-container,
+.site-modal-other-payment-container,
+.site-payment-status-message {
+    display: none;
+}
+
+.site-paypal-button-container {
+    margin-top: 20px;
+}
+
+.site-payment-card-logo {
+    height: 30px;
+    margin: 5px;
+}
+
+.payment-receipt {
+    background: #f8f9fa;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.payment-receipt h5 {
+    color: #28a745;
+    margin-bottom: 15px;
+}
+
+.receipt-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.receipt-item:last-child {
+    border-bottom: none;
+}
+
+.receipt-item.receipt-total {
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 2px solid #28a745;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #28a745;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .receipt-container {
+        box-shadow: none;
+    }
+
+    .educational-note {
+        display: none;
+    }
+}

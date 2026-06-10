@@ -1,0 +1,30 @@
+{
+  "name": "faiton-build-files",
+  "description": "Static assets processing tools for faiton.",
+  "version": "0.0.1",
+  "author": "Mushex Antaranian",
+  "license": "MIT",
+  "keywords": [
+    "faiton"
+  ],
+  "homepage": "https://github.com/faiton/build-files",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/faiton/build-files.git"
+  },
+  "bugs": {
+    "url": "https://github.com/faiton/build-files/issues"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "faiton-builder": "^1.1.10"
+  },
+  "main": "index.js",
+  "devDependencies": {
+    "component-resolver": "^1.1.8",
+    "mocha": "^1.21.4",
+    "jshint": "^2.5.3"
+  }
+}

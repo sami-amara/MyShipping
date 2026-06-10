@@ -1,0 +1,1 @@
+{"version":3,"file":"tight-grid.js","sourceRoot":"","sources":["../../../../wwwroot/Admin/js/tight-grid.js"],"names":[],"mappings":"AAAA,CAAC,UAAS,CAAC;IACT,YAAY,CAAC;IACb,IAAI,CAAC,CAAC,OAAO,CAAC,CAAC,MAAM,EAAE,CAAC;QACtB,MAAM,OAAO,GAAG,IAAI,OAAO,CAAC,OAAO,EAAE;YACnC,OAAO,EAAE,WAAW;YACpB,KAAK,EAAE,YAAY;SACpB,CAAC,CAAC;IACL,CAAC;AACH,CAAC,CAAC,CAAC,MAAM,CAAC,CAAC"}

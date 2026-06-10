@@ -1,0 +1,141 @@
+﻿@using Business.DTOS
+@model UI.Models.ShipmentsIndexViewModel
+
+
+@{
+    ViewData["Title"] = AppResource.Labels.Shipments ?? "Shipments";
+    var paged = Model?.Paged ?? new DataAccessLayer.Model.PagedResult<ShippmentDto>();
+    var pager = Model?.Pager ?? new UI.Models.PaginationInfo();
+    var q = Model?.Search ?? string.Empty;
+
+    Func<ShippmentDto, (string cls, string text)> statusBadge = s =>
+    {
+        if (s == null) return ("badge bg-secondary", "-");
+        var raw = (s.Status ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(raw)) return ("badge bg-secondary", "-");
+        var low = raw.ToLowerInvariant();
+        if (low == "1" || low == "active" || low == "true") return ("badge bg-success", (AppResource.Labels.Active ?? "Active"));
+        if (low == "0" || low == "inactive" || low == "false") return ("badge bg-secondary", (AppResource.Labels.Inactive ?? "Inactive"));
+        return ("badge bg-info text-dark", raw);
+    };
+}
+
+<h2>@(AppResource.Labels.Shipments ?? "Shipments")</h2>
+
+<form class="row g-2 mb-3" method="get" asp-action="List" asp-controller="Shipments">
+    <div class="col-sm-6 col-md-4">
+        <input name="q" class="form-control" placeholder="@(AppResource.Labels.Search ?? "Search")" value="@q" />
+    </div>
+
+    <input type="hidden" name="sortBy" value="@Model?.SortBy" />
+    <input type="hidden" name="sortDir" value="@Model?.SortDir" />
+
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">@((AppResource.Labels.Search) ?? "Search")</button>
+        <a class="btn btn-outline-secondary" href="@Url.Action("List", "Shipments")">@((AppResource.Labels.Clear) ?? "Clear")</a>
+    </div>
+</form>
+
+@Html.AntiForgeryToken()
+
+<div class="wshipping-content-block">
+    <h1>UI Project</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="order-list">
+                    <h3>Your Shipment History</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="shipments-table">
+                            <thead>
+                                <tr>
+                                    <th>@AppResource.Labels.SL</th>
+                                    <th>@AppResource.Labels.TrackingNumber</th>
+                                    <th>@AppResource.Labels.OrderDate</th>
+                                    <th>@AppResource.Labels.ShippingValue</th>
+                                    <th>@AppResource.Labels.SenderName</th>
+                                    <th>@AppResource.Labels.ReceiverName</th>
+                                    <th>@AppResource.Labels.Status</th>
+                                    <th class="text-center">@AppResource.Labels.Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="shipments-table-body">
+                                @if (!paged.Items.Any())
+                                {
+                                    <tr><td colspan="8" class="text-center">@((AppResource.Labels.NoRecordsFound) ?? "No records found")</td></tr>
+                                }
+                                else
+                                {
+                                    var index = (pager.Page - 1) * pager.PageSize;
+                                    foreach (var shipment in paged.Items)
+                                    {
+                                        index++;
+                                        var badge = statusBadge(shipment);
+                                        <tr data-id="@shipment?.Id">
+                                            <td class="align-middle">@index</td>
+                                            <td class="align-middle">@((shipment?.TrackingNumber != null) ? shipment.TrackingNumber.ToString() : "-")</td>
+                                            <td class="align-middle">@(shipment?.ShippingDate != null ? shipment.ShippingDate.ToString("yyyy-MM-dd") : "-")</td>
+                                            <td class="align-middle">@(shipment?.PackageValue != null ? string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:C}", shipment.PackageValue) : "-")</td>
+                                            <td class="align-middle">@(shipment?.UserSender?.SenderName ?? "-")</td>
+                                            <td class="align-middle">@(shipment?.UserReceiver?.ReceiverName ?? "-")</td>
+                                            <td class="align-middle">
+                                                <span class="@badge.cls" role="status" aria-label="status">@badge.text</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <a class="btn btn-sm btn-outline-primary me-1" title="Details" href="@Url.Action("Show", "Shipments", new { id = shipment?.Id })" aria-label="Details">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                </a>
+
+                                                <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="@shipment?.Id" data-delete-url="@Url.Action("Delete", "Shipments")" title="Delete" aria-label="Delete">
+                                                    <i class="far fa-trash-alt" aria-hidden="true"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                        <!-- pager markup unchanged -->
+                        <nav aria-label="Pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item @(pager.HasPrevious ? "" : "disabled")">
+                                    <a class="page-link" href="@Url.Action("Index", "Shipments", new { page = pager.PrevPage, pageSize = pager.PageSize, sortBy = Model.SortBy, sortDir = Model.SortDir })">&laquo; Previous</a>
+                                </li>
+
+                                @for (int p = pager.Start; p <= pager.End; p++)
+                                {
+                                    if (p == pager.Page)
+                                    {
+                                        <li class="page-item active"><span class="page-link">@p</span></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Shipments", new { page = p, pageSize = pager.PageSize, sortBy = Model.SortBy, sortDir = Model.SortDir })">@p</a></li>
+                                    }
+                                }
+
+                                <li class="page-item @(pager.HasNext ? "" : "disabled")">
+                                    <a class="page-link" href="@Url.Action("Index", "Shipments", new { page = pager.NextPage, pageSize = pager.PageSize, sortBy = Model.SortBy, sortDir = Model.SortDir })">Next &raquo;</a>
+                                </li>
+                            </ul>
+
+                            <div class="text-center mt-2">
+                                <small class="text-muted">Page @pager.Page of @pager.TotalPages — Showing @paged.Items.Count of @pager.TotalCount</small>
+                            </div>
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_AlertMessage")
+
+@section Scripts {
+    <script src="~/js/shipments-index-delete.js" asp-append-version="true"></script>
+}
+
+

@@ -1,0 +1,12 @@
+{
+  "locals": [
+    "reset",
+    "stuff"
+  ],
+  "scripts": [
+    "index.js"
+  ],
+  "templates": [
+    "template.html"
+  ]
+}

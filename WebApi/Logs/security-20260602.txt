@@ -1,0 +1,124 @@
+2026-06-02 13:41:46.447 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 14:00:34.920 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 14:10:59.529 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 14:18:04.672 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 14:18:55.619 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 14:18:55.849 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 14:18:58.246 +03:00 [INF] SendGrid accepted email. To=samiamara277@gmail.com, Subject=Reset your password, Status=202, MessageId=RnsMahkeSkKlQ0cWtWPRpw
+2026-06-02 14:18:58.249 +03:00 [INF] 🔑 PASSWORD_RESET_REQUESTED | Email: samiamara277@gmail.com | IP: ::1
+2026-06-02 14:21:41.929 +03:00 [INF] ✅ PASSWORD_RESET_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1
+2026-06-02 14:40:07.434 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 14:40:41.166 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 14:40:41.378 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 14:40:41.433 +03:00 [INF] ▶️ API Login called for samiamara277@gmail.com
+2026-06-02 14:40:41.434 +03:00 [INF] ▶️ API Login called for samiamara277@gmail.com
+2026-06-02 14:40:42.705 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-02 14:40:42.711 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-02 14:40:42.760 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-02 14:40:42.760 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-02 14:40:43.091 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1 | UserAgent: 
+2026-06-02 14:40:43.091 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1 | UserAgent: 
+2026-06-02 14:40:43.093 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for samiamara277@gmail.com
+2026-06-02 14:40:43.094 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for samiamara277@gmail.com
+2026-06-02 15:08:13.322 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 15:08:26.676 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 15:08:26.887 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 15:08:26.931 +03:00 [INF] ▶️ API Login called for samiamara277@gmail.com
+2026-06-02 15:08:27.203 +03:00 [INF] ▶️ API Login called for samiamara277@gmail.com
+2026-06-02 15:08:27.889 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-02 15:08:27.889 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-02 15:08:27.926 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-02 15:08:27.926 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-02 15:08:28.245 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1 | UserAgent: 
+2026-06-02 15:08:28.245 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1 | UserAgent: 
+2026-06-02 15:08:28.247 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for samiamara277@gmail.com
+2026-06-02 15:08:28.248 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for samiamara277@gmail.com
+2026-06-02 15:30:09.786 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 15:30:51.840 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 15:30:52.106 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 15:30:53.761 +03:00 [INF] SendGrid accepted email. To=samiamara277@gmail.com, Subject=Reset your password, Status=202, MessageId=gG9z4wpXQF-27Rebo43OUA
+2026-06-02 15:30:53.765 +03:00 [INF] 🔑 PASSWORD_RESET_REQUESTED | Email: samiamara277@gmail.com | IP: ::1
+2026-06-02 15:34:11.196 +03:00 [INF] ✅ PASSWORD_RESET_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1
+2026-06-02 15:44:05.714 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 15:44:34.591 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 15:44:34.829 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 15:44:36.337 +03:00 [INF] SendGrid accepted email. To=samiamara277@gmail.com, Subject=Reset your password, Status=202, MessageId=om2sT_TvQSGJP3zZ2MqjXQ
+2026-06-02 15:44:36.341 +03:00 [INF] 🔑 PASSWORD_RESET_REQUESTED | Email: samiamara277@gmail.com | IP: ::1
+2026-06-02 15:46:54.807 +03:00 [WRN] ❌ PASSWORD_RESET_FAILED | Email: samiamara277@gmail.com | Reason: Invalid token. | IP: ::1
+2026-06-02 15:48:39.861 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 15:48:48.939 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 15:48:49.182 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 15:48:49.233 +03:00 [INF] ▶️ API Login called for samiamara277@gmail.com
+2026-06-02 15:48:49.893 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-02 15:48:49.931 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-02 15:48:50.201 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1 | UserAgent: 
+2026-06-02 15:48:50.202 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for samiamara277@gmail.com
+2026-06-02 15:52:04.931 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 15:54:48.925 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 16:19:31.911 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 16:46:55.761 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 16:50:52.889 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 16:50:53.091 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 16:50:55.255 +03:00 [INF] SendGrid accepted email. To=samiamara277@gmail.com, Subject=Reset your password, Status=202, MessageId=zahdoPV_SdG-2M64iRJuOg
+2026-06-02 16:50:55.258 +03:00 [INF] 🔑 PASSWORD_RESET_REQUESTED | Email: samiamara277@gmail.com | IP: ::1
+2026-06-02 16:51:47.334 +03:00 [WRN] ❌ PASSWORD_RESET_FAILED | Email: samiamara277@gmail.com | Reason: Invalid token. | IP: ::1
+2026-06-02 16:52:22.402 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 16:53:20.432 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 16:53:56.887 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 16:53:57.124 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 16:53:58.444 +03:00 [INF] SendGrid accepted email. To=samiamara277@gmail.com, Subject=Reset your password, Status=202, MessageId=aNhpa2ZgQXS7UrPtCLR5ug
+2026-06-02 16:53:58.449 +03:00 [INF] 🔑 PASSWORD_RESET_REQUESTED | Email: samiamara277@gmail.com | IP: ::1
+2026-06-02 16:56:35.516 +03:00 [INF] ✅ PASSWORD_RESET_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1
+2026-06-02 18:09:41.584 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 18:09:50.960 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 18:09:51.204 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 18:09:51.255 +03:00 [INF] ▶️ API Login called for samiamara277@gmail.com
+2026-06-02 18:09:51.947 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-02 18:09:52.016 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-02 18:09:52.293 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: samiamara277@gmail.com | UserId: 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a | IP: ::1 | UserAgent: 
+2026-06-02 18:09:52.294 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for samiamara277@gmail.com
+2026-06-02 18:17:55.157 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 18:19:35.575 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 18:22:01.235 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 18:22:10.283 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 18:22:11.031 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., RefreshToken=cuAdupqDZ4..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Mvc.CookieTempDataProvider=CfDJ8KhqfN...
+2026-06-02 18:22:11.032 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: cuAdupqDZ4NTVWfDGt7q...
+2026-06-02 18:22:13.976 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a
+2026-06-02 18:22:13.977 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-06-02 18:22:13.980 +03:00 [INF] ✅ Step 4 passed: Token valid for 10067.633961936666 more minutes
+2026-06-02 18:22:14.156 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 7f33f490-31bb-43ed-93f9-2b8eb61f3e9a
+2026-06-02 18:46:11.959 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 18:46:32.476 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 18:46:32.752 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 18:46:32.786 +03:00 [INF] ▶️ API Login called for Wasan@gmail.com
+2026-06-02 18:46:33.505 +03:00 [INF] ✅ User validated, generating tokens
+2026-06-02 18:46:33.536 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-06-02 18:46:33.822 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: Wasan@gmail.com | UserId: 9cfd03ad-f0e1-46ab-a4fa-23f76788325b | IP: ::1 | UserAgent: 
+2026-06-02 18:46:33.824 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for Wasan@gmail.com
+2026-06-02 19:05:42.501 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 19:15:52.382 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 19:15:52.663 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 19:28:57.451 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 19:29:25.248 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 19:29:25.527 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 19:29:25.544 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., .AspNetCore.Culture=c=en|uic=e..., RefreshToken=7rAyHM6p4I..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Mvc.CookieTempDataProvider=CfDJ8KhqfN...
+2026-06-02 19:29:25.545 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: 7rAyHM6p4I0hEFkOkLxw...
+2026-06-02 19:29:26.114 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-06-02 19:29:26.115 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-06-02 19:29:26.119 +03:00 [INF] ✅ Step 4 passed: Token valid for 10037.123671315 more minutes
+2026-06-02 19:29:26.281 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-06-02 19:35:38.402 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 19:37:32.382 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 19:37:32.581 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 19:50:15.887 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 19:51:34.171 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 19:51:34.401 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 20:24:07.809 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-06-02 20:25:07.453 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-06-02 20:25:07.649 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-02 20:25:07.660 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., .AspNetCore.Culture=c=en|uic=e..., RefreshToken=7rAyHM6p4I..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Mvc.CookieTempDataProvider=CfDJ8KhqfN...
+2026-06-02 20:25:07.661 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: 7rAyHM6p4I0hEFkOkLxw...
+2026-06-02 20:25:08.242 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-06-02 20:25:08.243 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-06-02 20:25:08.246 +03:00 [INF] ✅ Step 4 passed: Token valid for 9981.421555635 more minutes
+2026-06-02 20:25:08.386 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b

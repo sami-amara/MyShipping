@@ -1,0 +1,41 @@
+﻿@using AppResource
+<div id="alert-message-config" data-message-type="@(TempData["MessageType"] ?? 0)"></div>
+<textarea id="alert-message-texts" class="d-none">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(new
+{
+    saveSuccessTitle = message.SaveSuccessTitle,
+    saveSuccessMessage = message.SaveSuccessMessage,
+    saveFailedTitle = message.SaveFailedTitle,
+    saveFailedMessage = message.SaveFailedMessage,
+    deleteSuccessTitle = message.DeleteSuccessTitle,
+    deleteSuccessMessage = message.DeleteSucessMessage,
+    deleteFailedTitle = message.DeleteFailedTitle,
+    deleteFailedMessage = message.DeleteFailedMessage,
+    updateSuccessTitle = message.UpdateSuccessTitle,
+    updateSuccessMessage = message.UpdateSuccessMessage,
+    registrationSuccessTitle = message.RegistrationSuccessfulTitle,
+    registrationSuccessMessage = message.RegistrationSuccessfulMessage,
+    registrationFailedTitle = message.RegistrationFaildTitle,
+    registrationFailedMessage = message.RegistrationFaildMessage,
+    lockedSuccessTitle = message.LockedSuccessTitle,
+    lockedSuccessMessage = message.LockedSuccessMessage,
+    unlockedSuccessTitle = message.UnlockedSuccessTitle,
+    unlockedSuccessMessage = message.UnlockedSuccessMessage,
+    lockedFaildTitle = message.LockedFaildTitle,
+    lockedFaildMessage = message.LockedFaildMessage,
+    unlockedFaildTitle = message.UnlockedFaildTitle,
+    unlockedFaildMessage = message.UnlockedFaildMessage,
+    adminLockedTitle = message.AdminLockedTitle,
+    adminLockedMessage = message.AdminLockedMessage,
+    tempLockedTitle = message.TempLockedTitle,
+    tempLockedMessage = message.TempLockedMessage
+}))</textarea>
+<script src="~/Admin/assets/js/admin-alert-message.js" asp-append-version="true"></script>
+
+
+
+
+
+
+
+
+

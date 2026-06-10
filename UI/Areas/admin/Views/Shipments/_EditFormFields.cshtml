@@ -1,0 +1,44 @@
+@model Business.DTOS.ShippmentDto
+
+
+
+<!-- Step 0: shipping from (keeps original inputs) -->
+<fieldset data-step="0" class="active">
+    <h2 class="fs-title">@AppResource.Labels.ShippingFromTitle</h2>
+    <h3 class="fs-subtitle">@AppResource.Labels.RequiredFieldNote</h3>
+
+    <div class="shipping-form">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="form-group">
+                    <label for="senderCountry">@AppResource.Labels.Country<sup>*</sup></label>
+                    <select asp-for="UserSender.CountryName" id="senderCountry" name="SenderCountry" class="form-control" required>
+                        @if (Model?.UserSender?.CountryName != null )
+                        {
+                            <option value="@Model.UserSender.CountryName" selected>@(Model.UserSender.CountryName)</option>
+                        }
+                        <option value="">@AppResource.Labels.Country</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="form-group">
+                    <label for="senderName">@AppResource.Labels.CompanyOrName<sup>*</sup></label>
+                    <input asp-for="UserSender.SenderName" type="text" class="form-control" id="senderName" name="SenderName" required />
+                    <span asp-validation-for="UserSender.SenderName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="form-group">
+                    <label for="senderContact">@AppResource.Labels.Contact<sup>*</sup></label>
+                    <input asp-for="UserSender.Contact" type="text" class="form-control" id="senderContact" name="SenderContact" required />
+                </div>
+            </div>
+        </div>
+
+        <!-- rest of the original fields omitted for brevity; include only what you need -->
+    </div>
+
+</fieldset>

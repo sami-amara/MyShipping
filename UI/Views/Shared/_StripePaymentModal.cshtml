@@ -1,0 +1,74 @@
+<!-- Stripe Payment Modal -->
+<div class="modal fade" id="stripePaymentModal" tabindex="-1" aria-labelledby="stripePaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="stripePaymentModalLabel">
+                    <i class="mdi mdi-credit-card"></i>
+                    Pay with Credit Card
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- Shipment Info Summary -->
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">Shipment ID</small>
+                                <p class="mb-0 fw-bold" id="stripe-shipment-id">-</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <small class="text-muted">Amount</small>
+                                <p class="mb-0 fw-bold text-primary stripe-amount-display" id="stripe-amount-display">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stripe Card Element Form -->
+                <form id="stripe-payment-form">
+                    <div class="mb-3">
+                        <label for="stripe-card-element" class="form-label">
+                            Card Details
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div id="stripe-card-element" class="form-control p-3"></div>
+                        <div id="stripe-card-errors" class="invalid-feedback d-block mt-2"></div>
+                    </div>
+
+                    <!-- Security Badge -->
+                    <div class="alert alert-info border-0 mb-4">
+                        <i class="mdi mdi-shield-check-outline"></i>
+                        <small>Your payment information is secure. We use industry-standard encryption and never store your card details.</small>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close"></i>
+                            Cancel
+                        </button>
+
+                        <button type="submit" id="stripe-submit-button" class="btn btn-primary btn-lg">
+                            <span id="stripe-button-text">
+                                <i class="mdi mdi-lock-outline"></i>
+                                Pay Now
+                            </span>
+                            <span id="stripe-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer - Powered by Stripe -->
+            <div class="modal-footer border-0 bg-light justify-content-center">
+                <small class="text-muted">
+                    Powered by 
+                    <strong class="stripe-brand-text">Stripe</strong>
+                    <i class="mdi mdi-shield-check text-success ms-1"></i>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

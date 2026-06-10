@@ -1,0 +1,160 @@
+﻿@using Business.DTOS
+@using Business.Services.Shipment
+@using UI.Constants
+@model UI.Models.ShipmentsIndexViewModel
+
+@{
+    ViewData["Title"] = AppResource.Labels.Shipments ?? "Shipments";
+    var paged = Model?.Paged ?? new DataAccessLayer.Model.PagedResult<ShippmentDto>();
+    var pager = Model?.Pager ?? new UI.Models.PaginationInfo();
+    var q = Model?.Search ?? string.Empty;
+    var selectedStatus = Model?.StatusFilter;
+    var selectedPaymentStatus = Model?.IsPaidFilter;
+}
+
+
+
+
+<div class="container my-5">
+    <h2>@(AppResource.Labels.Shipments ?? "Shipments")</h2>
+
+    @* ✅ Enhanced search with consistent sizing and spacing *@
+    <form class="mb-3" method="get" asp-action="List" asp-controller="Shipments">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-4">
+                <input type="text" name="q" class="form-control shipment-search-control" 
+                       placeholder="Search by sender, receiver, or tracking number..." 
+                       value="@q" />
+            </div>
+            <div class="col-md-4">
+                @await Html.PartialAsync("_StatusFilterDropdown", (selectedStatus, selectedPaymentStatus))
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-shipment-primary d-inline-flex align-items-center justify-content-center w-100 shipment-search-btn">
+                    <i class="fa fa-search shipment-search-icon"></i>
+                    <span>@((AppResource.Labels.Search) ?? "Search")</span>
+                </button>
+            </div>
+            <div class="col-md-2">
+                <a asp-action="List" asp-controller="Shipments" 
+                   class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center w-100 shipment-search-btn">
+                    <i class="fa fa-redo shipment-search-icon"></i>
+                    <span>@((AppResource.Labels.Clear ?? "Clear"))</span>
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+    <table class="table table-striped" id="shipments-table">
+        <thead>
+            <tr>
+                <th>@AppResource.Labels.SL</th>
+                <th>@AppResource.Labels.TrackingNumber</th>
+                <th>@AppResource.Labels.OrderDate</th>
+                <th>@AppResource.Labels.ShippingValue</th>
+                <th>@AppResource.Labels.SenderName</th>
+                <th>@AppResource.Labels.ReceiverName</th>
+                <th>@AppResource.Labels.Status</th>
+                <th class="text-center">@AppResource.Labels.Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!paged.Items.Any())
+            {
+                <tr><td colspan="8" class="text-center">@((AppResource.Labels.NoRecordsFound) ?? "No records found")</td></tr>
+            }
+            else
+            {
+                var index = (pager.Page - 1) * pager.PageSize;
+                foreach (var shipment in paged.Items)
+                {
+                    index++;
+                    <tr data-id="@shipment?.Id">
+                        <td class="align-middle">@index</td>
+                        <td class="align-middle">@((shipment?.TrackingNumber != null) ? shipment.TrackingNumber.ToString() : "-")</td>
+                        <td class="align-middle">@(shipment?.ShippingDate != null ? shipment.ShippingDate.ToString("yyyy-MM-dd") : "-")</td>
+                        <td class="align-middle">@(shipment?.PackageValue != null ? string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:C}", shipment.PackageValue) : "-")</td>
+                        <td class="align-middle">@(shipment?.UserSender?.SenderName ?? "-")</td>
+                        <td class="align-middle">@(shipment?.UserReceiver?.ReceiverName ?? "-")</td>
+                        
+                        @* ✅ Use HTML Helper *@
+                        <td class="align-middle">@ShipmentHelpers.StatusBadge(shipment)</td>
+                        
+                        <td class="align-middle text-center">
+                            <a class="btn btn-sm btn-outline-primary me-1" title="Details" href="@Url.Action("Show", "Shipments", new { id = shipment?.Id })" aria-label="Details">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+
+                            @{
+                                var stateVal = shipment?.CurrentState ?? 0;
+                                var hideEdit = Enum.IsDefined(typeof(ShipmentStatusEnum), stateVal) && stateVal > (int)ShipmentStatusEnum.ReadyForShipping;
+                            }
+                            @if (!hideEdit)
+                            {
+                                <a class="btn btn-sm btn-outline-secondary me-1" title="Edit" href="@Url.Action("Edit", "Shipments", new { id = shipment?.Id })" aria-label="Edit">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            }
+                            @* ✅ Only show delete button for Created status *@
+                                @if ((shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Created || 
+                                (shipment?.CurrentState ?? 0) == (int)ShipmentStatusEnum.Updated)
+                            {
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="@shipment?.Id" title="Delete" aria-label="Delete">
+                                    <i class="far fa-trash-alt" aria-hidden="true"></i>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<nav aria-label="Pagination" id="shipments-pagination" class="mt-3">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(pager.HasPrevious ? "" : "disabled")">
+            <a class="page-link" href="@Url.Action("List", "Shipments", new { q = q, status = selectedStatus, page = pager.PrevPage, pageSize = pager.PageSize, sortBy = Model.SortBy, sortDir = Model.SortDir })">&laquo; @((AppResource.Labels.Previous) ?? "Previous")</a>
+        </li>
+
+        @for (int p = pager.Start; p <= pager.End; p++)
+        {
+            if (p == pager.Page)
+            {
+                <li class="page-item active"><span class="page-link">@p</span></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" href="@Url.Action("List", "Shipments", new { q = q, status = selectedStatus, page = p, pageSize = pager.PageSize, sortBy = Model.SortBy, sortDir = Model.SortDir })">@p</a></li>
+            }
+        }
+
+        <li class="page-item @(pager.HasNext ? "" : "disabled")">
+            <a class="page-link" href="@Url.Action("List", "Shipments", new { q = q, status = selectedStatus, page = pager.NextPage, pageSize = pager.PageSize, sortBy = Model.SortBy, sortDir = Model.SortDir })">@((AppResource.Labels.Next) ?? "Next") &raquo;</a>
+        </li>
+    </ul>
+
+    <div class="text-center mt-2">
+        <small class="text-muted">Page @pager.Page of @pager.TotalPages — Showing @paged.Items.Count of @paged.TotalCount</small>
+    </div>
+</nav>
+
+@await Html.PartialAsync("_AlertMessage")
+@Html.AntiForgeryToken()
+</div>
+
+@section Scripts {
+
+    <script src="~/Modules/AppHelper.js"></script>
+    <script src="~/Modules/ApiClient.js"></script>
+    <script src="~/Modules/ShipmentApiClient.js"></script>
+    <script src="~/Modules/ShipmentService.js"></script>
+    <script src="~/Modules/UserListShipments.js"></script>
+
+}
+
+
+
+
+

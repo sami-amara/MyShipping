@@ -1,0 +1,99 @@
+/* ═══════════════════════════════════════════════════════════════
+   SHIPMENTS MODULE - SHARED STYLES
+   Following project color scheme: #eb0028 (primary), #a3001c (dark)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* CSS Variables - inherits from project main colors */
+:root {
+    --shipment-primary: #eb0028;
+    --shipment-primary-dark: #a3001c;
+    --shipment-primary-light: #ff1a3d;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD HEADERS
+   ═══════════════════════════════════════════════════════════════ */
+
+.shipment-card .card-header, 
+.party-card .card-header, 
+.extras-card .card-header {
+    background-color: var(--shipment-primary) !important;
+    color: #fff;
+    font-weight: 600;
+}
+
+.party-card .card-body {
+    font-size: 1.02rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════ */
+
+.shipment-header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.shipment-prop-row {
+    margin-bottom: .5rem;
+    line-height: 1.3;
+}
+
+.shipment-prop-row strong {
+    font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTONS - Following project button styling
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Base button styling for shipment actions */
+.text-end .btn {
+    margin-bottom: 0.25rem;
+}
+
+/* Primary button - uses project primary color (#eb0028) */
+.btn-shipment-primary,
+.btn-primary.btn-shipment-primary {
+    background-color: var(--shipment-primary) !important;
+    border-color: var(--shipment-primary) !important;
+    color: #fff !important;
+}
+
+.btn-shipment-primary:hover,
+.btn-primary.btn-shipment-primary:hover,
+.btn-shipment-primary:focus,
+.btn-primary.btn-shipment-primary:focus {
+    background-color: var(--shipment-primary-dark) !important;
+    border-color: var(--shipment-primary-dark) !important;
+    color: #fff !important;
+}
+
+/* Delete button - uses project primary color */
+.btn-delete-primary {
+    background-color: var(--shipment-primary);
+    border-color: var(--shipment-primary);
+    color: #fff;
+}
+
+.btn-delete-primary:hover {
+    background-color: var(--shipment-primary-dark);
+    border-color: var(--shipment-primary-dark);
+    color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BADGES - Following Bootstrap badge styling
+   ═══════════════════════════════════════════════════════════════ */
+
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Status badge in header */
+.badge-status-header {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+}

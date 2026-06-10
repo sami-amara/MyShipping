@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = ResourceTextHelper.L("AboutUs", "About Us");
+}
+
+
+
+<!-- About Us Section Start -->
+<section class="about-us-section section-padding">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="about-image">
+                    <img src="~/assets/images/air-single-gallery1.jpg" alt="@ViewData["Title"]" class="img-fluid rounded" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-content">
+                    <div class="section-title">
+                        <h2>@(ResourceTextHelper.L("AboutUsHeading", "Who We Are"))</h2>
+                    </div>
+                    <p>@(ResourceTextHelper.L("AboutUsDesc1", "We are a leading shipping and logistics company dedicated to delivering your packages safely and on time. With years of experience in the industry, we have built a reputation for reliability and excellence."))</p>
+                    <p>@(ResourceTextHelper.L("AboutUsDesc2", "Our team of professionals works around the clock to ensure that every shipment is handled with the utmost care. We leverage modern technology to provide real-time tracking and transparent communication throughout the delivery process."))</p>
+                    <div class="row mt-4">
+                        <div class="col-sm-6">
+                            <div class="about-feature d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle me-2 site-accent-icon"></i>
+                                <span>@(ResourceTextHelper.L("AboutFeature1", "Reliable Delivery"))</span>
+                            </div>
+                            <div class="about-feature d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle me-2 site-accent-icon"></i>
+                                <span>@(ResourceTextHelper.L("AboutFeature2", "Real-Time Tracking"))</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="about-feature d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle me-2 site-accent-icon"></i>
+                                <span>@(ResourceTextHelper.L("AboutFeature3", "Worldwide Coverage"))</span>
+                            </div>
+                            <div class="about-feature d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle me-2 site-accent-icon"></i>
+                                <span>@(ResourceTextHelper.L("AboutFeature4", "Secure Packaging"))</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="row mt-5 text-center">
+            <div class="col-sm-3 col-6 mb-4">
+                <div class="stat-card p-3 border rounded">
+                    <h3 class="site-accent-icon">5000+</h3>
+                    <p>@(ResourceTextHelper.L("StatShipments", "Shipments Delivered"))</p>
+                </div>
+            </div>
+            <div class="col-sm-3 col-6 mb-4">
+                <div class="stat-card p-3 border rounded">
+                    <h3 class="site-accent-icon">50+</h3>
+                    <p>@(ResourceTextHelper.L("StatCountries", "Countries Covered"))</p>
+                </div>
+            </div>
+            <div class="col-sm-3 col-6 mb-4">
+                <div class="stat-card p-3 border rounded">
+                    <h3 class="site-accent-icon">200+</h3>
+                    <p>@(ResourceTextHelper.L("StatTeam", "Team Members"))</p>
+                </div>
+            </div>
+            <div class="col-sm-3 col-6 mb-4">
+                <div class="stat-card p-3 border rounded">
+                    <h3 class="site-accent-icon">10+</h3>
+                    <p>@(ResourceTextHelper.L("StatYears", "Years Experience"))</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About Us Section End -->

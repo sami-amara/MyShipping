@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Logout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Confirm Logout</h3>
+                    <p class="card-text">Are you sure you want to logout?</p>
+                    
+                    <form asp-controller="Account" asp-action="LogoutConfirmed" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">Yes, Logout</button>
+                    </form>
+                    
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

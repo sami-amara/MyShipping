@@ -1,0 +1,25 @@
+2026-05-24 10:28:07.502 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-24 10:28:58.273 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-24 10:28:58.523 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-24 10:28:58.537 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Culture=c=en|uic=e..., RefreshToken=rXE0IJvCg9..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., MyShipping.AuthCookie=CfDJ8KhqfN...
+2026-05-24 10:28:58.557 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: rXE0IJvCg9P9Lq0GH/xG...
+2026-05-24 10:28:59.721 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-24 10:28:59.722 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-24 10:28:59.725 +03:00 [INF] ✅ Step 4 passed: Token valid for 8888.228222066668 more minutes
+2026-05-24 10:28:59.888 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-24 11:18:21.185 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-24 11:42:37.965 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-24 11:42:47.408 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-24 11:42:47.640 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-24 11:42:47.659 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Culture=c=en|uic=e..., RefreshToken=rXE0IJvCg9..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-24 11:42:47.659 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: rXE0IJvCg9P9Lq0GH/xG...
+2026-05-24 11:42:48.690 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-24 11:42:48.691 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-24 11:42:48.694 +03:00 [INF] ✅ Step 4 passed: Token valid for 8814.412062748333 more minutes
+2026-05-24 11:42:48.842 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-24 11:42:48.958 +03:00 [INF] 📥 Refresh request cookies: __stripe_mid=e21019f1-a..., .AspNetCore.Culture=c=en|uic=e..., RefreshToken=rXE0IJvCg9..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-24 11:42:48.959 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: rXE0IJvCg9P9Lq0GH/xG...
+2026-05-24 11:42:48.967 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-24 11:42:48.968 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-24 11:42:48.970 +03:00 [INF] ✅ Step 4 passed: Token valid for 8814.407468436666 more minutes
+2026-05-24 11:42:48.976 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b

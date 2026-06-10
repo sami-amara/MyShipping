@@ -1,0 +1,4 @@
+.logo > * {
+    background-image: url(images/logo.png);
+    margin: 5px;
+}

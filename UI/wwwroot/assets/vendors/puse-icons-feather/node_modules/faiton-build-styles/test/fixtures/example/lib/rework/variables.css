@@ -1,0 +1,11 @@
+:root {
+  --carbon: #313131;
+}
+
+body {
+    color: var(--carbon);
+}
+
+div {
+    color: var(--cherry, #F37561);
+}

@@ -1,0 +1,30 @@
+2026-05-09 18:06:32.100 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-09 18:06:43.443 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-09 18:06:43.639 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-09 18:06:43.651 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., .AspNetCore.Antiforgery=CfDJ8KhqfN..., MyShipping.AuthCookie=CfDJ8KhqfN...
+2026-05-09 18:06:43.654 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-09 18:06:44.661 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-09 18:06:44.664 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-09 18:06:44.668 +03:00 [INF] ✅ Step 4 passed: Token valid for 4134.832762223334 more minutes
+2026-05-09 18:06:44.798 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-09 18:19:47.217 +03:00 [ERR] Failed to update status for shipment "73a7acc7-2caf-4eeb-b46b-616f0e701ff2" to 5
+System.InvalidOperationException: Shipment must be paid before it can be shipped.
+   at Business.Services.Shipment.ManageShipmentsState.ShippedShipment.HandleState(ShippmentDto shipment) in E:\MyShipping\Business\Services\Shipment\ManageShipmentsState\ShippedShipment.cs:line 40
+   at WebApi.Controllers.ShipmentsController.UpdateStatus(Guid id, Int32 newState) in E:\MyShipping\WebApi\Controllers\ShipmentsController.cs:line 488
+2026-05-09 18:21:07.386 +03:00 [ERR] Failed to update status for shipment "73a7acc7-2caf-4eeb-b46b-616f0e701ff2" to 5
+System.InvalidOperationException: Shipment must be paid before it can be shipped.
+   at Business.Services.Shipment.ManageShipmentsState.ShippedShipment.HandleState(ShippmentDto shipment) in E:\MyShipping\Business\Services\Shipment\ManageShipmentsState\ShippedShipment.cs:line 40
+   at WebApi.Controllers.ShipmentsController.UpdateStatus(Guid id, Int32 newState) in E:\MyShipping\WebApi\Controllers\ShipmentsController.cs:line 488
+2026-05-09 18:56:39.220 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-09 18:58:31.140 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-09 18:58:31.339 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-09 18:58:31.355 +03:00 [INF] 📥 Refresh request cookies: RefreshToken=Ffj39TWYhy..., .AspNetCore.Culture=c=en|uic=e..., .AspNetCore.Identity.Application=CfDJ8BIY48..., MyShipping.AuthCookie=CfDJ8KhqfN..., .AspNetCore.Antiforgery=CfDJ8KhqfN...
+2026-05-09 18:58:31.357 +03:00 [INF] ✅ Step 1 passed: RefreshToken cookie found: Ffj39TWYhywCaAomqsz8...
+2026-05-09 18:58:32.428 +03:00 [INF] ✅ Step 2 passed: Token found in database for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-09 18:58:32.430 +03:00 [INF] ✅ Step 3 passed: Token not revoked (CurrentState=1)
+2026-05-09 18:58:32.434 +03:00 [INF] ✅ Step 4 passed: Token valid for 4083.0366659666665 more minutes
+2026-05-09 18:58:32.565 +03:00 [INF] ✅ SUCCESS: New AccessToken generated for user 9cfd03ad-f0e1-46ab-a4fa-23f76788325b
+2026-05-09 19:05:13.178 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-09 19:07:30.806 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-09 19:07:31.017 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-09 19:49:30.686 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Deactivated Accounts";
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <h2>🔐 Deactivated User Accounts</h2>
+            <p class="text-muted">Manage users who have deactivated their accounts</p>
+        </div>
+    </div>
+    <div style="display: none;">
+        @Html.AntiForgeryToken()
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Deactivated On</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="deactivatedUsersTable">
+                    @foreach (var user in Model)
+                    {
+                        <tr data-user-id="@user.Id">
+                            <td><strong>@user.Email</strong></td>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>
+                                <small class="text-muted">
+                                    @((DateTime)user.DeactivatedAt)?.ToString("MMM dd, yyyy HH:mm")
+                                </small>
+                            </td>
+                            <td>
+                                <span class="badge bg-danger">Deactivated</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-success reactivate-user"
+                                        data-user-id="@user.Id"
+                                        data-user-email="@user.Email"
+                                        type="button">
+                                    ✅ Reactivate
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <strong>✅ No Deactivated Accounts</strong><br>
+            All user accounts are currently active.
+        </div>
+    }
+</div>
+
+
+@await Html.PartialAsync("_AlertMessage")
+
+
+
+@section Scripts {
+
+    <script src="~/Admin/assets/js/deactivated-users.js"></script>
+   
+}
+

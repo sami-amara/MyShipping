@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Too Many Requests";
+    var retryMinutes = ViewBag.RetryAfterMinutes ?? 5;
+    var retrySeconds = ViewBag.RetryAfterSeconds ?? 300;
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Too Many Requests
+                </h4>
+                <hr>
+                <p class="mb-0">
+                    You've made too many requests. Please wait
+                    <strong>@retryMinutes minutes</strong> before trying again.
+                </p>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Why did this happen?</h5>
+                    <p class="card-text">
+                        This is a security measure to protect against automated attacks.
+                        If you're a legitimate user, please wait a few minutes and try again.
+                    </p>
+                    
+                    <div id="countdown" class="alert alert-info mt-3">
+                        <strong>Time remaining:</strong>
+                        <span id="countdown-timer">@retryMinutes minutes</span>
+                    </div>
+                    <div id="rate-limit-config" data-retry-seconds="@retrySeconds"></div>
+                    
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Return Home
+                    </a>
+                    <a href="@Url.Action("Login", "Account")" class="btn btn-secondary">
+                        <i class="fas fa-sign-in-alt"></i> Back to Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/rate-limit-error.js" asp-append-version="true"></script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @{
+    ViewData["Title"] = "Too Many Requests";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-white">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Too Many Requests</h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["RateLimitExceeded"] != null)
+                    {
+                        <p class="lead">
+                            You've made too many requests. Please wait
+                            <strong>@TempData["RetryAfterMinutes"] minutes</strong>
+                            before trying again.
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="lead">
+                            You've exceeded the rate limit. Please try again later.
+                        </p>
+                    }
+                    
+                    <hr />
+                    
+                    <p>This is a security measure to protect against automated abuse.</p>
+                    
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Return Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ *@

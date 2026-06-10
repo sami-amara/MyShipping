@@ -1,0 +1,8 @@
+2026-05-16 16:46:28.640 +03:00 [WRN] The WebRootPath was not found: E:\MyShipping\WebApi\wwwroot. Static files may be unavailable.
+2026-05-16 16:46:50.828 +03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-05-16 16:46:51.131 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-05-16 16:46:51.178 +03:00 [INF] ▶️ API Login called for Wasan@gmail.com
+2026-05-16 16:46:52.526 +03:00 [INF] ✅ User validated, generating tokens
+2026-05-16 16:46:52.607 +03:00 [INF] ✅ AccessToken generated: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-05-16 16:46:52.914 +03:00 [INF] 🔐 LOGIN_SUCCESS | User: Wasan@gmail.com | UserId: 9cfd03ad-f0e1-46ab-a4fa-23f76788325b | IP: ::1 | UserAgent: 
+2026-05-16 16:46:52.915 +03:00 [INF] ✅ API Login SUCCESS: Returning AccessToken for Wasan@gmail.com

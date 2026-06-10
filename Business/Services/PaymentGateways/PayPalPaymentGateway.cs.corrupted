@@ -1,0 +1,750 @@
+using Business.Contracts;
+using Business.Payments.Gateway;
+using Business.Payments.Shared;
+using Business.Configuration;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace Business.Services.PaymentGateways
+{
+    /// <summary>
+    /// PayPal payment gateway implementation for processing payments via PayPal REST API.
+    /// Supports order creation, payment capture, refunds, and webhook signature verification.
+    /// </summary>
+    /// <remarks>
+    /// This gateway integrates with PayPal's REST API v2 to handle:
+    /// - Creating payment orders with CAPTURE or AUTHORIZE intent
+    /// - Capturing payments immediately or after approval
+    /// - Processing refunds for completed transactions
+    /// - Validating webhook signatures using PayPal's verification endpoint
+    /// 
+    /// Configuration is loaded from appsettings.json under PaymentGateways:PayPal section.
+    /// Supports both Sandbox (testing) and Live (production) environments.
+    /// 
+    /// OAuth 2.0 access tokens are cached and automatically refreshed when expired.
+    /// </remarks>
+    public class PayPalPaymentGateway : IPaymentGateway
+    {
+        private readonly PayPalOptions _options;
+        private readonly HttpClient _httpClient;
+        private string? _accessToken;
+        private DateTime _tokenExpiry = DateTime.MinValue;
+
+        /// <summary>
+        /// Initializes a new instance of the PayPal payment gateway.
+        /// </summary>
+        /// <param name="options">Payment gateway configuration options containing PayPal credentials and settings</param>
+        /// <param name="httpClientFactory">Factory for creating configured HTTP clients for PayPal API calls</param>
+        /// <exception cref="InvalidOperationException">Thrown when ClientId or ClientSecret is not configured</exception>
+        public PayPalPaymentGateway(IOptions<PaymentGatewayOptions> options, IHttpClientFactory httpClientFactory)
+        {
+            _options = options.Value.PayPal;
+
+            if (string.IsNullOrEmpty(_options.ClientId));
+                throw new InvalidOperationException("PayPal ClientId is not configured");
+            if (string.IsNullOrEmpty(_options.ClientSecret));
+                throw new InvalidOperationException("PayPal ClientSecret is not configured");
+            _httpClient = httpClientFactory.CreateClient("PayPal");
+            // Set base URL based on environment (Sandbox for testing, Live for production);
+            var baseUrl = _options.BaseUrl;
+
+            // If BaseUrl is not explicitly configured, determine from environment
+            if (string.IsNullOrWhiteSpace(baseUrl))
+            {
+                baseUrl = string.Equals(_options.Environment, "Live", StringComparison.OrdinalIgnoreCase);
+                    ? "https://api-m.paypal.com" 
+                    : "https://api-m.sandbox.paypal.com";
+            }
+
+            _httpClient.BaseAddress = new Uri(baseUrl);
+        }
+
+        /// <summary>
+        /// Gets the payment provider name identifier.
+        /// </summary>
+        /// <returns>Returns "PayPal" as the provider name</returns>
+        public string GetProviderName() => "PayPal";
+
+        /// <summary>
+        /// Processes a payment request through PayPal by creating an order and optionally capturing it.
+        /// </summary>
+        /// <param name="request">Payment request containing amount, currency, and metadata</param>
+        /// <returns>
+        /// PaymentResult containing success status, transaction ID, and payment details.
+        /// Returns failure result if order creation or capture fails.
+        /// </returns>
+        /// <remarks>
+        /// The payment flow is:
+        /// 1. Obtain OAuth 2.0 access token (cached and auto-refreshed);
+        /// 2. Create PayPal order with CAPTURE or AUTHORIZE intent
+        /// 3. If CaptureImmediately is true and payment token is provided, capture the order
+        /// 4. Map PayPal status to internal PaymentStatus enum
+        /// 5. Return structured PaymentResult with transaction details
+        /// 
+        /// For immediate capture, the order is created and captured in a single flow.
+        /// For deferred capture, the order ID is returned for later approval/capture.
+        /// </remarks>
+        public async Task<PaymentResult> ProcessPayment(PaymentRequest request)
+        {
+            try
+            {
+                // Step 1: Ensure we have a valid access token
+                await EnsureAccessToken();
+                // Step 2: Create PayPal order
+                var orderRequest = new
+                {
+                    intent = "CAPTURE",  // Always CAPTURE for immediate payment after approval
+                    purchase_units = new[]
+                    {
+                        new
+                        {
+                            reference_id = request.Metadata.GetValueOrDefault("OrderId", Guid.NewGuid().ToString()),
+                            description = request.Description,
+                            amount = new
+                            {
+                                currency_code = request.Currency.ToUpper(),
+                                value = request.Amount.ToString("F2")
+                            }
+                        }
+                    },
+                    application_context = new
+                    {
+                        brand_name = "MyShipping",
+                        shipping_preference = "NO_SHIPPING",
+                        user_action = "PAY_NOW",
+                        return_url = request.Metadata.GetValueOrDefault("ReturnUrl", "https://localhost:7065/Shipments"),
+                        cancel_url = request.Metadata.GetValueOrDefault("CancelUrl", "https://localhost:7065/Shipments/Create");
+                    }
+                };
+
+                var orderResponse = await PostAsync<PayPalOrderResponse>("/v2/checkout/orders", orderRequest);
+                if (orderResponse == null || string.IsNullOrEmpty(orderResponse.Id))
+                {
+                    return new PaymentResult
+                    {
+                        Success = false,
+                        Status = PaymentStatus.Failed,
+                        ErrorMessage = "Failed to create PayPal order",
+                        ProcessedAt = DateTime.UtcNow
+                    };
+                }
+
+                // Step 3: Extract approval URL from HATEOAS links
+                var approvalUrl = orderResponse.Links?
+                    .FirstOrDefault(link => link.Rel.Equals("approve", StringComparison.OrdinalIgnoreCase));
+                    ?.Href;
+
+                // Order created successfully - user needs to approve via PayPal
+                return new PaymentResult
+                {
+                    Success = true,
+                    TransactionId = orderResponse.Id,
+                    Status = PaymentStatus.RequiresAction,  // User must approve before capture
+                    ProcessedAt = DateTime.UtcNow,
+                    AmountCharged = request.Amount,
+                    Currency = request.Currency,
+                    AdditionalInfo = approvalUrl  // Frontend can use this to redirect user
+                };
+            }
+            catch (HttpRequestException ex)
+            {
+                return new PaymentResult
+                {
+                    Success = false,
+                    Status = PaymentStatus.Failed,
+                    ErrorMessage = $"PayPal API error: {ex.Message}",
+                    ProcessedAt = DateTime.UtcNow
+                };
+            }
+            catch (Exception ex)
+            {
+                return new PaymentResult
+                {
+                    Success = false,
+                    Status = PaymentStatus.Failed,
+                    ErrorMessage = $"Payment processing failed: {ex.Message}",
+                    ProcessedAt = DateTime.UtcNow
+                };
+            }
+        }
+
+        /// <summary>
+        /// Captures an approved PayPal order to complete the payment.
+        /// </summary>
+        /// <param name="orderId">The PayPal order ID to capture</param>
+        /// <returns>
+        /// PaymentResult indicating capture success/failure with transaction details.
+        /// </returns>
+        /// <remarks>
+        /// This method should be called after the user has approved the payment via PayPal.
+        /// Typically called from a return/callback endpoint after user completes PayPal checkout.
+        /// 
+        /// Flow:
+        /// 1. User approves payment on PayPal
+        /// 2. PayPal redirects back to return_url with order ID
+        /// 3. Backend calls CaptureOrder to finalize payment
+        /// 4. Funds are transferred to merchant account
+        /// </remarks>
+        public async Task<PaymentResult> CaptureOrder(string orderId)
+        {
+            try
+            {
+                await EnsureAccessToken();
+                var captureResponse = await PostAsync<PayPalCaptureResponse>(
+                    $"/v2/checkout/orders/{orderId}/capture",
+                    new { });
+                if (captureResponse == null)
+                {
+                    return new PaymentResult
+                    {
+                        Success = false,
+                        Status = PaymentStatus.Failed,
+                        ErrorMessage = "Failed to capture PayPal order - no response",
+                        ProcessedAt = DateTime.UtcNow
+                    };
+                }
+
+                if (captureResponse.Status == "COMPLETED")
+                {
+                    // Extract the actual capture ID from the response
+                    // CRITICAL: Refunds MUST use the capture ID, NOT the order ID
+                    var captureId = captureResponse.PurchaseUnits?[0]?.Payments?.Captures?[0]?.Id;
+
+                    if (string.IsNullOrWhiteSpace(captureId))
+                    {
+                        return new PaymentResult
+                        {
+                            Success = false,
+                            TransactionId = orderId,
+                            Status = PaymentStatus.Failed,
+                            ErrorMessage = "PayPal capture completed but capture ID is missing from response. Cannot process refunds without capture ID.",
+                            ProcessedAt = DateTime.UtcNow,
+                            AdditionalInfo = $"PayPal Order: {orderId}, Status: {captureResponse.Status}"
+                        };
+                    }
+
+                    return new PaymentResult
+                    {
+                        Success = true,
+                        TransactionId = captureId,
+                        Status = PaymentStatus.Completed,
+                        ProcessedAt = DateTime.UtcNow,
+                        AdditionalInfo = $"PayPal Order: {orderId}, Capture: {captureId}, Status: {captureResponse.Status}"
+                    };
+                }
+                else
+                {
+                    return new PaymentResult
+                    {
+                        Success = false,
+                        TransactionId = orderId,
+                        Status = MapPayPalStatus(captureResponse.Status),
+                        ErrorMessage = $"PayPal capture not completed. Status: {captureResponse.Status}",
+                        ProcessedAt = DateTime.UtcNow,
+                        AdditionalInfo = $"PayPal Order: {orderId}, Status: {captureResponse.Status}"
+                    };
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return new PaymentResult
+                {
+                    Success = false,
+                    Status = PaymentStatus.Failed,
+                    ErrorMessage = $"PayPal capture API error: {ex.Message}",
+                    ProcessedAt = DateTime.UtcNow
+                };
+            }
+            catch (Exception ex)
+            {
+                return new PaymentResult
+                {
+                    Success = false,
+                    Status = PaymentStatus.Failed,
+                    ErrorMessage = $"PayPal capture failed: {ex.Message}",
+                    ProcessedAt = DateTime.UtcNow
+                };
+            }
+        }
+
+        /// <summary>
+        /// Processes a refund for a previously captured PayPal payment.
+        /// </summary>
+        /// <param name="request">Refund request containing transaction ID, amount, and reason</param>
+        /// <returns>
+        /// RefundResult indicating success/failure, refund ID, and status.
+        /// Supports both full and partial refunds.
+        /// </returns>
+        /// <remarks>
+        /// The refund flow is:
+        /// 1. Obtain valid OAuth 2.0 access token
+        /// 2. Call PayPal's /v2/payments/captures/{id}/refund endpoint
+        /// 3. Include optional amount for partial refunds (omit for full refund);
+        /// 4. Map PayPal refund status to internal RefundStatus enum
+        /// 5. Return RefundResult with refund transaction details
+        /// 
+        /// Refunds can only be processed for captured payments, not authorized orders.
+        /// PayPal may take several days to process the refund depending on the payment method.
+        /// </remarks>
+        public async Task<RefundResult> ProcessRefund(RefundRequest request)
+        {
+            try
+            {
+                await EnsureAccessToken();
+                var refundRequest = new
+                {
+                    amount = request.Amount.HasValue ? new
+                    {
+                        currency_code = request.Currency.ToUpper(),
+                        value = request.Amount.Value.ToString("F2")
+                    } : null,
+                    note_to_payer = request.Reason
+                };
+
+                var refundResponse = await PostAsync<PayPalRefundResponse>(
+                    $"/v2/payments/captures/{request.TransactionId}/refund",
+                    refundRequest);
+                if (refundResponse == null)
+                {
+                    return new RefundResult
+                    {
+                        Success = false,
+                        TransactionId = request.TransactionId,
+                        Status = RefundStatus.Failed,
+                        ErrorMessage = "Failed to process PayPal refund",
+                        ProcessedAt = DateTime.UtcNow
+                    };
+                }
+
+                return new RefundResult
+                {
+                    Success = refundResponse.Status == "COMPLETED",
+                    RefundId = refundResponse.Id ?? string.Empty,
+                    TransactionId = request.TransactionId,
+                    Status = MapPayPalRefundStatus(refundResponse.Status),
+                    ProcessedAt = DateTime.UtcNow,
+                    AmountRefunded = decimal.TryParse(refundResponse.Amount?.Value, out var amt) ? amt : 0,
+                    Currency = refundResponse.Amount?.CurrencyCode ?? request.Currency
+                };
+            }
+            catch (HttpRequestException ex)
+            {
+                return new RefundResult
+                {
+                    Success = false,
+                    TransactionId = request.TransactionId,
+                    Status = RefundStatus.Failed,
+                    ErrorMessage = $"PayPal API error: {ex.Message}",
+                    ProcessedAt = DateTime.UtcNow
+                };
+            }
+            catch (Exception ex)
+            {
+                return new RefundResult
+                {
+                    Success = false,
+                    TransactionId = request.TransactionId,
+                    Status = RefundStatus.Failed,
+                    ErrorMessage = $"Refund processing failed: {ex.Message}",
+                    ProcessedAt = DateTime.UtcNow
+                };
+            }
+        }
+
+        /// <summary>
+        /// Validates PayPal webhook signature by calling PayPal's webhook verification API.
+        /// This ensures the webhook request originated from PayPal and prevents webhook forgery attacks.
+        /// </summary>
+        /// <param name="payload">The raw webhook payload JSON received from PayPal</param>
+        /// <param name="signature">The PayPal transmission signature from the request header</param>
+        /// <returns>True if the webhook is verified as authentic; false otherwise</returns>
+        /// <remarks>
+        /// This method calls PayPal's POST /v1/notifications/verify-webhook-signature endpoint
+        /// to cryptographically verify the webhook originated from PayPal servers.
+        /// Production systems must configure a webhook ID in PayPal dashboard and appsettings.
+        /// </remarks>
+        public async Task<bool> ValidateWebhook(string payload, string signature)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(signature) || string.IsNullOrEmpty(payload));
+                    return false;
+
+                // PayPal webhook verification requires calling their verification API
+                // Reference: https://developer.paypal.com/api/rest/webhooks/rest/#verify-webhook-signature
+
+                await EnsureAccessToken();
+                // Extract required headers for verification
+                // In a real implementation, these should come from the actual HTTP request headers
+                var verificationRequest = new
+                {
+                    auth_algo = "SHA256withRSA",
+                    cert_url = string.Empty, // Should come from PAYPAL-CERT-URL header
+                    transmission_id = string.Empty, // Should come from PAYPAL-TRANSMISSION-ID header
+                    transmission_sig = signature,
+                    transmission_time = string.Empty, // Should come from PAYPAL-TRANSMISSION-TIME header
+                    webhook_id = _options.WebhookId ?? string.Empty,
+                    webhook_event = JsonSerializer.Deserialize<JsonElement>(payload);
+                };
+
+                // If webhook ID is not configured, cannot verify (fallback to signature presence check only);
+                if (string.IsNullOrEmpty(_options.WebhookId))
+                {
+                    // Log warning: webhook verification skipped due to missing configuration
+                    return !string.IsNullOrEmpty(signature);
+                }
+
+                var request = new HttpRequestMessage(HttpMethod.Post, "/v1/notifications/verify-webhook-signature");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                request.Content = new StringContent(
+                    JsonSerializer.Serialize(verificationRequest),
+                    Encoding.UTF8,
+                    "application/json");
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode);
+                    return false;
+
+                var verificationResponse = await JsonSerializer.DeserializeAsync<PayPalWebhookVerificationResponse>(
+                    await response.Content.ReadAsStreamAsync(),
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return verificationResponse?.VerificationStatus?.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase) ?? false;
+            }
+            catch
+            {
+                // Any exception during verification means the webhook cannot be trusted
+                return false;
+            }
+        }
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Ensures a valid OAuth 2.0 access token is available for PayPal API calls.
+        /// Automatically refreshes the token when it's expired or about to expire.
+        /// </summary>
+        /// <remarks>
+        /// Access tokens are cached in memory and reused until they expire.
+        /// A 5-minute buffer is used to prevent using tokens that are about to expire.
+        /// Token refresh is done by calling PayPal's /v1/oauth2/token endpoint
+        /// using client credentials grant type with ClientId and ClientSecret.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">Thrown when token request fails or returns invalid response</exception>
+        //private async Task EnsureAccessToken();
+        //{
+        //    //// Check if token is still valid (with 5-minute buffer);
+        //    //if (!string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _tokenExpiry.AddMinutes(-5));
+        //    //    return;
+
+        //    if (!string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _tokenExpiry.Subtract(TimeSpan.FromMinutes(5)));
+
+        //        return;
+
+        //   // Get new access token
+        //   var authString = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_options.ClientId}:{_options.ClientSecret}"));
+        //    var request = new HttpRequestMessage(HttpMethod.Post, "/v1/oauth2/token");
+        //    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", authString);
+        //    request.Content = new StringContent("grant_type=client_credentials", Encoding.UTF8, "application/x-www-form-urlencoded");
+        //    var response = await _httpClient.SendAsync(request);
+        //    if (!response.IsSuccessStatusCode);
+        //    {
+        //        var errorContent = await response.Content.ReadAsStringAsync();
+        //        throw new InvalidOperationException(
+        //            $"Failed to obtain PayPal access token. Status: {response.StatusCode}, Error: {errorContent}");
+        //    }
+           
+        //    var responseBody = await response.Content.ReadAsStringAsync();
+        //    var tokenResponse = JsonSerializer.Deserialize<PayPalTokenResponse>(
+        //        responseBody,
+        //        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        //    if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken));
+        //        throw new InvalidOperationException(
+        //            $"Failed to obtain PayPal access token - empty token response. Response body: {responseBody}");
+        //    _accessToken = tokenResponse.AccessToken;
+        //    _tokenExpiry = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn);
+        //}
+
+        private readonly SemaphoreSlim _tokenLock = new SemaphoreSlim(1, 1);
+        private async Task EnsureAccessToken()
+        {
+            // Quick check without locking (fast path);
+            if (!string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _tokenExpiry.Subtract(TimeSpan.FromMinutes(5)));
+                return;
+
+            await _tokenLock.WaitAsync();
+            try
+            {
+                // Double‑check inside lock (avoid race condition);
+                if (!string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _tokenExpiry.Subtract(TimeSpan.FromMinutes(5)));
+                    return;
+
+                // Get new access token
+                var authString = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_options.ClientId}:{_options.ClientSecret}"));
+                var request = new HttpRequestMessage(HttpMethod.Post, "/v1/oauth2/token");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Basic", authString);
+                request.Content = new StringContent("grant_type=client_credentials", Encoding.UTF8, "application/x-www-form-urlencoded");
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new InvalidOperationException(
+                        $"Failed to obtain PayPal access token. Status: {response.StatusCode}, Error: {errorContent}");
+                }
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var tokenResponse = JsonSerializer.Deserialize<PayPalTokenResponse>(
+                    responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken));
+                    throw new InvalidOperationException(
+                        $"Failed to obtain PayPal access token - empty token response. Response body: {responseBody}");
+                _accessToken = tokenResponse.AccessToken;
+                _tokenExpiry = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn);
+            }
+            finally
+            {
+                _tokenLock.Release();
+            }
+        }
+
+
+
+
+
+        /// <summary>
+        /// Makes an authenticated POST request to the PayPal REST API.
+        /// </summary>
+        /// <typeparam name="T">Expected response type to deserialize from JSON</typeparam>
+        /// <param name="endpoint">API endpoint path (e.g., "/v2/checkout/orders")</param>
+        /// <param name="data">Request payload object to serialize to JSON</param>
+        /// <returns>Deserialized response object of type T, or null if deserialization fails</returns>
+        /// <exception cref="HttpRequestException">Thrown when API returns non-success status code with error details</exception>
+        /// <remarks>
+        /// Automatically includes OAuth Bearer token in Authorization header.
+        /// Uses case-insensitive JSON deserialization for PayPal's response format.
+        /// Throws detailed exception with PayPal error response for debugging.
+        /// </remarks>
+        private async Task<T?> PostAsync<T>(string endpoint, object data) where T : class
+        {
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            request.Content = content;
+
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"PayPal API error: {response.StatusCode} - {errorContent}");
+            }
+
+            return await JsonSerializer.DeserializeAsync<T>(
+                await response.Content.ReadAsStreamAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        /// <summary>
+        /// Maps PayPal order status values to internal PaymentStatus enumeration.
+        /// </summary>
+        /// <param name="paypalStatus">PayPal status string from order or capture response</param>
+        /// <returns>Corresponding PaymentStatus enum value</returns>
+        /// <remarks>
+        /// PayPal order statuses:
+        /// - CREATED/SAVED → Pending (order created, awaiting payment);
+        /// - APPROVED → RequiresAction (approved by payer, needs capture);
+        /// - COMPLETED → Completed (payment captured successfully);
+        /// - VOIDED → Canceled (order voided before capture);
+        /// - PAYER_ACTION_REQUIRED → RequiresAction (additional payer action needed);
+        /// - Unknown → Failed (any unrecognized status treated as failure);
+        /// </remarks>
+        private PaymentStatus MapPayPalStatus(string? paypalStatus)
+        {
+            return paypalStatus?.ToUpper() switch
+            {
+                "CREATED" => PaymentStatus.Pending,
+                "SAVED" => PaymentStatus.Pending,
+                "APPROVED" => PaymentStatus.RequiresAction,
+                "VOIDED" => PaymentStatus.Canceled,
+                "COMPLETED" => PaymentStatus.Completed,
+                "PAYER_ACTION_REQUIRED" => PaymentStatus.RequiresAction,
+                _ => PaymentStatus.Failed
+            };
+        }
+
+        /// <summary>
+        /// Maps PayPal refund status values to internal RefundStatus enumeration.
+        /// </summary>
+        /// <param name="paypalStatus">PayPal refund status string from refund response</param>
+        /// <returns>Corresponding RefundStatus enum value</returns>
+        /// <remarks>
+        /// PayPal refund statuses:
+        /// - COMPLETED → Completed (refund processed successfully);
+        /// - PENDING → Pending (refund initiated, awaiting processing);
+        /// - FAILED → Failed (refund attempt failed);
+        /// - CANCELLED → Canceled (refund was cancelled);
+        /// - Unknown → Failed (any unrecognized status treated as failure);
+        /// </remarks>
+        private RefundStatus MapPayPalRefundStatus(string? paypalStatus)
+        {
+            return paypalStatus?.ToUpper() switch
+            {
+                "COMPLETED" => RefundStatus.Completed,
+                "PENDING" => RefundStatus.Pending,
+                "FAILED" => RefundStatus.Failed,
+                "CANCELLED" => RefundStatus.Canceled,
+                _ => RefundStatus.Failed
+            };
+        }
+
+        #endregion
+
+        #region PayPal API Models
+
+        /// <summary>
+        /// Response from PayPal OAuth 2.0 token endpoint.
+        /// Contains access token and expiration information.
+        /// </summary>
+        private class PayPalTokenResponse
+        {
+            /// <summary>OAuth 2.0 Bearer access token</summary>
+            [System.Text.Json.Serialization.JsonPropertyName("access_token")]
+            public string AccessToken { get; set; } = string.Empty;
+
+            /// <summary>Token type, typically "Bearer"</summary>
+            [System.Text.Json.Serialization.JsonPropertyName("token_type")]
+            public string TokenType { get; set; } = string.Empty;
+
+            /// <summary>Token lifetime in seconds (typically 32400 = 9 hours)</summary>
+            [System.Text.Json.Serialization.JsonPropertyName("expires_in")]
+            public int ExpiresIn { get; set; }
+        }
+
+        /// <summary>
+        /// Response from PayPal order creation endpoint.
+        /// Contains the order ID, current status, and HATEOAS links.
+        /// </summary>
+        private class PayPalOrderResponse
+        {
+            /// <summary>Unique PayPal order ID</summary>
+            public string Id { get; set; } = string.Empty;
+
+            /// <summary>Order status (CREATED, APPROVED, etc.)</summary>
+            public string Status { get; set; } = string.Empty;
+
+            /// <summary>HATEOAS links for approval, capture, etc.</summary>
+            public List<PayPalLink>? Links { get; set; }
+        }
+
+        /// <summary>
+        /// HATEOAS link from PayPal API responses.
+        /// </summary>
+        private class PayPalLink
+        {
+            /// <summary>Link URL</summary>
+            public string Href { get; set; } = string.Empty;
+
+            /// <summary>Link relationship type (e.g., "approve", "capture")</summary>
+            public string Rel { get; set; } = string.Empty;
+
+            /// <summary>HTTP method for the link</summary>
+            public string Method { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Response from PayPal order capture endpoint.
+        /// Contains capture details and payment information.
+        /// </summary>
+        private class PayPalCaptureResponse
+        {
+            /// <summary>Unique capture ID</summary>
+            public string Id { get; set; } = string.Empty;
+
+            /// <summary>Capture status (COMPLETED, PENDING, etc.)</summary>
+            public string Status { get; set; } = string.Empty;
+
+            /// <summary>Purchase units containing payment capture details</summary>
+            [System.Text.Json.Serialization.JsonPropertyName("purchase_units")]
+            public List<PayPalPurchaseUnit>? PurchaseUnits { get; set; }
+        }
+
+        /// <summary>
+        /// Represents a purchase unit in PayPal order/capture response.
+        /// Contains payment details for the transaction.
+        /// </summary>
+        private class PayPalPurchaseUnit
+        {
+            /// <summary>Payment details including captures</summary>
+            public PayPalPayments? Payments { get; set; }
+        }
+
+        /// <summary>
+        /// Contains payment capture information within a purchase unit.
+        /// </summary>
+        private class PayPalPayments
+        {
+            /// <summary>List of payment captures for this purchase unit</summary>
+            public List<PayPalCapture>? Captures { get; set; }
+        }
+
+        /// <summary>
+        /// Represents a single payment capture transaction.
+        /// </summary>
+        private class PayPalCapture
+        {
+            /// <summary>Unique capture transaction ID</summary>
+            public string Id { get; set; } = string.Empty;
+
+            /// <summary>Capture status (COMPLETED, PENDING, etc.)</summary>
+            public string Status { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Response from PayPal refund endpoint.
+        /// Contains refund transaction details.
+        /// </summary>
+        private class PayPalRefundResponse
+        {
+            /// <summary>Unique refund transaction ID</summary>
+            public string? Id { get; set; }
+
+            /// <summary>Refund status (COMPLETED, PENDING, FAILED, etc.)</summary>
+            public string Status { get; set; } = string.Empty;
+
+            /// <summary>Refunded amount details</summary>
+            public PayPalAmount? Amount { get; set; }
+        }
+
+        /// <summary>
+        /// Represents a monetary amount in PayPal API responses.
+        /// </summary>
+        private class PayPalAmount
+        {
+            /// <summary>ISO 4217 currency code (e.g., USD, EUR)</summary>
+            [System.Text.Json.Serialization.JsonPropertyName("currency_code")]
+            public string CurrencyCode { get; set; } = string.Empty;
+
+            /// <summary>Amount value as string with up to 2 decimal places</summary>
+            public string Value { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Response from PayPal webhook verification API.
+        /// Indicates whether the webhook signature is valid.
+        /// </summary>
+        private class PayPalWebhookVerificationResponse
+        {
+            /// <summary>
+            /// Verification result: "SUCCESS" indicates valid webhook, "FAILURE" indicates invalid
+            /// </summary>
+            public string VerificationStatus { get; set; } = string.Empty;
+        }
+
+        #endregion
+    }
+}

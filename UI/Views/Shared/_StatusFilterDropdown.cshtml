@@ -1,0 +1,72 @@
+@using UI.Constants
+@model (int? status, bool? isPaid)
+
+@{
+    var selectedStatus = Model.status;
+    var selectedPayment = Model.isPaid;
+}
+
+<select name="statusOrPayment" class="form-select shipment-search-control" onchange="handleFilterChange(this)">
+    <option value="">@(AppResource.Labels.AllStatuses ?? "All Statuses")</option>
+
+    @* ✅ Show statuses based on user role *@
+    @if (User.IsInRole(RoleNames.Admin))
+    {
+        @* Admin sees all statuses *@
+        <option value="status:1" selected="@(selectedStatus == 1 && !selectedPayment.HasValue)">@((AppResource.Labels.Created ?? "Created"))</option>
+        <option value="status:2" selected="@(selectedStatus == 2 && !selectedPayment.HasValue)">@((AppResource.Labels.Updated ?? "Updated"))</option>
+        <option value="status:3" selected="@(selectedStatus == 3 && !selectedPayment.HasValue)">@((AppResource.Labels.Approved ?? "Approved"))</option>
+        <option value="status:4" selected="@(selectedStatus == 4 && !selectedPayment.HasValue)">@((AppResource.Labels.ReadyForShipping ?? "Ready for Shipping"))</option>
+        <option value="status:5" selected="@(selectedStatus == 5 && !selectedPayment.HasValue)">@((AppResource.Labels.Shipped ?? "Shipped"))</option>
+        <option value="status:6" selected="@(selectedStatus == 6 && !selectedPayment.HasValue)">@((AppResource.Labels.Delivered ?? "Delivered"))</option>
+        <option value="status:7" selected="@(selectedStatus == 7 && !selectedPayment.HasValue)">@((AppResource.Labels.Cancelled ?? "Cancelled"))</option>
+        <option value="status:8" selected="@(selectedStatus == 8 && !selectedPayment.HasValue)">@((AppResource.Labels.Returned ?? "Returned"))</option>
+        <option value="status:9" selected="@(selectedStatus == 9 && !selectedPayment.HasValue)">@((AppResource.Labels.Refunded ?? "Refunded"))</option>
+    }
+    else if (User.IsInRole(RoleNames.Reviewer))
+    {
+        @* Reviewer sees Created, Updated and Approved *@
+        <option value="status:1" selected="@(selectedStatus == 1 && !selectedPayment.HasValue)">@((AppResource.Labels.Created ?? "Created"))</option>
+        <option value="status:2" selected="@(selectedStatus == 2 && !selectedPayment.HasValue)">@((AppResource.Labels.Updated ?? "Updated"))</option>
+        <option value="status:3" selected="@(selectedStatus == 3 && !selectedPayment.HasValue)">@((AppResource.Labels.Approved ?? "Approved"))</option>
+    }
+    else if (User.IsInRole(RoleNames.Operation))
+    {
+        @* Operation sees Approved and Ready *@
+        <option value="status:3" selected="@(selectedStatus == 3 && !selectedPayment.HasValue)">@((AppResource.Labels.Approved ?? "Approved"))</option>
+        <option value="status:4" selected="@(selectedStatus == 4 && !selectedPayment.HasValue)">@((AppResource.Labels.ReadyForShipping ?? "Ready for Shipping"))</option>
+    }
+    else if (User.IsInRole(RoleNames.OperationManager))
+    {
+        @* Operation Manager sees Ready, Shipped, Delivered *@
+        <option value="status:4" selected="@(selectedStatus == 4 && !selectedPayment.HasValue)">@((AppResource.Labels.ReadyForShipping ?? "Ready for Shipping"))</option>
+        <option value="status:5" selected="@(selectedStatus == 5 && !selectedPayment.HasValue)">@((AppResource.Labels.Shipped ?? "Shipped"))</option>
+        <option value="status:6" selected="@(selectedStatus == 6 && !selectedPayment.HasValue)">@((AppResource.Labels.Delivered ?? "Delivered"))</option>
+    }
+    else
+    {
+        @* Regular users see all statuses *@
+        <option value="status:1" selected="@(selectedStatus == 1 && !selectedPayment.HasValue)">@((AppResource.Labels.Created ?? "Created"))</option>
+        <option value="status:2" selected="@(selectedStatus == 2 && !selectedPayment.HasValue)">@((AppResource.Labels.Updated ?? "Updated"))</option>
+        <option value="status:3" selected="@(selectedStatus == 3 && !selectedPayment.HasValue)">@((AppResource.Labels.Approved ?? "Approved"))</option>
+        <option value="status:4" selected="@(selectedStatus == 4 && !selectedPayment.HasValue)">@((AppResource.Labels.ReadyForShipping ?? "Ready for Shipping"))</option>
+        <option value="status:5" selected="@(selectedStatus == 5 && !selectedPayment.HasValue)">@((AppResource.Labels.Shipped ?? "Shipped"))</option>
+        <option value="status:6" selected="@(selectedStatus == 6 && !selectedPayment.HasValue)">@((AppResource.Labels.Delivered ?? "Delivered"))</option>
+        <option value="status:7" selected="@(selectedStatus == 7 && !selectedPayment.HasValue)">@((AppResource.Labels.Cancelled ?? "Cancelled"))</option>
+        <option value="status:8" selected="@(selectedStatus == 8 && !selectedPayment.HasValue)">@((AppResource.Labels.Returned ?? "Returned"))</option>
+        <option value="status:9" selected="@(selectedStatus == 9 && !selectedPayment.HasValue)">@((AppResource.Labels.Refunded ?? "Refunded"))</option>
+    }
+
+    @* ✅ Payment Status Options *@
+    <option disabled>──────────</option>
+    <optgroup label="@(AppResource.Labels.PaymentStatus ?? "Payment Status")">
+        <option value="payment:paid" selected="@(selectedPayment == true)">💰 @(AppResource.Labels.Paid ?? "Paid")</option>
+        <option value="payment:unpaid" selected="@(selectedPayment == false)">⚠️ @(AppResource.Labels.UnPaid ?? "Unpaid")</option>
+    </optgroup>
+</select>
+
+@* Hidden inputs to hold actual filter values *@
+<input type="hidden" name="status" id="hiddenStatus" value="@(selectedStatus?.ToString() ?? "")" />
+<input type="hidden" name="isPaid" id="hiddenIsPaid" value="@(selectedPayment?.ToString().ToLower() ?? "")" />
+
+<script src="~/js/status-filter-dropdown.js" asp-append-version="true"></script>

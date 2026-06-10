@@ -1,0 +1,301 @@
+@model UI.Models.AccountSettingsPageViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    ViewData["Title"] = ResourceTextHelper.L("Settings", "Settings");
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+<div class="wshipping-content-block py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- ============================================ -->
+                <!-- PHASE 1: ACCOUNT SETTINGS & LANGUAGE        -->
+                <!-- ============================================ -->
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <h3 class="mb-3">@ResourceTextHelper.L("AccountSettings", "Account Settings")</h3>
+                        <p class="text-muted mb-4">@ResourceTextHelper.L("AccountSettingsDescription", "Update your account settings.")</p>
+
+                        <form asp-action="Settings" asp-controller="Account" method="post" novalidate>
+                            @Html.AntiForgeryToken()
+
+                            <h5 class="mb-3">@ResourceTextHelper.L("SettingsPhase1Title", "Phase 1: Contact & Language")</h5>
+
+                            <div class="mb-3">
+                                <label asp-for="Profile.Phone" class="form-label">@Labels.Phone</label>
+                                <input asp-for="Profile.Phone" class="form-control" placeholder="@Labels.Phone" />
+                                <span asp-validation-for="Profile.Phone" class="text-danger"></span>
+                            </div>
+
+                            <input asp-for="Profile.Language" type="hidden" />
+
+                            <h5 class="mb-3">@ResourceTextHelper.L("SettingsPhase2Title", "Phase 2: Profile Basics")</h5>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Profile.FirstName" class="form-label">@ResourceTextHelper.L("FirstName", "First Name")</label>
+                                    <input asp-for="Profile.FirstName" class="form-control" />
+                                    <span asp-validation-for="Profile.FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Profile.LastName" class="form-label">@ResourceTextHelper.L("LastName", "Last Name")</label>
+                                    <input asp-for="Profile.LastName" class="form-control" />
+                                    <span asp-validation-for="Profile.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-2">
+                                <button type="submit" class="wshipping-button">
+                                    @Actions.Save
+                                </button>
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                                    @Actions.Cancel
+                                </a>
+                            </div>
+                        </form>
+
+                        <hr class="my-4" />
+
+                        <form asp-area="" asp-controller="Home" asp-action="SetLanguage" method="get" class="mb-0">
+                            <input type="hidden" name="returnUrl" value="@Url.Action("Settings", "Account")" />
+                            <div class="mb-0">
+                                <label class="form-label">@ResourceTextHelper.L("Language", "Language")</label>
+                                <select name="culture" class="form-select" onchange="this.form.submit()">
+                                    <option value="en" selected="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en")">English</option>
+                                    <option value="ar" selected="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar")">العربية</option>
+                                </select>
+                                <small class="text-muted">@ResourceTextHelper.L("LanguageChangeHint", "Language changes apply immediately.")</small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- PHASE 3: SECURITY & SESSION MANAGEMENT      -->
+                <!-- ============================================ -->
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3">@ResourceTextHelper.L("SettingsPhase3Title", "Phase 3: Security")</h5>
+                        <p class="text-muted mb-4">@ResourceTextHelper.L("SecuritySettingsDescription", "Change your password and control active sessions.")</p>
+
+                        <form asp-action="ChangePassword" asp-controller="Account" method="post" novalidate>
+                            @Html.AntiForgeryToken()
+
+                            <div class="mb-3">
+                                <label asp-for="Security.CurrentPassword" class="form-label">@ResourceTextHelper.L("CurrentPassword", "Current Password")</label>
+                                <input asp-for="Security.CurrentPassword" class="form-control" type="password" autocomplete="current-password" />
+                                <span asp-validation-for="Security.CurrentPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Security.NewPassword" class="form-label">@ResourceTextHelper.L("NewPassword", "New Password")</label>
+                                <input asp-for="Security.NewPassword" class="form-control" type="password" autocomplete="new-password" />
+                                <small class="text-muted d-block mt-1">@ResourceTextHelper.L("PasswordPolicyHint", "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.")</small>
+                                <span asp-validation-for="Security.NewPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-4">
+                                <label asp-for="Security.ConfirmPassword" class="form-label">@ResourceTextHelper.L("ConfirmNewPassword", "Confirm New Password")</label>
+                                <input asp-for="Security.ConfirmPassword" class="form-control" type="password" autocomplete="new-password" />
+                                <span asp-validation-for="Security.ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="wshipping-button">
+                                @ResourceTextHelper.L("ChangePassword", "Change Password")
+                            </button>
+                        </form>
+
+                        <hr class="my-4" />
+
+                        <form asp-action="SignOutOtherDevices" asp-controller="Account" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger">
+                                @ResourceTextHelper.L("SignOutOtherDevices", "Sign out other devices")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- PHASE 4: NOTIFICATION PREFERENCES           -->
+                <!-- ============================================ -->
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3">@ResourceTextHelper.L("SettingsPhase4Title", "Phase 4: Notifications")</h5>
+                        <p class="text-muted mb-4">@ResourceTextHelper.L("NotificationSettingsDescription", "Choose how you want to receive account and shipment updates.")</p>
+
+                        <form asp-action="UpdateNotifications" asp-controller="Account" method="post">
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-check mb-2">
+                                <input asp-for="Notifications.NotifyByEmail" class="form-check-input" />
+                                <label asp-for="Notifications.NotifyByEmail" class="form-check-label">@ResourceTextHelper.L("NotifyByEmail", "Email notifications")</label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <input asp-for="Notifications.NotifyBySms" class="form-check-input" />
+                                <label asp-for="Notifications.NotifyBySms" class="form-check-label">@ResourceTextHelper.L("NotifyBySms", "SMS notifications")</label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <input asp-for="Notifications.NotifyShipmentStatusUpdates" class="form-check-input" />
+                                <label asp-for="Notifications.NotifyShipmentStatusUpdates" class="form-check-label">@ResourceTextHelper.L("NotifyShipmentStatusUpdates", "Shipment status updates")</label>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input asp-for="Notifications.NotifyMarketing" class="form-check-input" />
+                                <label asp-for="Notifications.NotifyMarketing" class="form-check-label">@ResourceTextHelper.L("NotifyMarketing", "Marketing updates")</label>
+                            </div>
+
+                            <button type="submit" class="wshipping-button">
+                                @ResourceTextHelper.L("SaveNotificationPreferences", "Save notification preferences")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- PHASE 5: SHIPPING PREFERENCES               -->
+                <!-- ============================================ -->
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3">@ResourceTextHelper.L("SettingsPhase5Title", "Phase 5: Shipping Preferences")</h5>
+                        <p class="text-muted mb-4">@ResourceTextHelper.L("ShippingPreferencesDescription", "Set your default shipping options for faster checkout.")</p>
+
+                        <form asp-action="UpdateShippingPreferences" asp-controller="Account" method="post">
+                            @Html.AntiForgeryToken()
+
+                            <div class="mb-3">
+                                <label asp-for="ShippingPreferences.DefaultCountryId" class="form-label">@ResourceTextHelper.L("DefaultCountry", "Default Country")</label>
+                                <select asp-for="ShippingPreferences.DefaultCountryId" asp-items="Model.ShippingPreferences.Countries" class="form-select" id="settingsCountry">
+                                    <option value="">@ResourceTextHelper.L("SelectCountry", "Select country")</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ShippingPreferences.DefaultCityId" class="form-label">@ResourceTextHelper.L("DefaultCity", "Default City")</label>
+                                <select asp-for="ShippingPreferences.DefaultCityId" asp-items="Model.ShippingPreferences.Cities" class="form-select" id="settingsCity">
+                                    <option value="">@ResourceTextHelper.L("SelectCity", "Select city")</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ShippingPreferences.DefaultCarrierId" class="form-label">@ResourceTextHelper.L("DefaultCarrier", "Default Carrier")</label>
+                                <select asp-for="ShippingPreferences.DefaultCarrierId" asp-items="Model.ShippingPreferences.Carriers" class="form-select">
+                                    <option value="">@ResourceTextHelper.L("SelectCarrier", "Select carrier")</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ShippingPreferences.DefaultShippingPackageId" class="form-label">@ResourceTextHelper.L("DefaultShippingPackage", "Default Shipping Package")</label>
+                                <select asp-for="ShippingPreferences.DefaultShippingPackageId" asp-items="Model.ShippingPreferences.ShippingPackages" class="form-select">
+                                    <option value="">@ResourceTextHelper.L("SelectShippingPackage", "Select shipping package")</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ShippingPreferences.DefaultShippingTypeId" class="form-label">@ResourceTextHelper.L("DefaultShippingType", "Default Shipping Type")</label>
+                                <select asp-for="ShippingPreferences.DefaultShippingTypeId" asp-items="Model.ShippingPreferences.ShippingTypes" class="form-select">
+                                    <option value="">@ResourceTextHelper.L("SelectShippingType", "Select shipping type")</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="wshipping-button">
+                                @ResourceTextHelper.L("SaveShippingPreferences", "Save shipping preferences")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- PHASE 6: PRIVACY & ACCOUNT LIFECYCLE        -->
+                <!-- ============================================ -->
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3">@ResourceTextHelper.L("SettingsPhase6Title", "Phase 6: Privacy")</h5>
+                        <p class="text-muted mb-4">@ResourceTextHelper.L("PrivacySettingsDescription", "Manage your personal data and account lifecycle.")</p>
+
+                        <!-- GDPR Data Export Section -->
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <form asp-action="DownloadPersonalData" asp-controller="Account" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="mdi mdi-download"></i> @ResourceTextHelper.L("DownloadMyData", "Download my data")
+                                </button>
+                            </form>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- ✅ FIXED: Danger Zone moved OUT of section Scripts -->
+                        <div class="border-top pt-4 mt-4">
+                            <h6 class="text-danger mb-3">
+                                <i class="mdi mdi-alert-circle"></i> ⚠️ Danger Zone
+                            </h6>
+                            <p class="text-muted small mb-3">
+                                Permanently deactivate your account. This action is irreversible.
+                            </p>
+                            <p class="small text-warning mb-3">
+                                <strong>📌 Note:</strong> Your data will be retained for 30 days and can be recovered. After 30 days, all data will be permanently deleted.
+                            </p>
+
+                            <!-- ✅ FIXED: Button moved HERE (outside section Scripts) -->
+                            <button 
+                                type="button" 
+                                id="btn-deactivate-account" 
+                                class="btn btn-danger"
+                                data-csrf-token="@requestToken">
+                                <i class="mdi mdi-lock-alert"></i> ❌ Deactivate My Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Messages -->
+@await Html.PartialAsync("_AlertMessage")
+
+<!-- ============================================ -->
+<!-- SCRIPTS SECTION                             -->
+<!-- ============================================ -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Module scripts for page functionality -->
+    <script src="~/Modules/AppHelper.js"></script>
+    <script src="~/Modules/CountryService.js"></script>
+    <script src="~/Modules/CitiesService.js"></script>
+    <script src="~/Modules/CarriersService.js"></script>
+    <script src="~/Modules/ShippingPackageService.js"></script>
+    <script src="~/Modules/ShippingTypeService.js"></script>
+    <script src="~/Modules/ManagePageControlls.js" asp-append-version="true"></script>
+    <script src="~/Modules/PageEvents.js" asp-append-version="true"></script>
+
+    <!-- Account-specific scripts (loaded LAST, after dependencies) -->
+    <script src="~/App/Shared/Account/deactivate-account.js"></script>
+
+    <!-- Success message handler for deactivation -->
+    <script>
+        $(document).ready(function () {
+            const messageType = '@TempData["MessageType"]';
+            const message = '@TempData["Message"]';
+
+            if (messageType === 'Deactivated' && message) {
+                showAlert.Success(
+                    '✅ Account Deactivated',
+                    message + '<br><br>You will be redirected to login shortly.'
+                );
+
+                // Redirect after user closes alert
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Login", "Account")';
+                }, 3000);
+            }
+        });
+    </script>
+}

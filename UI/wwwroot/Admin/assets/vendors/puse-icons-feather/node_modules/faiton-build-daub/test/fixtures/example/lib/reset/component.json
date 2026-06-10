@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "necolas/normalize.css": "*"
+  },
+  "template": "reset.html",
+  "styles": [
+    "base.css",
+    "index.css"
+  ],
+  "templates": [
+    "reset.html"
+  ]
+}

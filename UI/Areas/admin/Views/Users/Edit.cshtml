@@ -1,0 +1,116 @@
+@model UserDto
+
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> @ResourceTextHelper.L("Users", "Users") </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">@Labels.Home</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Users" asp-action="Index">@ResourceTextHelper.L("Users", "Users")</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    @(Model.Id == Guid.Empty ? Actions.AddNew : Actions.Edit)
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        @if (Model.Id == Guid.Empty)
+                        {
+                            <text>@ResourceTextHelper.L("CreateNewUser", "Create New User")</text>
+                        }
+                        else
+                        {
+                            <text>@ResourceTextHelper.L("EditUser", "Edit User")</text>
+                        }
+                    </h4>
+
+                    <form id="userForm" class="forms-sample" method="post" 
+                          asp-controller="Users" asp-action="Save" role="form">
+                        <input asp-for="Id" type="hidden" />
+
+                        <div class="form-group">
+                            <label asp-for="FirstName">@ResourceTextHelper.L("FirstName", "First Name")</label>
+                            <input asp-for="FirstName" type="text" class="form-control" 
+                                   placeholder="@ResourceTextHelper.L("FirstName", "First Name")" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="LastName">@ResourceTextHelper.L("LastName", "Last Name")</label>
+                            <input asp-for="LastName" type="text" class="form-control" 
+                                   placeholder="@ResourceTextHelper.L("LastName", "Last Name")" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Email">@Labels.Email</label>
+                            <input asp-for="Email" type="email" class="form-control" 
+                                   placeholder="@Labels.Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Phone">@Labels.Phone</label>
+                            <input asp-for="Phone" type="text" class="form-control" 
+                                   placeholder="@Labels.Phone" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Role">@ResourceTextHelper.L("Role", "Role")</label>
+                            <select asp-for="Role" class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Roles))">
+                                <option value="">@ResourceTextHelper.L("SelectRole", "Select Role")</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-danger"></span>
+                        </div>
+
+                        @if (Model.Id == Guid.Empty)
+                        {
+                            <div class="form-group">
+                                <label asp-for="Password">@ResourceTextHelper.L("Password", "Password")</label>
+                                <input asp-for="Password" type="password" class="form-control" 
+                                       placeholder="@ResourceTextHelper.L("Password", "Password")" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <small class="form-text text-muted">
+                                    @ResourceTextHelper.L("PasswordPolicyHint", "Password must be at least 6 characters with letters and numbers")
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="ConfirmPassword">@ResourceTextHelper.L("ConfirmPassword", "Confirm Password")</label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" 
+                                       placeholder="@ResourceTextHelper.L("ConfirmPassword", "Confirm Password")" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        }
+
+                        <button type="submit" class="btn btn-gradient-primary me-2">
+                            @Actions.Save
+                        </button>
+                        <a asp-controller="Users" asp-action="Index" class="btn btn-light">
+                            @Actions.Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_AlertMessage")
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+}

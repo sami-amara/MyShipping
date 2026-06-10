@@ -1,0 +1,78 @@
+@using Business.DTOS
+@using Business.Services.Shipment
+@model Business.DTOS.ShippmentDto
+
+@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Delete Shipment";
+    var currentState = Model?.CurrentState ?? 0;
+    var statuses = Enum.GetValues(typeof(ShipmentStatusEnum)).Cast<ShipmentStatusEnum>().ToList();
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">@ViewData["Title"]</h3>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">@ViewData["Title"]</h4>
+
+            <ul class="nav nav-pills mb-4">
+                @foreach (var st in statuses)
+                {
+                    var intVal = (int)st;
+                    var isCompleted = currentState > intVal;
+                    var isActive = currentState == intVal;
+                    var cls = isActive ? "btn btn-sm btn-gradient-info me-2" : (isCompleted ? "btn btn-sm btn-gradient-success me-2" : "btn btn-sm btn-outline-secondary me-2");
+                    <li class="nav-item"><span class="@cls" data-status-value="@intVal">@st.ToString()</span></li>
+                }
+            </ul>
+
+            <form id="deleteForm" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label class="form-label">Shipment Details</label>
+                    <dl class="row">
+                        <dt class="col-sm-3">Tracking Number</dt>
+                        <dd class="col-sm-9">@Model.TrackingNumber</dd>
+
+                        <dt class="col-sm-3">Sender</dt>
+                        <dd class="col-sm-9">@Model.UserSender?.SenderName</dd>
+
+                        <dt class="col-sm-3">Receiver</dt>
+                        <dd class="col-sm-9">@Model.UserReceiver?.ReceiverName</dd>
+
+                        <dt class="col-sm-3">Current Status</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge bg-danger">@((ShipmentStatusEnum)Model.CurrentState)</span>
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="alert alert-danger">
+                    <i class="fas fa-trash"></i>
+                    Clicking "Delete Shipment" will soft-delete this shipment (status set to Deleted). This action cannot be undone.
+                </div>
+
+                <div class="d-flex">
+                    <button id="btnDelete" type="button" class="btn btn-gradient-danger me-2"
+                            data-target-state="0">
+                        <i class="fas fa-trash-alt"></i> Delete Shipment
+                    </button>
+                    <a asp-action="List" class="btn btn-outline-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Modules/AppHelper.js"></script>
+    <script src="~/Modules/ApiClient.js"></script>
+    <script src="~/Modules/ShipmentApiClient.js"></script>
+    <script src="~/Modules/ShipmentService.js"></script>
+    <script src="~/Modules/UpdateStatus.js"></script>
+}

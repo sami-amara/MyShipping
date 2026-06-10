@@ -1,0 +1,137 @@
+@using Business.DTOS
+@using Business.Services.Shipment
+@model Business.DTOS.ShippmentDto
+
+
+<!-- ✅ Phase 5 Defaults - Hidden JSON for JavaScript -->
+<textarea id="shipment-defaults-json" class="d-none">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(new
+{
+    defaultCarrierId = ViewData["DefaultCarrierId"]?.ToString() ?? "",
+
+}))</textarea>
+
+@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = (AppResource.Labels.MarkReadyForShipping ?? "Mark Shipment Ready for Shipping");
+    var currentState = Model?.CurrentState ?? 0;
+    var statuses = Enum.GetValues(typeof(ShipmentStatusEnum)).Cast<ShipmentStatusEnum>().ToList();
+}
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">@ViewData["Title"]</h3>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <h4 class="card-title mb-0">@ViewData["Title"]</h4>
+
+                @* Payment Status Badge *@
+                <div>
+                    @if (Model?.IsPaid ?? false)
+                    {
+                        <span class="badge bg-success">
+                            <i class="mdi mdi-check-circle"></i>
+                            <span>@(AppResource.Labels.Active ?? "Paid")</span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">
+                            <i class="mdi mdi-alert-circle"></i>
+                            <span>@(AppResource.Labels.UnPaid ?? "Unpaid")</span>
+                        </span>
+                    }
+                </div>
+            </div>
+
+            @* Warning message if unpaid *@
+            @if (!(Model?.IsPaid ?? false))
+            {
+                <div class="alert alert-warning" role="alert">
+                    <i class="mdi mdi-alert-circle"></i>
+                    <strong>Warning:</strong> This shipment is not paid. Payment is required before marking it ready for shipping.
+                </div>
+            }
+
+            <!-- Progress / status steps (uses ShipmentStatusEnum) -->
+            <ul class="nav nav-pills mb-4">
+                @foreach (var st in statuses)
+                {
+                    var intVal = (int)st;
+                    var isCompleted = currentState > intVal;
+                    var isActive = currentState == intVal;
+                    var cls = isActive ? "btn btn-sm btn-gradient-info me-2" : (isCompleted ? "btn btn-sm btn-gradient-success me-2" : "btn btn-sm btn-outline-secondary me-2");
+                    <li class="nav-item"><span class="@cls" data-status-value="@intVal">@st.ToString()</span></li>
+                }
+            </ul>
+
+            <form id="makeReadyForm" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+               @*  <input type="hidden" name="PaymentMethodId" value="@Model.PaymentMethodId" />
+                <input type="hidden" name="IsPaid" value="@Model.IsPaid" /> *@
+
+                <div class="mb-3">
+                    <label for="deliveryManId">@AppResource.Labels.Carrier</label>
+                    <select id="deliveryManId" name="DeliveryManId" class="form-control">
+                        <option value="">@AppResource.Labels.SelectCarrier ?? "Select Carrier"</option>
+                        <span asp-validation-for="CarrierId" class="text-danger"></span>
+                    </select>
+                </div>
+
+
+                <div class="d-flex">
+                    <button id="btnMakeReady" type="button" class="btn btn-gradient-primary me-2">@AppResource.Labels.MarkReady</button>
+                    <a asp-action="List" class="btn btn-outline-secondary">@AppResource.Labels.Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts
+{
+    @await Html.PartialAsync("_AlertMessage")
+
+    <link rel="stylesheet" href="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css" />
+    <!-- plugins:js -->
+    <script src="~/Admin/assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/Admin/assets/vendors/datatables.net/jquery.dataTables.js"></script>
+
+    <script src="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page -->
+    <script src="~/Admin/assets/js/data-table.js"></script>
+    <!-- End custom js for this page -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+    <script src="~/Modules/AppHelper.js"></script>
+    <script src="~/Modules/ApiClient.js"></script>
+    <script src="~/Modules/ShipmentApiClient.js"></script>
+    <script src="~/Modules/DiagnosticsService.js"></script>
+    <script src="~/Shared/js/ValidationErrorMapper.js"></script>
+    <script src="~/Modules/ShipmentService.js"></script>
+    <script src="~/Modules/CountryService.js"></script>
+    <script src="~/Modules/CitiesService.js"></script>
+    <script src="~/Modules/ShippingPackageService.js"></script>
+    <script src="~/Modules/ShippingTypeService.js"></script>
+    <script src="~/Modules/CarriersService.js"></script>
+    <script src="~/Modules/ManagePageControlls.js"></script>
+    <script src="~/Modules/PageEvents.js"></script>
+    <script src="~/Modules/MarkReady.js"></script>
+   @*  <script src="~/Modules/ChangeStatus.js"></script> *@
+
+}
+
+
+
+
+
+

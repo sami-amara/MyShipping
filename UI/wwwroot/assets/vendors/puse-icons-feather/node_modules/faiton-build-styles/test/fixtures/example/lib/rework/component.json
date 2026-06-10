@@ -1,0 +1,8 @@
+{
+  "styles": [
+    "index.css",
+    "variables.css",
+    "pseudos.css",
+    "custom-media.css"
+  ]
+}

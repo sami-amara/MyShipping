@@ -1,0 +1,12 @@
+/* ═══════════════════════════════════════════════════════════════
+   SHIPMENT SHOW PAGE - ADMIN AREA
+   Page-specific layout and component styles
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Admin show page specific layouts */
+.content-wrapper .card-body {
+    /* Inherits from admin theme */
+}
+
+/* Show page specific overrides */
+/* Add any admin Show page specific styles here */

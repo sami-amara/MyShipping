@@ -1,0 +1,6 @@
+body {
+  display: flex; /* check autoprefixer support */
+  color: var(--hot);
+  background: url(images/bg.png);;
+  font-family: sans-serif;
+}

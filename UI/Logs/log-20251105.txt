@@ -1,0 +1,1490 @@
+2025-11-05 16:14:59.925 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 16:15:00.799 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 16:15:00.813 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 16:15:00.876 +03:00 [INF] Executed DbCommand (58ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 16:15:00.944 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 16:15:00.961 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 16:15:00.965 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 16:15:00.974 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 16:15:00.990 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 16:15:00.997 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 16:15:01.432 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 16:15:01.515 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 16:15:01.519 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 16:15:01.523 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 16:15:01.527 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 16:15:01.560 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 16:15:01.619 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 16:15:01.624 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 16:15:01.628 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 16:15:01.860 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 16:15:01.861 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 16:15:01.913 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 16:15:01.914 +03:00 [INF] Hosting environment: Development
+2025-11-05 16:15:01.915 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 16:15:02.550 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 16:15:02.716 +03:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-11-05 16:15:02.748 +03:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-11-05 16:15:02.754 +03:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-11-05 16:15:02.760 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 302 0 null 211.6894ms
+2025-11-05 16:15:02.769 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Account/Login?ReturnUrl=%2F - null null
+2025-11-05 16:15:02.781 +03:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-11-05 16:15:02.786 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 16:15:02.799 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller UI.Controllers.AccountController (UI).
+2025-11-05 16:15:02.822 +03:00 [INF] Executing ViewResult, running view Login.
+2025-11-05 16:15:02.988 +03:00 [INF] Executed ViewResult - view Login executed in 169.1987ms.
+2025-11-05 16:15:02.994 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 191.9748ms
+2025-11-05 16:15:02.996 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 16:15:03.001 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Account/Login?ReturnUrl=%2F - 200 null text/html; charset=utf-8 231.7478ms
+2025-11-05 16:15:03.019 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 16:15:03.022 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 16:15:03.029 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 9.3073ms
+2025-11-05 16:15:03.062 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 39.6888ms
+2025-11-05 16:15:07.035 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Account/Login - null null
+2025-11-05 16:15:07.042 +03:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-11-05 16:15:07.047 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 16:15:07.048 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller UI.Controllers.AccountController (UI).
+2025-11-05 16:15:07.053 +03:00 [INF] Executing ViewResult, running view Login.
+2025-11-05 16:15:07.064 +03:00 [INF] Executed ViewResult - view Login executed in 10.871ms.
+2025-11-05 16:15:07.066 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 16.5998ms
+2025-11-05 16:15:07.068 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 16:15:07.070 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Account/Login - 200 null text/html; charset=utf-8 34.6576ms
+2025-11-05 16:15:07.079 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 16:15:07.082 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 16:15:07.089 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 7.3766ms
+2025-11-05 16:15:07.099 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 19.689ms
+2025-11-05 16:15:08.282 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7065/Account/Login - application/x-www-form-urlencoded 247
+2025-11-05 16:15:08.288 +03:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-11-05 16:15:08.289 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 16:15:08.308 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Business.DTOS.LoginDto) on controller UI.Controllers.AccountController (UI).
+2025-11-05 16:15:13.561 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 16:15:14.294 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2025-11-05 16:15:14.416 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2025-11-05 16:15:14.442 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 16:15:14.449 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 16:15:14.460 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2025-11-05 16:15:14.470 +03:00 [INF] AuthenticationScheme: Identity.Application signed in.
+2025-11-05 16:15:17.394 +03:00 [INF] Start processing HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 16:15:17.396 +03:00 [INF] Sending HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 16:16:11.190 +03:00 [INF] Received HTTP response headers after 53791.1701ms - 200
+2025-11-05 16:16:11.195 +03:00 [INF] End processing HTTP request after 53801.6325ms - 200
+2025-11-05 16:16:18.672 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 16:16:19.246 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 16:16:25.030 +03:00 [INF] AuthenticationScheme: Cookies signed in.
+2025-11-05 16:16:26.736 +03:00 [INF] Executing RedirectResult, redirecting to /admin.
+2025-11-05 16:16:26.738 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 78427.2671ms
+2025-11-05 16:16:26.739 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 16:16:26.742 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7065/Account/Login - 302 0 null 78459.54ms
+2025-11-05 16:16:26.743 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/admin - null null
+2025-11-05 16:16:26.780 +03:00 [INF] Executing endpoint 'UI.Areas.admin.Controllers.HomeController.Index (UI)'
+2025-11-05 16:16:26.782 +03:00 [INF] Route matched with {area = "admin", action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Areas.admin.Controllers.HomeController (UI).
+2025-11-05 16:16:26.790 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 16:16:26.838 +03:00 [INF] Executed ViewResult - view Index executed in 54.9195ms.
+2025-11-05 16:16:26.840 +03:00 [INF] Executed action UI.Areas.admin.Controllers.HomeController.Index (UI) in 57.1168ms
+2025-11-05 16:16:26.841 +03:00 [INF] Executed endpoint 'UI.Areas.admin.Controllers.HomeController.Index (UI)'
+2025-11-05 16:16:26.843 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/admin - 200 null text/html; charset=utf-8 99.8578ms
+2025-11-05 16:16:26.968 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 16:16:26.972 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.8936ms
+2025-11-05 16:16:27.038 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 16:16:27.045 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 6.3763ms
+2025-11-05 16:16:31.542 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 16:16:31.550 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 16:16:31.553 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 16:16:31.695 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 16:16:31.723 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 16:16:31.768 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 16:16:31.787 +03:00 [INF] Executed ViewResult - view Index executed in 18.7328ms.
+2025-11-05 16:16:31.790 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 234.6213ms
+2025-11-05 16:16:31.791 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 16:16:31.793 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 250.9214ms
+2025-11-05 16:16:31.837 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 16:16:31.839 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 2.5246ms
+2025-11-05 16:16:32.029 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 16:16:32.040 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 10.7437ms
+2025-11-05 16:16:36.843 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 16:16:36.849 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 6.4654ms
+2025-11-05 16:16:36.853 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 16:16:36.936 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 16:16:36.940 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 4.8905ms
+2025-11-05 16:16:36.943 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 16:16:36.943 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 16:16:36.946 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 3.8647ms
+2025-11-05 16:16:36.950 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 16:16:45.638 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 16:16:45.643 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 16:16:45.644 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 16:16:45.654 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 16:16:45.656 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 16:16:45.658 +03:00 [INF] Executed ViewResult - view Index executed in 2.1388ms.
+2025-11-05 16:16:45.660 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 14.3951ms
+2025-11-05 16:16:45.661 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 16:16:45.663 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 24.7232ms
+2025-11-05 16:16:45.692 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 16:16:45.692 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 16:16:45.695 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.8803ms
+2025-11-05 16:16:45.702 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 9.987ms
+2025-11-05 16:16:45.729 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 16:16:45.732 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 3.1694ms
+2025-11-05 16:16:45.735 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 16:16:45.810 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 16:16:45.819 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 9.2444ms
+2025-11-05 16:16:45.824 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 16:16:45.829 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 16:16:45.832 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 3.6235ms
+2025-11-05 16:16:45.836 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 16:16:53.583 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 16:16:53.588 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 16:16:53.591 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 16:16:53.600 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 16:16:53.695 +03:00 [INF] Executed ViewResult - view Create executed in 95.316ms.
+2025-11-05 16:16:53.697 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 103.2264ms
+2025-11-05 16:16:53.699 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 16:16:53.700 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 116.7195ms
+2025-11-05 16:16:53.730 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 16:16:53.734 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 4.1812ms
+2025-11-05 16:16:53.737 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shared/js/ValidationErrorMapper.js - null null
+2025-11-05 16:16:53.737 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Modules/ShipmentService.js - null null
+2025-11-05 16:16:53.742 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 16:16:53.741 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 16:16:53.911 +03:00 [INF] The file /Modules/ShipmentService.js was not modified
+2025-11-05 16:16:53.916 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 175.4356ms
+2025-11-05 16:16:53.914 +03:00 [INF] The file /Shared/js/ValidationErrorMapper.js was not modified
+2025-11-05 16:16:53.738 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 16:16:53.845 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 16:16:53.906 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 16:16:53.923 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 181.4353ms
+2025-11-05 16:16:53.924 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Modules/ShipmentService.js - 304 null text/javascript 186.6726ms
+2025-11-05 16:16:53.926 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shared/js/ValidationErrorMapper.js - 304 null text/javascript 189.039ms
+2025-11-05 16:16:53.932 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 86.996ms
+2025-11-05 16:16:53.933 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 26.8071ms
+2025-11-05 16:16:53.942 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 16:16:53.944 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:36:26.297 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:36:26.299 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 2.5255ms
+2025-11-05 17:36:29.565 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:36:29.631 +03:00 [INF] Executed DbCommand (22ms) [Parameters=[@__p_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Id] = @__p_0
+2025-11-05 17:36:29.648 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2025-11-05 17:36:29.654 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:36:29.664 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:36:29.696 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:36:29.754 +03:00 [INF] Executed DbCommand (37ms) [Parameters=[@__p_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Id] = @__p_0
+2025-11-05 17:36:29.754 +03:00 [INF] Executed DbCommand (59ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:36:29.761 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2025-11-05 17:36:29.797 +03:00 [INF] Executed DbCommand (34ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2025-11-05 17:36:29.797 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:36:29.797 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Id] = @__p_0
+2025-11-05 17:36:29.803 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:36:29.805 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2025-11-05 17:36:29.805 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 239.3083ms
+2025-11-05 17:36:29.844 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2025-11-05 17:36:29.846 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:36:29.847 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:36:29.852 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 197.655ms
+2025-11-05 17:36:29.856 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:36:29.858 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:36:29.862 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2025-11-05 17:36:29.865 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 169.5804ms
+2025-11-05 17:36:29.868 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:36:37.943 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:36:37.955 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:36:37.956 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:36:37.959 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:36:37.964 +03:00 [INF] Executed ViewResult - view Create executed in 5.6691ms.
+2025-11-05 17:36:37.965 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 8.1699ms
+2025-11-05 17:36:37.967 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:36:37.968 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 24.1295ms
+2025-11-05 17:36:38.003 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/shared/js/signalr-client.js - null null
+2025-11-05 17:36:38.006 +03:00 [INF] The file /shared/js/signalr-client.js was not modified
+2025-11-05 17:36:38.008 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/shared/js/signalr-client.js - 304 null text/javascript 4.4302ms
+2025-11-05 17:36:38.009 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:36:38.015 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 5.6577ms
+2025-11-05 17:36:38.018 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:36:38.021 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:36:38.022 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:36:38.025 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.7709ms
+2025-11-05 17:36:38.035 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 12.7962ms
+2025-11-05 17:36:38.064 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:36:38.068 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 3.5206ms
+2025-11-05 17:36:38.071 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:36:38.076 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:36:38.080 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 3.5798ms
+2025-11-05 17:36:38.083 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:37:08.151 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 17:37:09.117 +03:00 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:37:09.130 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 17:37:09.165 +03:00 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 17:37:09.233 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 17:37:09.262 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:37:09.266 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 17:37:09.276 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 17:37:09.287 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 17:37:09.293 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 17:37:09.574 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:37:09.633 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:37:09.639 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:37:09.641 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:37:09.643 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:37:09.656 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:37:09.686 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:37:09.690 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:37:09.692 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:37:09.953 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 17:37:09.955 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 17:37:10.067 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 17:37:10.081 +03:00 [INF] Hosting environment: Development
+2025-11-05 17:37:10.093 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 17:37:10.309 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:37:10.519 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:37:10.536 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:37:10.681 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 17:37:10.726 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:37:10.793 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:37:10.937 +03:00 [INF] Executed ViewResult - view Index executed in 145.4303ms.
+2025-11-05 17:37:10.948 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 408.643ms
+2025-11-05 17:37:10.950 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:37:10.958 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 651.7216ms
+2025-11-05 17:37:10.969 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:37:10.973 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:37:10.976 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 7.277ms
+2025-11-05 17:37:11.017 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 44.3122ms
+2025-11-05 17:37:13.393 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:37:13.415 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:37:13.418 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:37:13.465 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:37:13.605 +03:00 [INF] Executed ViewResult - view Create executed in 140.7157ms.
+2025-11-05 17:37:13.608 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 187.1711ms
+2025-11-05 17:37:13.609 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:37:13.610 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 217.958ms
+2025-11-05 17:37:13.638 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:37:13.638 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:37:13.641 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.1762ms
+2025-11-05 17:37:13.657 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 18.5256ms
+2025-11-05 17:37:22.786 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Account/Login - null null
+2025-11-05 17:37:22.802 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:37:22.805 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller UI.Controllers.AccountController (UI).
+2025-11-05 17:37:22.810 +03:00 [INF] Executing ViewResult, running view Login.
+2025-11-05 17:37:22.854 +03:00 [INF] Executed ViewResult - view Login executed in 44.991ms.
+2025-11-05 17:37:22.857 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 49.1568ms
+2025-11-05 17:37:22.859 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:37:22.860 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Account/Login - 200 null text/html; charset=utf-8 74.0647ms
+2025-11-05 17:37:22.867 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:37:22.870 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:37:22.873 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.8503ms
+2025-11-05 17:37:22.875 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 7.847ms
+2025-11-05 17:37:25.229 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7065/Account/Login - application/x-www-form-urlencoded 306
+2025-11-05 17:37:25.235 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:37:25.247 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Business.DTOS.LoginDto) on controller UI.Controllers.AccountController (UI).
+2025-11-05 17:37:29.079 +03:00 [INF] Executed DbCommand (233ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:37:29.684 +03:00 [INF] Executed DbCommand (106ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2025-11-05 17:37:29.843 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2025-11-05 17:37:32.837 +03:00 [INF] Executed DbCommand (2,970ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:37:32.847 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:37:32.859 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2025-11-05 17:37:32.866 +03:00 [INF] AuthenticationScheme: Identity.Application signed in.
+2025-11-05 17:37:35.827 +03:00 [INF] Start processing HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 17:37:35.830 +03:00 [INF] Sending HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 17:38:12.988 +03:00 [INF] Received HTTP response headers after 37155.492ms - 200
+2025-11-05 17:38:12.990 +03:00 [INF] End processing HTTP request after 37163.8383ms - 200
+2025-11-05 17:38:17.720 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:38:18.188 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:40:00.256 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 17:40:01.215 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:40:01.227 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 17:40:01.257 +03:00 [INF] Executed DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 17:40:01.312 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 17:40:01.330 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:40:01.333 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 17:40:01.345 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 17:40:01.355 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 17:40:01.361 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 17:40:01.632 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:40:01.682 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:40:01.688 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:40:01.691 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:40:01.694 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:40:01.709 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:40:01.749 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:40:01.753 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:40:01.756 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:40:02.075 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 17:40:02.077 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 17:40:02.162 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 17:40:02.170 +03:00 [INF] Hosting environment: Development
+2025-11-05 17:40:02.173 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 17:40:02.478 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:40:02.684 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:40:02.699 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:40:02.820 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 17:40:02.850 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:40:02.894 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:40:03.015 +03:00 [INF] Executed ViewResult - view Index executed in 120.0083ms.
+2025-11-05 17:40:03.023 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 319.9239ms
+2025-11-05 17:40:03.025 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:40:03.034 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 559.1658ms
+2025-11-05 17:40:03.049 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:40:03.051 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:40:03.057 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 8.4323ms
+2025-11-05 17:40:03.086 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 34.9311ms
+2025-11-05 17:40:05.732 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:40:05.754 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:40:05.760 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:40:05.801 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:40:05.929 +03:00 [INF] Executed ViewResult - view Create executed in 128.7829ms.
+2025-11-05 17:40:05.930 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 168.3275ms
+2025-11-05 17:40:05.931 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:40:05.932 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 200.2333ms
+2025-11-05 17:40:05.964 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:40:05.964 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:40:05.967 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.2279ms
+2025-11-05 17:40:05.983 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 18.1379ms
+2025-11-05 17:40:14.727 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Account/Login - null null
+2025-11-05 17:40:14.743 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:40:14.747 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller UI.Controllers.AccountController (UI).
+2025-11-05 17:40:14.751 +03:00 [INF] Executing ViewResult, running view Login.
+2025-11-05 17:40:14.794 +03:00 [INF] Executed ViewResult - view Login executed in 43.7007ms.
+2025-11-05 17:40:14.797 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 47.9524ms
+2025-11-05 17:40:14.798 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:40:14.800 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Account/Login - 200 null text/html; charset=utf-8 72.9495ms
+2025-11-05 17:40:14.807 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:40:14.807 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:40:14.812 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 4.8937ms
+2025-11-05 17:40:14.814 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 7.464ms
+2025-11-05 17:40:17.463 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7065/Account/Login - application/x-www-form-urlencoded 306
+2025-11-05 17:40:17.470 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:40:17.485 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Business.DTOS.LoginDto) on controller UI.Controllers.AccountController (UI).
+2025-11-05 17:40:21.164 +03:00 [INF] Executed DbCommand (260ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:40:21.872 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2025-11-05 17:40:21.988 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2025-11-05 17:40:22.009 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:40:22.015 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:40:22.025 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2025-11-05 17:40:22.033 +03:00 [INF] AuthenticationScheme: Identity.Application signed in.
+2025-11-05 17:40:24.264 +03:00 [INF] Start processing HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 17:40:24.266 +03:00 [INF] Sending HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 17:41:10.235 +03:00 [INF] Received HTTP response headers after 45966.071ms - 200
+2025-11-05 17:41:10.237 +03:00 [INF] End processing HTTP request after 45975.0031ms - 200
+2025-11-05 17:41:10.258 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:41:10.268 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:41:10.273 +03:00 [INF] AuthenticationScheme: Cookies signed in.
+2025-11-05 17:41:10.279 +03:00 [INF] Executing RedirectResult, redirecting to /admin.
+2025-11-05 17:41:10.280 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 52793.5348ms
+2025-11-05 17:41:10.281 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:41:10.282 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7065/Account/Login - 302 0 null 52819.1465ms
+2025-11-05 17:41:10.286 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/admin - null null
+2025-11-05 17:41:10.291 +03:00 [INF] Executing endpoint 'UI.Areas.admin.Controllers.HomeController.Index (UI)'
+2025-11-05 17:41:10.293 +03:00 [INF] Route matched with {area = "admin", action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Areas.admin.Controllers.HomeController (UI).
+2025-11-05 17:41:10.302 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:41:10.404 +03:00 [INF] Executed ViewResult - view Index executed in 107.9018ms.
+2025-11-05 17:41:10.406 +03:00 [INF] Executed action UI.Areas.admin.Controllers.HomeController.Index (UI) in 110.133ms
+2025-11-05 17:41:10.407 +03:00 [INF] Executed endpoint 'UI.Areas.admin.Controllers.HomeController.Index (UI)'
+2025-11-05 17:41:10.409 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/admin - 200 null text/html; charset=utf-8 122.9395ms
+2025-11-05 17:41:10.508 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/shared/js/AdminRules.js - null null
+2025-11-05 17:41:10.508 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:41:10.516 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 8.0462ms
+2025-11-05 17:41:10.518 +03:00 [INF] The file /shared/js/AdminRules.js was not modified
+2025-11-05 17:41:10.522 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/shared/js/AdminRules.js - 304 null text/javascript 13.4952ms
+2025-11-05 17:41:10.586 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:41:10.591 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 5.1293ms
+2025-11-05 17:41:16.152 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:41:16.157 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:41:16.159 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:41:16.183 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:41:16.187 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:41:16.189 +03:00 [INF] Executed ViewResult - view Index executed in 2.6834ms.
+2025-11-05 17:41:16.192 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 30.6865ms
+2025-11-05 17:41:16.193 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:41:16.195 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 42.346ms
+2025-11-05 17:41:16.251 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:41:16.253 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 2.2155ms
+2025-11-05 17:41:16.465 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:41:16.475 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 10.2353ms
+2025-11-05 17:41:18.969 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:41:18.974 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:41:18.975 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:41:18.977 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:41:18.982 +03:00 [INF] Executed ViewResult - view Create executed in 5.101ms.
+2025-11-05 17:41:18.983 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 6.7683ms
+2025-11-05 17:41:18.985 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:41:18.986 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 16.9736ms
+2025-11-05 17:41:19.011 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:41:19.011 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:41:19.014 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.0459ms
+2025-11-05 17:41:19.019 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 8.3474ms
+2025-11-05 17:41:24.775 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:41:24.781 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 6.1496ms
+2025-11-05 17:41:24.787 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:41:24.831 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:41:24.838 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 6.7121ms
+2025-11-05 17:41:24.841 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:41:24.848 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:41:24.850 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 2.8465ms
+2025-11-05 17:41:24.853 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:42:13.951 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:42:13.962 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:42:13.963 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:42:13.965 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:42:13.975 +03:00 [INF] Executed ViewResult - view Create executed in 9.9575ms.
+2025-11-05 17:42:13.976 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 11.9646ms
+2025-11-05 17:42:13.977 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:42:13.978 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 27.2761ms
+2025-11-05 17:42:14.012 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:42:14.012 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:42:14.016 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.3993ms
+2025-11-05 17:42:14.027 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:42:14.060 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 48.065ms
+2025-11-05 17:42:14.063 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 35.7964ms
+2025-11-05 17:42:14.068 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:42:14.107 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:42:14.110 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 2.8025ms
+2025-11-05 17:42:14.112 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:42:14.175 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:42:14.180 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 4.4928ms
+2025-11-05 17:42:14.183 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:42:38.872 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 17:42:39.760 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:42:39.772 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 17:42:39.814 +03:00 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 17:42:39.873 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 17:42:39.893 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:42:39.895 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 17:42:39.904 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 17:42:39.916 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 17:42:39.925 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 17:42:40.144 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:42:40.193 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:42:40.198 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:42:40.200 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:42:40.203 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:42:40.215 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:42:40.251 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:42:40.256 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:42:40.260 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:42:40.424 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 17:42:40.425 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 17:42:40.473 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 17:42:40.475 +03:00 [INF] Hosting environment: Development
+2025-11-05 17:42:40.476 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 17:42:41.099 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:42:41.303 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:42:41.320 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:42:41.445 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 17:42:41.483 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:42:41.546 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:42:41.673 +03:00 [INF] Executed ViewResult - view Index executed in 129.6126ms.
+2025-11-05 17:42:41.681 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 357.3033ms
+2025-11-05 17:42:41.685 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:42:41.696 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 599.3279ms
+2025-11-05 17:42:41.727 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:42:41.733 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:42:41.739 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 10.9284ms
+2025-11-05 17:42:41.771 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 38.2449ms
+2025-11-05 17:42:44.320 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:42:44.343 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:42:44.348 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:42:44.389 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:42:44.528 +03:00 [INF] Executed ViewResult - view Create executed in 140.833ms.
+2025-11-05 17:42:44.531 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 181.2624ms
+2025-11-05 17:42:44.532 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:42:44.533 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 212.7442ms
+2025-11-05 17:42:44.556 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:42:44.558 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:42:44.560 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.506ms
+2025-11-05 17:42:44.575 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 16.7821ms
+2025-11-05 17:42:52.642 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:42:52.645 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 2.9934ms
+2025-11-05 17:42:54.784 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Account/Login - null null
+2025-11-05 17:42:54.803 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:42:54.805 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller UI.Controllers.AccountController (UI).
+2025-11-05 17:42:54.809 +03:00 [INF] Executing ViewResult, running view Login.
+2025-11-05 17:42:54.852 +03:00 [INF] Executed ViewResult - view Login executed in 43.2916ms.
+2025-11-05 17:42:54.854 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 46.8144ms
+2025-11-05 17:42:54.855 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:42:54.857 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Account/Login - 200 null text/html; charset=utf-8 73.4709ms
+2025-11-05 17:42:54.866 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:42:54.866 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:42:54.873 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 7.2402ms
+2025-11-05 17:42:54.875 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 9.7013ms
+2025-11-05 17:50:46.917 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 17:50:47.838 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:50:47.850 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 17:50:47.906 +03:00 [INF] Executed DbCommand (51ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 17:50:47.966 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 17:50:47.984 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:50:47.989 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 17:50:47.998 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 17:50:48.022 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 17:50:48.038 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 17:50:48.352 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:50:48.403 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:50:48.409 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:50:48.413 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:50:48.418 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:50:48.437 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:50:48.483 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:50:48.487 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:50:48.491 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:50:48.815 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 17:50:48.818 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 17:50:48.881 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 17:50:48.882 +03:00 [INF] Hosting environment: Development
+2025-11-05 17:50:48.883 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 17:50:49.522 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:50:49.652 +03:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-11-05 17:50:49.683 +03:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-11-05 17:50:49.688 +03:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-11-05 17:50:49.694 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 302 0 null 175.2886ms
+2025-11-05 17:50:49.719 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Account/Login?ReturnUrl=%2F - null null
+2025-11-05 17:50:49.730 +03:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-11-05 17:50:49.735 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:50:49.745 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller UI.Controllers.AccountController (UI).
+2025-11-05 17:50:49.763 +03:00 [INF] Executing ViewResult, running view Login.
+2025-11-05 17:50:49.911 +03:00 [INF] Executed ViewResult - view Login executed in 147.0444ms.
+2025-11-05 17:50:49.917 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 168.4656ms
+2025-11-05 17:50:49.920 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:50:49.924 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Account/Login?ReturnUrl=%2F - 200 null text/html; charset=utf-8 205.4027ms
+2025-11-05 17:50:49.937 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:50:49.938 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:50:49.945 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 8.5195ms
+2025-11-05 17:50:49.976 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 37.9605ms
+2025-11-05 17:50:52.511 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7065/Account/Login - application/x-www-form-urlencoded 263
+2025-11-05 17:50:52.518 +03:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-11-05 17:50:52.520 +03:00 [INF] Executing endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:50:52.536 +03:00 [INF] Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Business.DTOS.LoginDto) on controller UI.Controllers.AccountController (UI).
+2025-11-05 17:50:58.524 +03:00 [INF] Executed DbCommand (835ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:50:59.823 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2025-11-05 17:50:59.957 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2025-11-05 17:50:59.983 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:50:59.988 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:50:59.999 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2025-11-05 17:51:00.006 +03:00 [INF] AuthenticationScheme: Identity.Application signed in.
+2025-11-05 17:51:03.792 +03:00 [INF] Start processing HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 17:51:03.794 +03:00 [INF] Sending HTTP request POST https://localhost:7228/api/auth/login
+2025-11-05 17:51:35.708 +03:00 [INF] Received HTTP response headers after 31911.0558ms - 200
+2025-11-05 17:51:35.710 +03:00 [INF] End processing HTTP request after 31919.4351ms - 200
+2025-11-05 17:51:35.739 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:51:35.747 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-11-05 17:51:35.751 +03:00 [INF] AuthenticationScheme: Cookies signed in.
+2025-11-05 17:51:35.757 +03:00 [INF] Executing RedirectResult, redirecting to /admin.
+2025-11-05 17:51:35.758 +03:00 [INF] Executed action UI.Controllers.AccountController.Login (UI) in 43218.6894ms
+2025-11-05 17:51:35.759 +03:00 [INF] Executed endpoint 'UI.Controllers.AccountController.Login (UI)'
+2025-11-05 17:51:35.768 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7065/Account/Login - 302 0 null 43256.9639ms
+2025-11-05 17:51:35.772 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/admin - null null
+2025-11-05 17:51:35.781 +03:00 [INF] Executing endpoint 'UI.Areas.admin.Controllers.HomeController.Index (UI)'
+2025-11-05 17:51:35.783 +03:00 [INF] Route matched with {area = "admin", action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Areas.admin.Controllers.HomeController (UI).
+2025-11-05 17:51:35.792 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:51:35.841 +03:00 [INF] Executed ViewResult - view Index executed in 55.8367ms.
+2025-11-05 17:51:35.843 +03:00 [INF] Executed action UI.Areas.admin.Controllers.HomeController.Index (UI) in 58.6563ms
+2025-11-05 17:51:35.846 +03:00 [INF] Executed endpoint 'UI.Areas.admin.Controllers.HomeController.Index (UI)'
+2025-11-05 17:51:35.847 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/admin - 200 null text/html; charset=utf-8 74.9358ms
+2025-11-05 17:51:35.978 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:51:35.983 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 4.5805ms
+2025-11-05 17:51:36.061 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:51:36.073 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 12.3643ms
+2025-11-05 17:51:40.819 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:51:40.825 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:51:40.828 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:51:40.962 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 17:51:40.999 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:51:41.048 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:51:41.074 +03:00 [INF] Executed ViewResult - view Index executed in 26.0704ms.
+2025-11-05 17:51:41.077 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 246.9538ms
+2025-11-05 17:51:41.078 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:51:41.080 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 261.6561ms
+2025-11-05 17:51:41.124 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:51:41.128 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.7271ms
+2025-11-05 17:51:41.302 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:51:41.309 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 7.0401ms
+2025-11-05 17:51:43.837 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:51:43.857 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:51:43.861 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:51:43.867 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:51:44.000 +03:00 [INF] Executed ViewResult - view Create executed in 133.7481ms.
+2025-11-05 17:51:44.001 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 138.3612ms
+2025-11-05 17:51:44.003 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:51:44.004 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 167.2134ms
+2025-11-05 17:51:44.029 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:51:44.030 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:51:44.033 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.3086ms
+2025-11-05 17:51:44.041 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 10.7829ms
+2025-11-05 17:51:48.565 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:51:48.568 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.1148ms
+2025-11-05 17:51:51.314 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:51:51.319 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 5.1861ms
+2025-11-05 17:51:51.323 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:51:51.397 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:51:51.400 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 3.291ms
+2025-11-05 17:51:51.403 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:51:51.412 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:51:51.415 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 2.864ms
+2025-11-05 17:51:51.418 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:52:18.309 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:52:18.320 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:52:18.322 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:52:18.329 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:52:18.338 +03:00 [INF] Executed ViewResult - view Create executed in 9.5137ms.
+2025-11-05 17:52:18.340 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 16.5622ms
+2025-11-05 17:52:18.341 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:52:18.341 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 32.5006ms
+2025-11-05 17:52:18.879 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:52:18.879 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:52:18.881 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 2.6414ms
+2025-11-05 17:52:18.919 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:52:18.921 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 42.8713ms
+2025-11-05 17:52:18.923 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 4.6665ms
+2025-11-05 17:52:18.928 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:52:18.983 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:52:18.986 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 3.0973ms
+2025-11-05 17:52:18.989 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:52:18.995 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:52:18.999 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 4.2435ms
+2025-11-05 17:52:19.002 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:56:07.473 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 17:56:08.341 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:56:08.352 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 17:56:08.402 +03:00 [INF] Executed DbCommand (46ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 17:56:08.472 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 17:56:08.491 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:56:08.495 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 17:56:08.506 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 17:56:08.519 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 17:56:08.539 +03:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 17:56:08.874 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:56:08.926 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:56:08.931 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:56:08.936 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:56:08.940 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:56:08.961 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:56:09.018 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:56:09.022 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:56:09.026 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:56:09.128 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 17:56:09.130 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 17:56:09.161 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 17:56:09.163 +03:00 [INF] Hosting environment: Development
+2025-11-05 17:56:09.165 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 17:56:09.237 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:56:09.317 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:56:09.324 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:56:09.412 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 17:56:09.435 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:56:09.486 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:56:09.561 +03:00 [INF] Executed ViewResult - view Index executed in 77.0781ms.
+2025-11-05 17:56:09.571 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 244.5785ms
+2025-11-05 17:56:09.572 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:56:09.579 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 342.9899ms
+2025-11-05 17:56:09.595 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:56:09.600 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:56:09.601 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 5.1748ms
+2025-11-05 17:56:09.625 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 25.37ms
+2025-11-05 17:56:15.255 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:56:15.280 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 24.2409ms
+2025-11-05 17:56:15.284 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:56:15.333 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:56:15.351 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 18.225ms
+2025-11-05 17:56:15.354 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:56:15.362 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:56:15.365 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 3.4266ms
+2025-11-05 17:56:15.368 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:56:29.144 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:56:29.152 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:56:29.153 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:56:29.201 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:56:29.207 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:56:29.211 +03:00 [INF] Executed ViewResult - view Index executed in 3.9494ms.
+2025-11-05 17:56:29.212 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 56.4392ms
+2025-11-05 17:56:29.214 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:56:29.215 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 71.4932ms
+2025-11-05 17:56:29.244 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:56:29.244 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:56:29.248 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 4.4299ms
+2025-11-05 17:56:29.258 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 13.8171ms
+2025-11-05 17:56:29.266 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:56:29.269 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 2.858ms
+2025-11-05 17:56:29.272 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:56:29.357 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:56:29.361 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 3.4816ms
+2025-11-05 17:56:29.365 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:56:29.369 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:56:29.373 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 3.827ms
+2025-11-05 17:56:29.375 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:57:05.231 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 17:57:06.109 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:57:06.127 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 17:57:06.159 +03:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 17:57:06.223 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 17:57:06.241 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 17:57:06.244 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 17:57:06.252 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 17:57:06.262 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 17:57:06.266 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 17:57:06.526 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:57:06.572 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:57:06.578 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:57:06.582 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:57:06.587 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 17:57:06.603 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:57:06.640 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:57:06.643 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:57:06.647 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 17:57:06.876 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 17:57:06.879 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 17:57:07.084 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 17:57:07.091 +03:00 [INF] Hosting environment: Development
+2025-11-05 17:57:07.097 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 17:57:07.787 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:57:07.981 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:57:07.993 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:57:08.073 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 17:57:08.103 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:57:08.151 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:57:08.277 +03:00 [INF] Executed ViewResult - view Index executed in 126.4292ms.
+2025-11-05 17:57:08.289 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 292.9298ms
+2025-11-05 17:57:08.290 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:57:08.300 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 515.0214ms
+2025-11-05 17:57:08.318 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:57:08.321 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:57:08.327 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 7.9659ms
+2025-11-05 17:57:08.360 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 38.6386ms
+2025-11-05 17:57:12.956 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:57:12.985 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 28.9216ms
+2025-11-05 17:57:12.989 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:57:13.015 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:57:13.030 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:57:13.044 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 28.3909ms
+2025-11-05 17:57:13.044 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 14.2674ms
+2025-11-05 17:57:13.049 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:57:13.053 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:57:20.104 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 17:57:20.113 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:57:20.114 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 17:57:20.173 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 17:57:20.177 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 17:57:20.182 +03:00 [INF] Executed ViewResult - view Index executed in 4.8679ms.
+2025-11-05 17:57:20.183 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 67.2204ms
+2025-11-05 17:57:20.184 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 17:57:20.185 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 81.1686ms
+2025-11-05 17:57:20.204 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:57:20.205 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:57:20.213 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 7.947ms
+2025-11-05 17:57:20.222 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 17.9745ms
+2025-11-05 17:57:20.237 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:57:20.240 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 3.2441ms
+2025-11-05 17:57:20.244 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:57:20.303 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:57:20.305 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:57:20.306 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 3.2463ms
+2025-11-05 17:57:20.309 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 4.1412ms
+2025-11-05 17:57:20.312 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 17:57:20.314 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:57:31.400 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 17:57:31.407 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:57:31.411 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 17:57:31.420 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 17:57:31.542 +03:00 [INF] Executed ViewResult - view Create executed in 123.6121ms.
+2025-11-05 17:57:31.545 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 131.7576ms
+2025-11-05 17:57:31.546 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 17:57:31.547 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 146.7384ms
+2025-11-05 17:57:31.593 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 17:57:31.597 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 4.7816ms
+2025-11-05 17:57:31.600 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 17:57:31.603 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 17:57:31.604 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 17:57:31.607 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.5766ms
+2025-11-05 17:57:31.612 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 8.1071ms
+2025-11-05 17:57:31.642 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 17:57:31.648 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 5.6818ms
+2025-11-05 17:57:31.652 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 17:57:31.677 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 17:57:31.681 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 4.3732ms
+2025-11-05 17:57:31.685 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 18:07:08.087 +03:00 [INF] User profile is available. Using 'C:\Users\USER\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-05 18:07:08.895 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 18:07:08.908 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-05 18:07:08.956 +03:00 [INF] Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-11-05 18:07:09.018 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-11-05 18:07:09.037 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-05 18:07:09.040 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-05 18:07:09.049 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-05 18:07:09.061 +03:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-05 18:07:09.083 +03:00 [INF] Executed DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-11-05 18:07:09.314 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 18:07:09.361 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 18:07:09.366 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 18:07:09.371 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 18:07:09.377 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-05 18:07:09.397 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 18:07:09.428 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 18:07:09.431 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 18:07:09.434 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[Phone], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-11-05 18:07:09.581 +03:00 [INF] Now listening on: https://localhost:7065
+2025-11-05 18:07:09.582 +03:00 [INF] Now listening on: http://localhost:5004
+2025-11-05 18:07:09.621 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-05 18:07:09.623 +03:00 [INF] Hosting environment: Development
+2025-11-05 18:07:09.624 +03:00 [INF] Content root path: E:\MyShipping\UI
+2025-11-05 18:07:10.530 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 18:07:10.770 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 18:07:10.788 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 18:07:10.914 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-05 18:07:10.948 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 18:07:11.030 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 18:07:11.173 +03:00 [INF] Executed ViewResult - view Index executed in 145.8024ms.
+2025-11-05 18:07:11.181 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 388.8193ms
+2025-11-05 18:07:11.184 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 18:07:11.194 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 666.4502ms
+2025-11-05 18:07:11.210 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 18:07:11.216 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 18:07:11.216 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 6.6738ms
+2025-11-05 18:07:11.244 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 27.5293ms
+2025-11-05 18:07:22.257 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 18:07:22.274 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 17.4564ms
+2025-11-05 18:07:22.279 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 18:07:22.318 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 18:07:22.330 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 18:07:22.341 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 23.3261ms
+2025-11-05 18:07:22.341 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 11.2197ms
+2025-11-05 18:07:22.344 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 18:07:22.348 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 18:07:27.762 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/ - null null
+2025-11-05 18:07:27.771 +03:00 [INF] Executing endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 18:07:27.773 +03:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller UI.Controllers.HomeController (UI).
+2025-11-05 18:07:27.830 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CountryAName], [t].[CountryEName], [t].[CreatedBy], [t].[CreatedDate], [t].[CurrentState], [t].[UpdatedBy], [t].[UpdatedDate]
+FROM [TbCountries] AS [t]
+WHERE [t].[CurrentState] > 0
+2025-11-05 18:07:27.835 +03:00 [INF] Executing ViewResult, running view Index.
+2025-11-05 18:07:27.842 +03:00 [INF] Executed ViewResult - view Index executed in 7.6578ms.
+2025-11-05 18:07:27.844 +03:00 [INF] Executed action UI.Controllers.HomeController.Index (UI) in 69.1867ms
+2025-11-05 18:07:27.845 +03:00 [INF] Executed endpoint 'UI.Controllers.HomeController.Index (UI)'
+2025-11-05 18:07:27.846 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/ - 200 null text/html; charset=utf-8 83.828ms
+2025-11-05 18:07:27.880 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 18:07:27.881 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 18:07:27.889 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 7.7122ms
+2025-11-05 18:07:27.894 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 18:07:27.897 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 3.4647ms
+2025-11-05 18:07:27.900 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 20.488ms
+2025-11-05 18:07:27.902 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 18:07:27.985 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 18:07:27.988 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 18:07:27.989 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 3.9985ms
+2025-11-05 18:07:27.992 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 4.1672ms
+2025-11-05 18:07:27.996 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 18:07:28.000 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 18:07:36.531 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 18:07:36.538 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 18:07:36.541 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 18:07:36.550 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 18:07:36.671 +03:00 [INF] Executed ViewResult - view Create executed in 121.6865ms.
+2025-11-05 18:07:36.673 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 130.7208ms
+2025-11-05 18:07:36.674 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 18:07:36.675 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 143.9169ms
+2025-11-05 18:07:36.714 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 18:07:36.717 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 3.5562ms
+2025-11-05 18:07:36.720 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 18:07:36.727 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 18:07:36.727 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 18:07:36.730 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.8742ms
+2025-11-05 18:07:36.738 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 11.0418ms
+2025-11-05 18:07:36.781 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 18:07:36.785 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 4.4341ms
+2025-11-05 18:07:36.786 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 18:07:36.789 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 18:07:36.792 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 6.0016ms
+2025-11-05 18:07:36.795 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 18:18:59.542 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 18:18:59.619 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 18:18:59.659 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 116.4875ms
+2025-11-05 18:18:59.612 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 18:18:59.657 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 18:18:59.669 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 49.8343ms
+2025-11-05 18:18:59.674 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 62.6139ms
+2025-11-05 18:18:59.677 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 20.012ms
+2025-11-05 18:18:59.680 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 18:18:59.684 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 18:18:59.687 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 18:19:31.451 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/Shipments/Create - null null
+2025-11-05 18:19:31.471 +03:00 [INF] Executing endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 18:19:31.472 +03:00 [INF] Route matched with {action = "Create", controller = "Shipments", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Create() on controller UI.Controllers.ShipmentsController (UI).
+2025-11-05 18:19:31.476 +03:00 [INF] Executing ViewResult, running view Create.
+2025-11-05 18:19:31.523 +03:00 [INF] Executed ViewResult - view Create executed in 47.1063ms.
+2025-11-05 18:19:31.585 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-11-05 18:19:31.586 +03:00 [INF] Executed action UI.Controllers.ShipmentsController.Create (UI) in 111.6672ms
+2025-11-05 18:19:31.588 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - null null
+2025-11-05 18:19:31.589 +03:00 [INF] Executed endpoint 'UI.Controllers.ShipmentsController.Create (UI)'
+2025-11-05 18:19:31.590 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 4.6233ms
+2025-11-05 18:19:31.592 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - null null
+2025-11-05 18:19:31.594 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/js/popper.min.js.map - 404 0 null 5.0864ms
+2025-11-05 18:19:31.594 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/Shipments/Create - 200 null text/html; charset=utf-8 142.5692ms
+2025-11-05 18:19:31.597 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-11-05 18:19:31.601 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/assets/css/bootstrap.min.css.map - 404 0 null 8.2975ms
+2025-11-05 18:19:31.603 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/js/popper.min.js.map, Response status code: 404
+2025-11-05 18:19:31.611 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7065/assets/css/bootstrap.min.css.map, Response status code: 404
+2025-11-05 18:19:31.650 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - null null
+2025-11-05 18:19:31.650 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7065/_vs/browserLink - null null
+2025-11-05 18:19:31.654 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_framework/aspnetcore-browser-refresh.js - 200 16489 application/javascript; charset=utf-8 3.697ms
+2025-11-05 18:19:31.663 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7065/_vs/browserLink - 200 null text/javascript; charset=UTF-8 12.5566ms
