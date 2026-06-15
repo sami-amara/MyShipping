@@ -25,7 +25,7 @@ namespace Business.Services.Shipment.ManageShipmentsState
 
         public async Task HandleState(ShippmentDto shipment)
         {
-            if (shipment?.Id == Guid.Empty);
+            if (shipment?.Id == Guid.Empty)
                 throw new ArgumentException("Shipment ID is required for cancellation");
             var paymentTransaction = await _paymentTransactionService.GetByShipmentId(shipment.Id);
             var isPaid = shipment?.IsPaid == true || paymentTransaction?.TransactionStatus == (int)Domains.PaymentTransactionStatus.Completed;
