@@ -1,0 +1,4 @@
+*.css linguist-vendored=true  
+*.js linguist-vendored=true  
+UI/wwwroot/** linguist-vendored=true  
+**/node_modules/** linguist-vendored=true 
