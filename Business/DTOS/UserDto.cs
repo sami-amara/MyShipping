@@ -15,14 +15,14 @@ namespace Business.DTOS
     {
         [Required(AllowEmptyStrings = false, ErrorMessageResourceName = "FristNameRequired", ErrorMessageResourceType = typeof(ValidationMessages))]
         [StringLength(200, MinimumLength = 2, ErrorMessageResourceName = "NameLength", ErrorMessageResourceType = typeof(ValidationMessages))]
-        //[RegularExpression(@"^[\p{L}\p{Zs}\.\-'''`]+$", ErrorMessageResourceName = "OnlyValidNamesAllowed", ErrorMessageResourceType = typeof(ValidationMessages))]
+
         public string FirstName { get; set; } = string.Empty;
 
 
 
         [Required(AllowEmptyStrings = false, ErrorMessageResourceName = "LastNameRequired", ErrorMessageResourceType = typeof(ValidationMessages))]
         [StringLength(200, MinimumLength = 2, ErrorMessageResourceName = "NameLength", ErrorMessageResourceType = typeof(ValidationMessages))]
-        //RegularExpression(@"^[\p{L}\p{Zs}\.\-'''`]+$", ErrorMessageResourceName = "OnlyValidNamesAllowed", ErrorMessageResourceType = typeof(ValidationMessages))]
+
         public string LastName { get; set; } = string.Empty;
 
 
@@ -33,8 +33,6 @@ namespace Business.DTOS
         public string Email { get; set; } = string.Empty;
 
 
-
-        //[RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d).{6,}$",ErrorMessageResourceType = typeof(ValidationMessages),ErrorMessageResourceName = "InvalidPassword")]
         [Required(AllowEmptyStrings = false, ErrorMessageResourceName = "PasswordRequired", ErrorMessageResourceType = typeof(ValidationMessages))]
         [MinLength(8, ErrorMessageResourceName = "InvalidPassword", ErrorMessageResourceType = typeof(ValidationMessages))]
         public string Password { get; set; } = string.Empty;

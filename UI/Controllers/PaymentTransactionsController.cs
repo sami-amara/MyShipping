@@ -1,5 +1,5 @@
 using AutoMapper;
-using Business.Contracts;
+using Business.Contracts.Payments;
 using Business.DTOS;
 using DataAccessLayer.Model;
 using Microsoft.AspNetCore.Authorization;

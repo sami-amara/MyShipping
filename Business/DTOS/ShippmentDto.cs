@@ -16,16 +16,16 @@ namespace Business.DTOS
         [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "ShippingDateRequired", AllowEmptyStrings = false)]
         public DateTime ShippingDate { get; set; } = DateTime.UtcNow;
 
-        [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "DeliveryDateRequired", AllowEmptyStrings = false)]
+        //[Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "DeliveryDateRequired", AllowEmptyStrings = false)]
         public DateTime DelivryDate { get; set; }
-                        
+        
+
         [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "SenderIdRequired", AllowEmptyStrings = false)]
         public Guid SenderId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "ReceiverIdRequired", AllowEmptyStrings = false)]
         public Guid ReceiverId { get; set; }
 
-        //[Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "CarrierIdRequired", AllowEmptyStrings = false)]
         public Guid? CarrierId { get; set; }
                      
 
@@ -54,7 +54,6 @@ namespace Business.DTOS
         [Range(0.01, double.MaxValue, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "ShippingRateInvalid")]
         public decimal? ShippingRate { get; set; }
 
-       // [Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "PaymentMethodRequired", AllowEmptyStrings = false)]
         public Guid? PaymentMethodId { get; set; }
 
         public string? PaymentMethodToken { get; set; }
@@ -72,7 +71,6 @@ namespace Business.DTOS
         // Payment transaction data (for PayPal redirect flow)
         public PaymentTransactionDto? PaymentTransaction { get; set; }
 
-        // Human-friendly status string (Active/Inactive etc.). Added so server can return both numeric and text.
         public string? Status { get; set; }
 
         // Related entity names (for display purposes)
@@ -82,5 +80,51 @@ namespace Business.DTOS
         public string? PaymentMethodName { get; set; }
 
         public bool IsPaid { get; set; } = false;
+
+
+        // Audit trail
+        public DateTime? ApprovedAt { get; set; }
+        public Guid? ApprovedBy { get; set; }
+        public string? ApprovedByUserName { get; set; }
+
+        public DateTime? ReadyAt { get; set; }
+        public Guid? ReadyBy { get; set; }
+        public string? ReadyByUserName { get; set; }
+
+        public DateTime? ShippedAt { get; set; }
+        public Guid? ShippedBy { get; set; }
+        public string? ShippedByUserName { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public string? CreatedByUserName { get; set; }
+
+
+        public Guid? DeliveredBy { get; set; }
+        public DateTime? DeliveredAt { get; set; }
+        public string? DeliveredByUserName { get; set; }
+
+
+        public Guid? CancelledBy { get; set; }
+        public DateTime? CancelledAt { get; set; }
+        public string? CancelledByUserName { get; set; }
+        public string? CancellationReason { get; set; }
+
+        public Guid? ReturnedBy { get; set; }
+        public DateTime? ReturnedAt { get; set; }
+        public string? ReturnedByUserName { get; set; }
+        public string? ReturnReason { get; set; }
+
+
+        public DateTime? DeletedDate { get; set; }
+        public Guid? DeletedBy { get; set; }
+        public string? DeletedByUserName { get; set; }
+
+
+        public Guid? RefundedBy { get; set; }
+        public DateTime? RefundedAt { get; set; }
+        public string? RefundReason { get; set; }
+        public string? RefundedByUserName { get; set; } // 👈 For display only, no migration needed
+
     }
 }

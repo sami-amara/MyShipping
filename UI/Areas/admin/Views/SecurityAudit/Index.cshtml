@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Security Audit Dashboard";
+    var stats = ViewBag.Stats as dynamic;
+    var unreviewedEvents = ViewBag.UnreviewedEvents as dynamic;
+    var criticalEvents = ViewBag.CriticalEvents as dynamic;
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>🔒 Security Audit Dashboard</h2>
+            <p class="text-muted">Monitor suspicious activities, rate limit breaches, and security incidents</p>
+        </div>
+    </div>
+
+    <!-- Security Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">⚠️ Critical Events</h5>
+                    <p class="card-text display-6">@stats.CriticalEvents</p>
+                    <small class="text-muted">Last 24 hours</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">🎯 High Risk Events</h5>
+                    <p class="card-text display-6">@stats.HighRiskEvents</p>
+                    <small class="text-muted">Last 24 hours</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-info">🔔 Unreviewed</h5>
+                    <p class="card-text display-6">@stats.UnreviewedEvents</p>
+                    <small class="text-muted">Awaiting review</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Total Events</h5>
+                    <p class="card-text display-6">@stats.TotalEvents</p>
+                    <small class="text-muted">Last 24 hours</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Type Breakdown -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Event Breakdown</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🚨 Rate Limit Breaches</span>
+                            <badge class="badge bg-danger">@stats.RateLimitBreaches</badge>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🔐 Failed Logins</span>
+                            <badge class="badge bg-warning">@stats.FailedLogins</badge>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🔄 Token Reuse</span>
+                            <badge class="badge bg-danger">@stats.TokenReuseEvents</badge>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🔒 Account Lockouts</span>
+                            <badge class="badge bg-warning">@stats.AccountLockouts</badge>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a href="@Url.Action("Unreviewed", "SecurityAudit", new { area = "admin" })"
+                       class="btn btn-info btn-block mb-2 w-100">
+                        📋 Review Unreviewed Events
+                    </a>
+                    <a href="@Url.Action("Critical", "SecurityAudit", new { area = "admin" })"
+                       class="btn btn-danger btn-block mb-2 w-100">
+                        🚨 View Critical Events
+                    </a>
+                    <a href="@Url.Action("ByIP", "SecurityAudit", new { area = "admin", ipAddress = "%" })"
+                       class="btn btn-warning btn-block w-100">
+                        📍 Suspicious IPs: @stats.UniqueSuspiciousIPs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Events Table -->
+    @if (unreviewedEvents != null && ((IEnumerable<object>)unreviewedEvents).Any())
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5>⚠️ Recent Unreviewed Events</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Event Type</th>
+                                    <th>Severity</th>
+                                    <th>Email</th>
+                                    <th>IP Address</th>
+                                    <th>CorrelationId</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var evt in unreviewedEvents)
+                                {
+                                    <tr>
+                                        <td>@evt.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                        <td><code>@evt.EventType</code></td>
+                                        <td>
+                                            @if (evt.Severity == "CRITICAL")
+                                            {
+                                                <span class="badge bg-danger">@evt.Severity</span>
+                                            }
+                                            else if (evt.Severity == "HIGH")
+                                            {
+                                                <span class="badge bg-warning">@evt.Severity</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-info">@evt.Severity</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(evt.Email))
+                                            {
+                                                <small>@evt.Email</small><br />
+                                            }
+                                            @if (!string.IsNullOrEmpty(evt.IpAddress))
+                                            {
+                                                <small class="text-muted">@evt.IpAddress</small>
+                                            } 
+                                        </td>
+                                        <!-- IP ADDRESS -->
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(evt.IpAddress))
+                                            {
+                                                <small class="text-muted">@evt.IpAddress</small>
+                                            }
+                                            else
+                                            {
+                                                <small class="text-muted">-</small>
+                                            }
+                                        </td>
+                                        <!-- 🆕 CORRELATIONID COLUMN -->
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(evt.CorrelationId))
+                                            {
+                                                <small title="@evt.CorrelationId" class="font-monospace">
+                                                    @(evt.CorrelationId.Length > 12 ? evt.CorrelationId.Substring(0, 12) + "..." : evt.CorrelationId)
+                                                </small>
+                                            }
+                                            else
+                                            {
+                                                <small class="text-muted">-</small>
+                                            }
+                                        <td>
+                                            <small>@evt.Description</small>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("MarkReviewed", "SecurityAudit", new { area = "admin", eventId = evt.Id })"
+                                               class="btn btn-sm btn-success"
+                                               onclick="return confirm('Mark as reviewed?');">
+                                                ✓ Review
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

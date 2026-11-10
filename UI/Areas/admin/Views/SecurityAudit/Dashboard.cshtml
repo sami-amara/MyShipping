@@ -1,0 +1,208 @@
+﻿@{
+    ViewData["Title"] = "Security Audit Dashboard";
+    var stats = ViewBag.Stats as dynamic;
+    var aggregatedEvents = ViewBag.AggregatedEvents as List<Business.Services.Logging.AggregatedSecurityEvent>;
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>🔒 Security Audit Dashboard</h2>
+            <p class="text-muted">Monitor suspicious activities, rate limit breaches, and security incidents</p>
+        </div>
+    </div>
+
+    <!-- Security Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">⚠️ Critical Events</h5>
+                    <p class="card-text display-6">@stats?.CriticalEvents ?? 0</p>
+                    <small class="text-muted">Last 24 hours</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">🎯 High Risk Events</h5>
+                    <p class="card-text display-6">@stats?.HighRiskEvents ?? 0</p>
+                    <small class="text-muted">Last 24 hours</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-info">🔔 Unreviewed</h5>
+                    <p class="card-text display-6">@stats?.UnreviewedEvents ?? 0</p>
+                    <small class="text-muted">Awaiting review</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Total Events</h5>
+                    <p class="card-text display-6">@stats?.TotalEvents ?? 0</p>
+                    <small class="text-muted">Last 24 hours</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Type Breakdown -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>📈 Event Breakdown (Last 24h)</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🚨 Rate Limit Breaches</span>
+                            <badge class="badge bg-danger">@stats?.RateLimitBreaches ?? 0</badge>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🔐 Failed Logins</span>
+                            <badge class="badge bg-warning">@stats?.FailedLogins ?? 0</badge>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🔄 Token Reuse</span>
+                            <badge class="badge bg-danger">@stats?.TokenReuseEvents ?? 0</badge>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>🔒 Account Lockouts</span>
+                            <badge class="badge bg-warning">@stats?.AccountLockouts ?? 0</badge>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>⚡ Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a href="@Url.Action("Unreviewed", "SecurityAudit", new { area = "admin" })"
+                       class="btn btn-info w-100 mb-2">
+                        📋 Review Unreviewed Events (@(stats?.UnreviewedEvents ?? 0))
+                    </a>
+                    <a href="@Url.Action("Critical", "SecurityAudit", new { area = "admin" })"
+                       class="btn btn-danger w-100 mb-2">
+                        🚨 View Critical Events (@(stats?.CriticalEvents ?? 0))
+                    </a>
+                    <a href="@Url.Action("ByType", "SecurityAudit", new { area = "admin", eventType = "RATE_LIMIT_BREACH" })"
+                       class="btn btn-warning w-100">
+                        ⚠️ View Rate Limit Breaches (@(stats?.RateLimitBreaches ?? 0))
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aggregated Events Patterns (NEW) -->
+    @if (aggregatedEvents != null && aggregatedEvents.Any())
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5>🔍 Event Patterns & Aggregation (Unique Combinations)</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Event Type</th>
+                                    <th>Email</th>
+                                    <th>IP Address</th>
+                                    <th style="text-align: center;">Attempts</th>
+                                    <th>First Seen</th>
+                                    <th>Last Seen</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var agg in aggregatedEvents.Take(25))
+                                {
+                                    <tr>
+                                        <td>
+                                            <small>
+                                                <span title="@agg.EventType">@agg.GetEventIcon() @agg.EventType</span>
+                                            </small>
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(agg.Email) && agg.Email != "unknown")
+                                            {
+                                                <small title="@agg.Email">
+                                                    @(agg.Email.Length > 20 ? agg.Email.Substring(0, 20) + "..." : agg.Email)
+                                                </small>
+                                            }
+                                            else
+                                            {
+                                                <small class="text-muted">-</small>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(agg.IpAddress) && agg.IpAddress != "unknown")
+                                            {
+                                                <a href="@Url.Action("ByIp", "SecurityAudit", new { area = "admin", ipAddress = agg.IpAddress })"
+                                                   class="link-secondary" title="View events from this IP">
+                                                    <small>@agg.IpAddress</small>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <small class="text-muted">-</small>
+                                            }
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <span class="badge @agg.GetSeverityBadgeClass()">@agg.AttemptCount</span>
+                                        </td>
+                                        <td><small>@agg.FirstAttempt.ToString("yyyy-MM-dd HH:mm")</small></td>
+                                        <td><small>@agg.LastAttempt.ToString("yyyy-MM-dd HH:mm")</small></td>
+                                        <td>
+                                            <span class="badge @agg.GetSeverityBadgeClass()">@agg.Severity</span>
+                                        </td>
+                                        <td>
+                                            @if (!agg.IsReviewed)
+                                            {
+                                                <span class="badge bg-warning">Unreviewed</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">Reviewed</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("ByEmail", "SecurityAudit", new { area = "admin", email = agg.Email })"
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="View all events for this email">
+                                                📌 Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize tooltips
+        document.querySelectorAll('[title]').forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
+    </script>
+}

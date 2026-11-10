@@ -178,7 +178,7 @@ const ShipmentService = (function () {
                 }
                 // IMPORTANT: This calls the MINIMAL endpoint - /api/Shipments/{id}/UpdateStatus?newState=N
                 // This should NOT require full DTO validation (Width, Height, Length, Weight, UserSender, UserReceiver, ShippingTypeId, ShipingPackgingId, PackageValue)
-                return ShipmentApiClient.updateStatus(id, opts.targetState)
+                return ShipmentApiClient.updateStatus(id, opts.targetState, opts.reason)
                     .then(function (res) {
                     restoreBtn();
                     if (opts.redirect && opts.redirectUrl) {

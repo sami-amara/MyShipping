@@ -30,6 +30,7 @@ namespace Business.Services.Shipment.ManageShipmentsState
                 ShipmentStatusEnum.Cancelled        => _serviceProvider.GetRequiredService<CancelledShipment>(),
                 ShipmentStatusEnum.Returned         => _serviceProvider.GetRequiredService<ReturnedShipment>(),
                 ShipmentStatusEnum.Deleted          => _serviceProvider.GetRequiredService<DeletedShipment>(),
+                ShipmentStatusEnum.Refunded         => _serviceProvider.GetRequiredService<RefundedShipment>(),
 
                 _ => throw new NotImplementedException($"No handler implemented for state: {status}")
             };

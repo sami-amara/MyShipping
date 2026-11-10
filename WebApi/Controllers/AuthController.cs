@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Business.Contracts;
+using Business.Contracts.Logging;
 using Business.DTOS;
 using DataAccessLayer.UserModels;
 using Domains;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore.Internal;
 using System.Security.Claims;
 using WebApi.Models;
 using WebApi.Services;
@@ -56,30 +58,32 @@ namespace WebApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IRefreshToken _refreshTokenService;
-        private readonly IUserService _userService;
+        //private readonly IUserService _userService;
+        //private readonly IUserService _userService;
+        private readonly IWebApiUserService _userService;
         private readonly TokenService _tokenService;
-        private readonly UserManager<ApplicationUser> _userManager;
+       // private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRefreshTokenRetriver _refreshTokenRetriver;
         private readonly ILogger<AuthController> _logger;
-        private readonly SecurityEventLogger _securityLogger;                   
+        private readonly ISecurityEventLogger _securityLogger;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
+        
 
         public AuthController(
             IRefreshToken refreshTokenService,
-            IUserService userService,
+            IWebApiUserService userService,
             TokenService tokenService,
             UserManager<ApplicationUser> userManager,
             ILogger<AuthController> logger,
             IRefreshTokenRetriver refreshTokenRetriver,
-            SecurityEventLogger securityLogger,
+            ISecurityEventLogger securityLogger,
             IEmailSender emailSender,
             IConfiguration configuration)
         {
             _refreshTokenService = refreshTokenService;
             _userService = userService;
             _tokenService = tokenService;
-            _userManager = userManager;
             _refreshTokenRetriver = refreshTokenRetriver;
             _logger = logger;
             _securityLogger = securityLogger;
@@ -132,51 +136,34 @@ namespace WebApi.Controllers
         /// <returns>200 OK on success with message, 400 BadRequest with validation errors on failure</returns>
         [HttpPost("register")]
         [EnableRateLimiting("auth")]  // ✅ Rate limit to prevent registration spam
+       
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
             try
             {
-                var result = await _userService.RegisterAsync(userDto);
+                // ✅ Get UI base URL from configuration
+                var uiBaseUrl = _configuration["ClientApp:BaseUrl"] ?? "https://localhost:7065";
+
+                // ✅ UserService handles: validation, user creation, role assignment, 
+                // email token generation, email send, logging
+                var result = await _userService.RegisterAsync(userDto, _emailSender, uiBaseUrl);
 
                 if (!result.Success)
                 {
-                    _securityLogger.LogRegistrationFailed(userDto.Email, string.Join(", ", result.Errors));
                     return BadRequest(ApiResponse<object>.FailureResponse(
                         message: "Registration failed",
                         errors: result.Errors.Select(e => new Error("VALIDATION_ERROR", e)).ToList()
                     ));
                 }
 
-                var user = await _userManager.FindByEmailAsync(userDto.Email);
-                if (user != null)
-                {
-                    _securityLogger.LogRegistrationSuccess(user.Id, userDto.Email);
-
-                    //try
-                    //{
-                    //    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Auth",
-                    //        new { userId = user.Id, token }, Request.Scheme);
-
-                    //    await _emailService.SendEmailConfirmationAsync(userDto.Email, confirmationLink);
-                    //    _securityLogger.LogEmailConfirmationSent(userDto.Email);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    // ✅ This will go to DATABASE (Error level)
-                    //    _logger.LogError(ex, "❌ FAILED TO SEND CONFIRMATION EMAIL | Email: {Email}", userDto.Email);
-                    //}
-                }
-
                 return Ok(ApiResponse<object>.SuccessResponse(
                     data: null,
-                    message: "User registered successfully. Please check your email to confirm your account."
+                    message: result.Errors?.FirstOrDefault() ?? "User registered successfully."
                 ));
             }
             catch (Exception ex)
             {
-                // ✅ This will go to DATABASE (Critical error)
-                _logger.LogCritical(ex, "🚨 CRITICAL ERROR DURING REGISTRATION | Email: {Email}", userDto.Email);
+                _logger.LogCritical(ex, "💥 CRITICAL ERROR in Register for {Email}", userDto.Email);
 
                 return StatusCode(500, ApiResponse<object>.FailureResponse(
                     message: "An unexpected error occurred",
@@ -184,6 +171,7 @@ namespace WebApi.Controllers
                 ));
             }
         }
+
 
         /// <summary>
         /// Authenticates a user and issues JWT access token and refresh token.
@@ -223,26 +211,23 @@ namespace WebApi.Controllers
         {
             try
             {
-                _logger.LogInformation("▶️ API Login called for {Email}", loginDto.Email);
-
                 var userResult = await _userService.LoginAsync(loginDto);
+
 
                 if (!userResult.Success)
                 {
-                    _logger.LogWarning("❌ Login validation failed for {Email}", loginDto.Email);
-                    return Unauthorized("INVALID CRIDETIALS FOR WEB API LOGGING");
+                    return Unauthorized(ApiResponse<object>.FailureResponse(
+                        message: "Invalid credentials",
+                        errors: userResult.Errors.Select(e => new Error("INVALID_CREDENTIALS", e)).ToList()
+                    ));
                 }
 
-                _logger.LogInformation("✅ User validated, generating tokens");
-
-                var userData = await GetClaims(loginDto.Email);
+                //var userData = await GetClaims(loginDto.Email);
+                var userData = await _userService.GetClaimsAsync(loginDto.Email);
                 var claims = userData.Item1;
                 UserDto user = userData.Item2;
 
                 var accessToken = _tokenService.GenerateAccessToken(claims);
-                _logger.LogInformation("✅ AccessToken generated: {Preview}...",
-                    accessToken.Substring(0, Math.Min(30, accessToken.Length)));
-
                 var refreshToken = _tokenService.GenerateRefreshToken();
 
                 var storedToken = new RefreshTokenDto
@@ -262,12 +247,10 @@ namespace WebApi.Controllers
                     SameSite = SameSiteMode.None,  // ✅ Must be None for cross-site
                     Path = "/",
                     Expires = storedToken.Expires,
-                    
+
                 });
 
-                _securityLogger.LogSuccessfulLogin(user.Id.ToString(), loginDto.Email);
-
-                _logger.LogInformation("✅ API Login SUCCESS: Returning AccessToken for {Email}", loginDto.Email);
+              
 
                 return Ok(new LoginResponse
                 {
@@ -282,126 +265,8 @@ namespace WebApi.Controllers
             }
         }
 
-        /// <summary>
-        /// [LEGACY ENDPOINT - COMMENTED OUT FOR TESTING] Issues a new access token using a valid refresh token.
-        /// 
-        /// ⚠️ NOTE: This endpoint uses the OLD refresh token flow. The CURRENT endpoint is:
-        /// POST /api/auth/refresh-access-token (see below)
-        /// 
-        /// This endpoint is currently commented out to verify nothing depends on it.
-        /// If no issues arise after monitoring, it can be safely removed.
-        /// </summary>
-        /*
-        [Obsolete("Use POST /api/auth/refresh-access-token instead. This legacy endpoint will be removed in a future version.")]
-        [HttpPost("refresh-token")]
-        [EnableRateLimiting("token-refresh")]  // ✅ Rate limit to prevent abuse
-        public async Task<IActionResult> RefreshToken()
-        {
-            // Step 1: Get refresh token from cookie
-            if (!Request.Cookies.TryGetValue("RefreshToken", out var refreshToken))
-            {
-                // ✅ NEW: Log token refresh failure
-                _securityLogger.LogTokenRefreshFailed("No refresh token in cookie");
-
-                return Unauthorized(ApiResponse<object>.FailureResponse(
-                    message: "No refresh token found",
-                    errors: new List<Error>
-                    {
-                new Error("NO_REFRESH_TOKEN", "Refresh token cookie is missing")
-                    }
-                ));
-            }
-
-            // Step 2: Get stored token details
-            var storedToken = await _refreshTokenRetriver.GetByToken(refreshToken);
-
-            // ✅ SECURITY: Detect reuse of revoked token (possible attack)
-            if (storedToken != null && storedToken.CurrentState == 2)
-            {
-                // ✅ NEW: Log critical security event
-                _securityLogger.LogTokenReuseDetected(storedToken.UserId, refreshToken);
-                _logger.LogWarning("⚠️ SECURITY ALERT: Attempt to reuse revoked token for user {UserId}", storedToken.UserId);
-
-                // ✅ CRITICAL: Revoke ALL tokens (token theft detected)
-                await _refreshTokenService.RevokeAllUserTokensAsync(
-                    storedToken.UserId,
-                    "Token reuse detected - possible theft");
-
-                // ✅ NEW: Log all tokens revoked
-                _securityLogger.LogAllTokensRevoked(storedToken.UserId, "Token reuse detected");
-
-                return Unauthorized(ApiResponse<object>.FailureResponse(
-                    message: "Security alert: This token has been revoked",
-                    errors: new List<Error>
-                    {
-                new Error("TOKEN_REUSE_DETECTED",
-                "This token has already been used. For security, all your sessions have been terminated. Please login again.")
-                    }
-                ));
-            }
-
-            // Step 3: Check if token is valid and not expired
-            if (storedToken == null || storedToken.Expires < DateTime.UtcNow)
-            {
-                // ✅ NEW: Log token refresh failure
-                _securityLogger.LogTokenRefreshFailed("Invalid or expired token");
-
-                return Unauthorized(ApiResponse<object>.FailureResponse(
-                    message: "Invalid or expired refresh token",
-                    errors: new List<Error>
-                    {
-                new Error("INVALID_REFRESH_TOKEN", "The refresh token is invalid or has expired")
-                    }
-                ));
-            }
-
-            // ✅ Step 4: ROTATE TOKEN
-            var newTokenDto = await _refreshTokenService.RotateRefreshTokenWithTrackingAsync(
-                storedToken.UserId,
-                refreshToken,
-                daysValid: 7);
-
-            if (newTokenDto == null)
-            {
-                _logger.LogError("Failed to rotate refresh token for user {UserId}", storedToken.UserId);
-
-                // ✅ NEW: Log token refresh failure
-                _securityLogger.LogTokenRefreshFailed("Token rotation failed");
-
-                return Unauthorized(ApiResponse<object>.FailureResponse(
-                    message: "Token rotation failed",
-                    errors: new List<Error>
-                    {
-                new Error("ROTATION_FAILED", "Unable to rotate refresh token")
-                    }
-                ));
-            }
-
-            // Step 5: Set new token in cookie
-            Response.Cookies.Append("RefreshToken", newTokenDto.Token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Path = "/",
-                Expires = newTokenDto.Expires
-            });
-
-            // ✅ NEW: Log successful token rotation
-            _securityLogger.LogTokenRotation(storedToken.UserId);
-            _logger.LogInformation("✓ Refresh token rotated successfully for user {UserId}", storedToken.UserId);
-
-            return Ok(ApiResponse<object>.SuccessResponse(
-                data: new
-                {
-                    TokenRotated = true,
-                    NewTokenPreview = newTokenDto.Token.Substring(0, 20) + "...",
-                    ExpiresAt = newTokenDto.Expires
-                },
-                message: "Refresh token renewed successfully"
-            ));
-        }
-        */
+     
+    
 
         /// <summary>
         /// [CURRENT ENDPOINT] Issues a new JWT access token using a valid refresh token.
@@ -437,20 +302,35 @@ namespace WebApi.Controllers
         /// 200 OK with new access token on success
         /// 401 Unauthorized if token is missing, invalid, expired, or reused (security breach detected)
         /// </returns>
+        /// 
+        /// <summary>
+        /// SECURITY LOGGING ARCHITECTURE for RefreshAccessToken:
+        /// 
+        /// Token-level security events remain in AuthController because they represent
+        /// HTTP-protocol-level failures (missing cookies, invalid tokens, token reuse,
+        /// token expiration) rather than business-logic decisions.
+        /// 
+        /// This follows the same pattern as logout (LogLogout in controller) and contrasts with
+        /// credential validation (LoginAsync/RegisterAsync security events in UserService).
+        /// 
+        /// Token security events logged here:
+        /// - LogTokenRefreshFailed: Missing/invalid/expired token
+        /// - LogTokenReuseDetected: Suspicious token reuse (security breach)
+        /// - LogAllTokensRevoked: Emergency revocation response
+        /// - LogTokenRotation: Successful secure token rotation
+        /// </summary>
         [HttpPost("refresh-access-token")]
         [EnableRateLimiting("token-refresh")]  // ✅ Rate limit token refresh attempts
         public async Task<IActionResult> RefreshAccessToken()
         {
             try
             {
-                // ✅ DIAGNOSTIC: Log all cookies
-                var allCookies = Request.Cookies.Select(c => $"{c.Key}={c.Value.Substring(0, Math.Min(10, c.Value.Length))}...");
-                _logger.LogInformation("📥 Refresh request cookies: {Cookies}", string.Join(", ", allCookies));
-
                 // ✅ Step 1: Check cookie
                 if (!Request.Cookies.TryGetValue("RefreshToken", out var refreshToken))
                 {
-                    _logger.LogWarning("❌ FAILED: No RefreshToken cookie found");
+                  
+                    _securityLogger.LogTokenRefreshFailed("No refresh token in cookie");
+
                     return Unauthorized(ApiResponse<object>.FailureResponse(
                         message: "No refresh token found",
                         errors: new List<Error>
@@ -460,15 +340,14 @@ namespace WebApi.Controllers
                     ));
                 }
 
-                _logger.LogInformation("✅ Step 1 passed: RefreshToken cookie found: {Preview}...",
-                    refreshToken.Substring(0, Math.Min(20, refreshToken.Length)));
-
                 // ✅ Step 2: Check database
                 var storedToken = await _refreshTokenRetriver.GetByToken(refreshToken);
 
                 if (storedToken == null)
                 {
-                    _logger.LogWarning("❌ FAILED: RefreshToken not found in database");
+                    
+                    _securityLogger.LogTokenRefreshFailed("Invalid or unknown refresh token");
+
                     return Unauthorized(ApiResponse<object>.FailureResponse(
                         message: "Invalid refresh token",
                         errors: new List<Error>
@@ -478,30 +357,41 @@ namespace WebApi.Controllers
                     ));
                 }
 
-                _logger.LogInformation("✅ Step 2 passed: Token found in database for user {UserId}", storedToken.UserId);
-
-                // ✅ Step 3: Check if revoked
+                // ✅ Step 3: Check if revoked (SECURITY: Token reuse detection)
                 if (storedToken.CurrentState == 2)
                 {
-                    _logger.LogWarning("❌ FAILED: RefreshToken is revoked (CurrentState=2)");
+                    //_logger.LogWarning("⚠️ SECURITY ALERT: Attempt to reuse revoked token for user {UserId}", storedToken.UserId);
+
+                    // ✅ Log token reuse detected
+                    await _securityLogger.LogTokenReuseDetected(storedToken.UserId, refreshToken);
+
+                    // ✅ CRITICAL: Revoke ALL tokens (possible token theft)
+                    await _refreshTokenService.RevokeAllUserTokensAsync(
+                        storedToken.UserId,
+                        "Token reuse detected - possible theft");
+
+                    // ✅ Log critical security event
+                     _securityLogger.LogAllTokensRevoked(storedToken.UserId, "Token reuse detected during refresh");
+
                     return Unauthorized(ApiResponse<object>.FailureResponse(
-                        message: "Token has been revoked",
+                        message: "Security alert: This token has been revoked",
                         errors: new List<Error>
                         {
-                    new Error("TOKEN_REVOKED", "This token has been revoked")
+                    new Error("TOKEN_REUSE_DETECTED",
+                    "This token has already been used. For security, all your sessions have been terminated. Please login again.")
                         }
                     ));
                 }
-
-                _logger.LogInformation("✅ Step 3 passed: Token not revoked (CurrentState={State})", storedToken.CurrentState);
 
                 // ✅ Step 4: Check expiration
                 var now = DateTime.UtcNow;
                 if (storedToken.Expires < now)
                 {
                     var minutesExpired = (now - storedToken.Expires).TotalMinutes;
-                    _logger.LogWarning("❌ FAILED: RefreshToken expired {Minutes} minutes ago. Expires={Expires}, Now={Now}",
-                        minutesExpired, storedToken.Expires, now);
+                    //_logger.LogWarning("❌ FAILED: RefreshToken expired {Minutes} minutes ago. Expires={Expires}, Now={Now}", minutesExpired, storedToken.Expires, now);
+
+                    _securityLogger.LogTokenRefreshFailed($"Refresh token expired {minutesExpired:F0} minutes ago");
+
                     return Unauthorized(ApiResponse<object>.FailureResponse(
                         message: "Refresh token has expired",
                         errors: new List<Error>
@@ -511,32 +401,64 @@ namespace WebApi.Controllers
                     ));
                 }
 
-                var minutesRemaining = (storedToken.Expires - now).TotalMinutes;
-                _logger.LogInformation("✅ Step 4 passed: Token valid for {Minutes} more minutes", minutesRemaining);
-
                 // ✅ Step 5: Generate new access token
-                var claims = await GetClaimsById(storedToken.UserId);
+               // var claims = await GetClaimsById(storedToken.UserId);
+                var claims = await _userService.GetClaimsByIdAsync(storedToken.UserId);
                 var newAccessToken = _tokenService.GenerateAccessToken(claims);
 
-                _logger.LogInformation("✅ SUCCESS: New AccessToken generated for user {UserId}", storedToken.UserId);
+                // ✅ Step 6: Rotate refresh token (revoke old, generate new)
+                var newTokenDto = await _refreshTokenService.RotateRefreshTokenWithTrackingAsync(
+                    storedToken.UserId,
+                    refreshToken,
+                    daysValid: 7);
 
-                return Ok(ApiResponse<Models.AccessTokenResponse>.SuccessResponse(
-                    data: new Models.AccessTokenResponse
+                if (newTokenDto == null)
+                {
+                    _logger.LogDebug("Failed to rotate refresh token for user {UserId}", storedToken.UserId);
+                    _securityLogger.LogTokenRefreshFailed("Token rotation failed");
+
+                    return Unauthorized(ApiResponse<object>.FailureResponse(
+                        message: "Token rotation failed",
+                        errors: new List<Error>
+                        {
+                    new Error("ROTATION_FAILED", "Unable to rotate refresh token")
+                        }
+                    ));
+                }
+
+                // ✅ Step 7: Set new refresh token in cookie
+                Response.Cookies.Append("RefreshToken", newTokenDto.Token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Path = "/",
+                    Expires = newTokenDto.Expires
+                });
+
+                // ✅ Step 8: Log successful token rotation
+                _securityLogger.LogTokenRotation(storedToken.UserId);
+                _logger.LogDebug("✅ Token refresh successful for user {UserId} | New token expires {Expires}",
+                    storedToken.UserId, newTokenDto.Expires);
+
+                return Ok(ApiResponse<object>.SuccessResponse(
+                    data: new
                     {
-                        AccessToken = newAccessToken
+                        AccessToken = newAccessToken,
+                        ExpiresIn = 1800, // 30 minutes in seconds
+                        TokenType = "Bearer"
                     },
-                    message: "Access token renewed"
+                    message: "Access token refreshed successfully"
                 ));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "💥 EXCEPTION in refresh-access-token");
+                _logger.LogCritical(ex, "🚨 CRITICAL ERROR in RefreshAccessToken");
+                _securityLogger.LogTokenRefreshFailed($"Unexpected error: {ex.Message}");
+
                 return StatusCode(500, ApiResponse<object>.FailureResponse(
-                    message: "Server error during refresh",
-                    errors: new List<Error>
-                    {
-                new Error("SERVER_ERROR", ex.Message)
-                    }
+                    message: "An unexpected error occurred",
+                    errors: new List<Error> { new Error("INTERNAL_ERROR", "Please try again later") }
                 ));
             }
         }
@@ -604,53 +526,39 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="dto">Object containing the email address</param>
         /// <returns>200 OK with generic success message (always, even if email doesn't exist for security)</returns>
+        /// 
         [HttpPost("forgot-password")]
-        [AllowAnonymous]  // ✅ Must allow unauthenticated access (user forgot password)
-        [EnableRateLimiting("auth")]  // ✅ Rate limit to prevent email bombing
+        [AllowAnonymous]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
-
-            if (user != null)
+            try
             {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                // ✅ Get UI base URL from configuration
+                var uiBaseUrl = _configuration["ClientApp:BaseUrl"]?.TrimEnd('/') ?? "https://localhost:7065";
+                var resetPasswordUrl = $"{uiBaseUrl}/Account/ResetPassword";
 
-                var uiBaseUrl = _configuration["ClientApp:BaseUrl"]?.TrimEnd('/');
-                if (string.IsNullOrWhiteSpace(uiBaseUrl))
-                {
-                    uiBaseUrl = "https://localhost:7065";
-                }
+                // ✅ UserService handles token generation, email send, AND security logging
+                await _userService.ForgotPasswordAsync(dto.Email, resetPasswordUrl);
 
-                var resetLink = QueryHelpers.AddQueryString(
-                    $"{uiBaseUrl}/Account/ResetPassword",
-                    new Dictionary<string, string?>
-                    {
-                        ["email"] = dto.Email,
-                        ["token"] = token
-                    });
-
-                var subject = "Reset your password";
-                var body = $@"
-                    <p>We received a request to reset your password.</p>
-                    <p><a href='{resetLink}'>Click here to reset your password</a></p>
-                    <p>If you did not request this, please ignore this email.</p>";
-
-                try
-                {
-                    await _emailSender.SendEmailAsync(dto.Email, subject, body);
-                    _securityLogger.LogPasswordResetRequested(dto.Email);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to send password reset email to {Email}", dto.Email);
-                }
+                // ✅ Always return generic success (prevents username enumeration)
+                return Ok(ApiResponse<object>.SuccessResponse(
+                    data: null,
+                    message: "If the email exists, a password reset link has been sent."
+                ));
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "💥 Unexpected error in forgot password for {Email}", dto.Email);
 
-            return Ok(ApiResponse<object>.SuccessResponse(
-                data: null,
-                message: "If the email exists, a password reset link has been sent."
-            ));
+                // ✅ Still return generic success (security best practice)
+                return Ok(ApiResponse<object>.SuccessResponse(
+                    data: null,
+                    message: "If the email exists, a password reset link has been sent."
+                ));
+            }
         }
+
 
         /// <summary>
         /// Resets a user's password using a valid reset token from the forgot-password flow.
@@ -682,46 +590,38 @@ namespace WebApi.Controllers
         /// 400 BadRequest if user not found or token invalid
         /// </returns>
         [HttpPost("reset-password")]
-        [AllowAnonymous]  // ✅ Must allow unauthenticated access (user is resetting forgotten password)
-        [EnableRateLimiting("auth")]  // ✅ Rate limit to prevent brute-force token attacks
+        [AllowAnonymous]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
-            if (user == null)
+            try
             {
-                // ✅ NEW: Log failed password reset
-                _securityLogger.LogPasswordResetFailed(dto.Email, "User not found");
+                // ✅ UserService handles all validation AND security logging
+                var result = await _userService.ResetPasswordAsync(dto.Email, dto.Token, dto.NewPassword);
 
+                if (result.Succeeded)
+                {
+                    return Ok(ApiResponse<object>.SuccessResponse(
+                        data: null,
+                        message: "Password reset successfully"
+                    ));
+                }
+
+                // Return validation errors without duplicating security logging
+                var errorList = result.Errors.Select(e => new Error("RESET_FAILED", e.Description)).ToList();
                 return BadRequest(ApiResponse<object>.FailureResponse(
-                    message: "Invalid request",
-                    errors: new List<Error>
-                    {
-                new Error("INVALID_REQUEST", "Password reset request is invalid")
-                    }
+                    message: "Password reset failed",
+                    errors: errorList
                 ));
             }
-
-            var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
-            if (result.Succeeded)
+            catch (Exception ex)
             {
-                // ✅ NEW: Log successful password reset
-                _securityLogger.LogPasswordResetSuccess(user.Id, dto.Email);
-
-                return Ok(ApiResponse<object>.SuccessResponse(
-                    data: null,
-                    message: "Password reset successfully"
+                _logger.LogError(ex, "💥 Exception during password reset for {Email}", dto.Email);
+                return StatusCode(500, ApiResponse<object>.FailureResponse(
+                    message: "An unexpected error occurred",
+                    errors: new List<Error> { new Error("INTERNAL_ERROR", "Please try again later") }
                 ));
             }
-
-            // ✅ NEW: Log failed password reset
-            _securityLogger.LogPasswordResetFailed(dto.Email, string.Join(", ", result.Errors.Select(e => e.Description)));
-
-            var errorList = result.Errors.Select(e => new Error("RESET_FAILED", e.Description)).ToList();
-
-            return BadRequest(ApiResponse<object>.FailureResponse(
-                message: "Password reset failed",
-                errors: errorList
-            ));
         }
 
         /// <summary>
@@ -754,115 +654,35 @@ namespace WebApi.Controllers
         [AllowAnonymous]  // ✅ Must allow unauthenticated access (user is confirming email)
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            try
             {
-                return BadRequest(ApiResponse<object>.FailureResponse(
-                    message: "Invalid confirmation request",
-                    errors: new List<Error>
-                    {
-                new Error("INVALID_REQUEST", "User ID and token are required")
-                    }
-                ));
-            }
+                // ✅ UserService handles validation, confirmation, email send, AND security logging
+                var result = await _userService.ConfirmEmailAsync(userId, token, _emailSender);
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return BadRequest(ApiResponse<object>.FailureResponse(
-                    message: "User not found",
-                    errors: new List<Error>
-                    {
-                new Error("USER_NOT_FOUND", "The specified user does not exist")
-                    }
-                ));
-            }
-
-            var result = await _userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
-            {
-                // ✅ Log email confirmation
-                _securityLogger.LogEmailConfirmed(user.Id, user.Email);
-
-                // ✅ Send welcome email
-                try
+                if (result.Succeeded)
                 {
-                    var welcomeSubject = "Welcome to MyShipping";
-                    var welcomeBody = $"<p>Hi {user.UserName ?? user.Email},</p><p>Your email has been confirmed successfully. You can now log in.</p>";
-                    await _emailSender.SendEmailAsync(user.Email, welcomeSubject, welcomeBody);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to send welcome email to {Email}", user.Email);
+                    return Ok(ApiResponse<object>.SuccessResponse(
+                        data: null,
+                        message: "Email confirmed successfully. You can now login."
+                    ));
                 }
 
-                return Ok(ApiResponse<object>.SuccessResponse(
-                    data: null,
-                    message: "Email confirmed successfully. You can now login."
+                // ✅ Return validation errors without duplicating security logging
+                var errorList = result.Errors.Select(e => new Error("CONFIRMATION_FAILED", e.Description)).ToList();
+                return BadRequest(ApiResponse<object>.FailureResponse(
+                    message: "Email confirmation failed",
+                    errors: errorList
                 ));
             }
-
-            var errorList = result.Errors.Select(e => new Error("CONFIRMATION_FAILED", e.Description)).ToList();
-
-            return BadRequest(ApiResponse<object>.FailureResponse(
-                message: "Email confirmation failed",
-                errors: errorList
-            ));
-        }
-
-        /// <summary>
-        /// Helper method: Builds JWT claims array for a user identified by email.
-        /// Used by the Login endpoint to create claims for the access token.
-        /// 
-        /// CLAIMS INCLUDED:
-        /// - NameIdentifier: User's GUID (used to identify user in subsequent API requests)
-        /// - Name: User's email address
-        /// - Email: User's email address (duplicate for compatibility)
-        /// - Role: User's role from database (Admin, User, Reviewer, etc.)
-        /// 
-        /// These claims are embedded in the JWT access token and available via
-        /// User.Claims in [Authorize] endpoints.
-        /// </summary>
-        /// <param name="email">User's email address</param>
-        /// <returns>Tuple containing claims array and UserDto</returns>
-        private async Task<(Claim[], UserDto)> GetClaims(string email)
-        {
-            var user = await _userService.GetUserByEmailAsync(email);
-            var claims = new[]
+            catch (Exception ex)
             {
-                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  // ✅ User ID for authorization
-                 new Claim(ClaimTypes.Name, user.Email),
-                 new Claim(ClaimTypes.Email, user.Email),  // ✅ Email claim
-                 new Claim(ClaimTypes.Role, user.Role ?? "User")  // ✅ Role for role-based authorization
-            };
-            return (claims, user);
+                _logger.LogError(ex, "💥 Exception during email confirmation for user {UserId}", userId);
+                return StatusCode(500, ApiResponse<object>.FailureResponse(
+                    message: "An unexpected error occurred",
+                    errors: new List<Error> { new Error("INTERNAL_ERROR", "Please try again later") }
+                ));
+            }
         }
 
-        /// <summary>
-        /// Helper method: Builds JWT claims array for a user identified by ID.
-        /// Used by the RefreshAccessToken endpoint to create claims for the new access token.
-        /// 
-        /// CLAIMS INCLUDED:
-        /// - NameIdentifier: User's GUID
-        /// - Name: User's email address
-        /// - Email: User's email address
-        /// - Role: User's current role from database (refreshed from DB to get latest role)
-        /// 
-        /// IMPORTANT: This method fetches the user's CURRENT role from the database,
-        /// so if an admin changes a user's role, the new role will be reflected in
-        /// the refreshed access token.
-        /// </summary>
-        /// <param name="userId">User's ID (GUID as string)</param>
-        /// <returns>Claims array for JWT token generation</returns>
-        private async Task<Claim[]> GetClaimsById(string userId)
-        {
-            var user = await _userService.GetUserByIdAsync(userId);
-            return new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  // ✅ User ID
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Email, user.Email),  // ✅ Email claim
-                new Claim(ClaimTypes.Role, user.Role ?? "User")  // ✅ Current role (refreshed from DB)
-            };
-        }
     }
 }

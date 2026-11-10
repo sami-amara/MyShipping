@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Contracts;
+using Business.Contracts.Exceptions;
 using Business.Contracts.Shipment;
 using Business.DTOS;
 using Business.Helpers;
@@ -27,8 +28,7 @@ namespace UI.Areas.admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Reviewer},{RoleNames.Operation},{RoleNames.OperationManager}")]
-    //[Authorize(Roles = "Admin,Reviewer,Operation,OperationManager")]
-    //[Authorize]
+    
     public class ShipmentsController : Controller
     {
 
@@ -36,15 +36,18 @@ namespace UI.Areas.admin.Controllers
         IShipmentQuery _shipmentQuery;
         private readonly ILogger _logger;
         private readonly IUserService _userService;
+        private readonly IShipmentCommand _shipmentCommand;
         public ShipmentsController( ILogger<HomeController> logger,
               IUserService userService,
-        IShipmentQuery shipmentQuery)
+        IShipmentQuery shipmentQuery, IShipmentCommand shipmentCommand)
         {
             
             _logger = logger;
             _shipmentQuery = shipmentQuery;
             _userService = userService;
-           
+            _shipmentCommand = shipmentCommand;
+
+
         }
 
         public IActionResult Create() => View();
@@ -88,7 +91,8 @@ namespace UI.Areas.admin.Controllers
                     statusFilter = new List<ShipmentStatusEnum> 
                     { 
                         ShipmentStatusEnum.Created,   // Status 1
-                        ShipmentStatusEnum.Updated    // Status 2
+                        ShipmentStatusEnum.Updated,    // Status 2
+                        ShipmentStatusEnum.Approved
                     };
                 }
                 else if (User.IsInRole(RoleNames.Operation))
@@ -96,7 +100,9 @@ namespace UI.Areas.admin.Controllers
                     // ✅ Operation role: Show only Approved shipments (ready for processing)
                     statusFilter = new List<ShipmentStatusEnum>
                     {
-                        ShipmentStatusEnum.Approved   // Status 3
+                        ShipmentStatusEnum.Approved,   // Status 3
+                        ShipmentStatusEnum.ReadyForShipping   // Status 3
+
                     };
                 }
                 else if (User.IsInRole(RoleNames.OperationManager))
@@ -104,7 +110,8 @@ namespace UI.Areas.admin.Controllers
                     // ✅ OperationManager role: Show only ReadyForShipping shipments
                     statusFilter = new List<ShipmentStatusEnum> 
                     {  
-                        ShipmentStatusEnum.ReadyForShipping  // Status 4
+                        ShipmentStatusEnum.ReadyForShipping,  // Status 4
+                        ShipmentStatusEnum.Shipped // Status 4
                     };
                 }
                 else
@@ -147,10 +154,11 @@ namespace UI.Areas.admin.Controllers
 
                 return View(vm);  // Render the List view with the view model
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                // ✅ ERROR HANDLING: Log error and return empty result instead of crashing
-                _logger.LogError(ex, "Failed to load paged shipments (List)");
+                // ✅ EXPECTED ERROR: Service layer couldn't load shipments (DB query failed)
+                // Log gracefully and return empty results instead of crashing
+                _logger.LogWarning(ex, "Failed to load paged shipments (List)");
 
                 // Create empty paged result with safe defaults
                 var empty = new PagedResult<ShippmentDto>
@@ -167,7 +175,7 @@ namespace UI.Areas.admin.Controllers
                 // Return view with empty data (user sees "No results" instead of error page)
                 var vm = new ShipmentsIndexViewModel 
                 { 
-                    Paged = empty, 
+                    Paged = empty,
                     Pager = pager, 
                     SortBy = sortBy, 
                     SortDir = sortDir, 
@@ -211,33 +219,15 @@ namespace UI.Areas.admin.Controllers
                 if (dto == null) return NotFound();
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Failed to load shipment for Edit {Id}", id);
+                _logger.LogWarning(ex, "Failed to load shipment for Approve {Id}", id);
                 return StatusCode(500);
             }
         }
 
-        //// GET: ShipmentsController/MakeShipmentReadyForShipp/{id}
-        ////[Authorize(Roles = "Admin,Manager")]
-        //[Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Operation}")]
-        //public async Task<IActionResult> MakeShipmentReadyForShipp(Guid id)
-        //{
-        //    if (id == Guid.Empty) return BadRequest();
-        //    try
-        //    {
-        //        var dto = await _shipmentQuery.GetByIdAsync(id);
-        //        if (dto == null) return NotFound();
-        //        // Render a lightweight view that allows Admin/Manager to select Carrier and mark ReadyForShipping
-        //        return View(dto);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Failed to load shipment for MakeShipmentReadyForShipp {Id}", id);
-        //        return StatusCode(500);
-        //    }
-        //}
 
+        [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Operation}")]
         public async Task<IActionResult> MakeShipmentReadyForShipp(Guid id)
         {
             if (id == Guid.Empty) return BadRequest();
@@ -246,6 +236,7 @@ namespace UI.Areas.admin.Controllers
             {
                 var dto = await _shipmentQuery.GetByIdAsync(id);
                 if (dto == null) return NotFound();
+
 
                 // ✅ Load current user context
                 var userEmail = User?.Identity?.Name;
@@ -257,22 +248,18 @@ namespace UI.Areas.admin.Controllers
                 var user = await _userService.GetUserByEmailAsync(userEmail);
                 if (user != null)
                 {
-                    
-                    ViewData["DefaultCarrierId"] = user.DefaultCarrierId?.ToString() ?? "";
 
-                    _logger.LogInformation("🎯 ReadyForShipping - loaded user defaults: Carrier={Carrier}", user.DefaultCarrierId);
+                    ViewData["DefaultCarrierId"] = user.DefaultCarrierId?.ToString() ?? "";
                 }
 
-                // Render a lightweight view that allows Admin/Manager to select Carrier and mark ReadyForShipping
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "❌ Failed to load shipment for MakeShipmentReadyForShipp {Id}", id);
+                _logger.LogWarning(ex, "❌ Failed to load shipment for MakeShipmentReadyForShipp {Id}", id);
                 return StatusCode(500);
             }
         }
-
 
         [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.OperationManager}")]
         public async Task<IActionResult> Shipped(Guid id)
@@ -282,17 +269,17 @@ namespace UI.Areas.admin.Controllers
             {
                 var dto = await _shipmentQuery.GetByIdAsync(id);
                 if (dto == null) return NotFound();
-                // Render a lightweight view that allows Admin/Manager to select Carrier and mark ReadyForShipping
+               
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Failed to load shipment for MakeShipmentReadyForShipp {Id}", id);
+                _logger.LogWarning(ex, "Failed to load shipment for Shipped {Id}", id);
                 return StatusCode(500);
             }
         }
 
-        
+
         [Authorize(Roles = $"{RoleNames.Admin}")]
         public async Task<ActionResult> Delete(Guid id)
         {
@@ -303,9 +290,9 @@ namespace UI.Areas.admin.Controllers
                 if (dto == null) return NotFound();
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Failed to load shipment for SoftDelete {Id}", id);
+                _logger.LogWarning(ex, "Failed to load shipment for SoftDelete {Id}", id);
                 return StatusCode(500);
             }
 
@@ -325,33 +312,14 @@ namespace UI.Areas.admin.Controllers
                 if (dto == null) return NotFound();
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Failed to load shipment for cancel {Id}", id);
+                _logger.LogWarning(ex, "Failed to load shipment for cancel {Id}", id);
                 return StatusCode(500);
             }
         }
 
-        // GET: ShipmentsController/Deliver/{id}
-        [HttpGet]
-        [Route("Deliver/{id}")]
-        [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.OperationManager}")]
-        public async Task<IActionResult> Deliver(Guid id)
-        {
 
-            if (id == Guid.Empty) return BadRequest();
-            try
-            {
-                var dto = await _shipmentQuery.GetByIdAsync(id);
-                if (dto == null) return NotFound();
-                return View(dto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to load shipment for Deliver {Id}", id);
-                return StatusCode(500);
-            }
-        }
 
         // GET: ShipmentsController/Return/{id}
         [HttpGet]
@@ -367,12 +335,34 @@ namespace UI.Areas.admin.Controllers
                 if (dto == null) return NotFound();
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Failed to load shipment for Return {Id}", id);
+                _logger.LogWarning(ex, "Failed to load shipment for Return {Id}", id);
                 return StatusCode(500);
             }
         }
+        // GET: ShipmentsController/Deliver/{id}
+        [HttpGet]
+        [Route("Deliver/{id}")]
+        [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.OperationManager}")]
+        public async Task<IActionResult> Deliver(Guid id)
+        {
+
+            if (id == Guid.Empty) return BadRequest();
+            try
+            {
+                var dto = await _shipmentQuery.GetByIdAsync(id);
+                if (dto == null) return NotFound();
+                return View(dto);
+            }
+            catch (ShipmentLoadException ex)
+            {
+                _logger.LogWarning(ex, "Failed to load shipment for Deliver {Id}", id);
+                return StatusCode(500);
+            }
+        }
+
+
 
         // GET: ShipmentsController/SoftDelete/{id}
         [HttpGet]
@@ -387,9 +377,9 @@ namespace UI.Areas.admin.Controllers
                 if (dto == null) return NotFound();
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Failed to load shipment for SoftDelete {Id}", id);
+                _logger.LogWarning(ex, "Failed to load shipment for SoftDelete {Id}", id);
                 return StatusCode(500);
             }
         }
@@ -427,9 +417,9 @@ namespace UI.Areas.admin.Controllers
                 // For admin area, usually all authorized users can view all shipments
                 return View(shipment);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Error loading shipment {Id} for display", id);
+                _logger.LogWarning(ex, "Error loading shipment {Id} for display", id);
                 TempData["MessageType"] = MessageType.Error;
                 TempData["Message"] = "An error occurred while loading the shipment details";
                 return RedirectToAction(nameof(List));
@@ -448,11 +438,41 @@ namespace UI.Areas.admin.Controllers
                 if (dto == null) return NotFound();
                 return View(dto);
             }
-            catch (Exception ex)
+            catch (ShipmentLoadException ex)
             {
-                _logger.LogError(ex, "Failed to load shipment for refund {Id}", id);
+                _logger.LogWarning(ex, "Failed to load shipment for refund {Id}", id);
                 return StatusCode(500);
             }
+        }
+
+        /// <summary>
+        /// TEST ACTION: Deliberately throws an unhandled exception to test ExceptionLoggingFilter.
+        /// This action does NOT catch the exception, allowing it to bubble to the global filter.
+        /// Route: /admin/shipments/test-exception
+        /// Comment this out after testing!
+        /// </summary>
+        [HttpGet]
+        //[Route("test-exception")]
+        //[AllowAnonymous]  // Allow anonymous access for testing
+        public IActionResult TestException()
+        {
+            // This exception is NOT caught by any try-catch in this action
+            // It will bubble up to ExceptionLoggingFilter for logging
+            throw new InvalidOperationException(
+                "🧪 TEST: This is a deliberate unhandled exception to verify ExceptionLoggingFilter is working. " +
+                "You should see this logged in the database and log files.SAMI " +
+                "Remove this action after testing.");
+        }
+
+        [HttpGet]
+        [AllowAnonymous] // allow anonymous access for testing
+        public IActionResult TestSecurityException()
+        {
+            // This simulates a deliberate security-related failure
+            throw new UnauthorizedAccessException(
+                "🧪 TEST SECURITY EXCEPTION: Unauthorized access attempt detected. " +
+                "This should be logged into security.txt and the database, " +
+                "but not into app.txt as a normal exception.");
         }
     }
 }

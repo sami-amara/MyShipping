@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccessLayer;
 using DataAccessLayer.DbContext;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -47,13 +46,13 @@ namespace UI.Services
                 _context.AccountAuditLogs.Add(auditLog);
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation(
-                    "✅ Audit log recorded: Action={Action}, UserId={UserId}, InitiatedBy={InitiatedBy}, Timestamp={Timestamp}",
-                    action, userId, initiatedBy, auditLog.Timestamp);
+                //_logger.LogInformation(
+                //    "✅ Audit log recorded: Action={Action}, UserId={UserId}, InitiatedBy={InitiatedBy}, Timestamp={Timestamp}",
+                //    action, userId, initiatedBy, auditLog.Timestamp);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Error recording audit log for user {UserId}", userId);
+                _logger.LogError(ex, "🔴 Error recording audit log for user {UserId}", userId);
                 // Don't throw - audit logging should not break the main operation
             }
         }
@@ -99,127 +98,168 @@ namespace UI.Services
             return await GetAuditLogsByActionAsync("Reactivated", limit);
         }
 
-
-
         /// <summary>
-        /// Retrieves all deactivated users with their deactivation details.
-        /// Used by Admin Dashboard.
+        /// Retrieves all failed login attempt logs.
         /// </summary>
-        public async Task<IEnumerable<dynamic>> GetDeactivatedUsersAsync()
+        public async Task<IEnumerable<AccountAuditLog>> GetFailedLoginLogsAsync(int limit = 100)
         {
-            var context = _context as ShippingContext;
-
-            return await context.Users
-                .Where(u => u.IsDeactivated)
-                .Select(u => new
-                {
-                    u.Id,
-                    u.Email,
-                    u.FirstName,
-                    u.LastName,
-                    u.DeactivatedAt,
-                    LastAction = context.AccountAuditLogs
-                        .Where(a => a.UserId == u.Id)
-                        .OrderByDescending(a => a.Timestamp)
-                        .FirstOrDefault().Timestamp
-                })
-                .OrderByDescending(u => u.DeactivatedAt)
-                .ToListAsync();
+            return await GetAuditLogsByActionAsync("FailedLoginAttempt_InvalidPassword", limit);
         }
 
         /// <summary>
-        /// Retrieves audit logs with user information for admin viewing.
+        /// Retrieves all account lockout events.
         /// </summary>
-        public async Task<IEnumerable<dynamic>> GetAuditLogsWithUserInfoAsync(int limit = 100)
+        public async Task<IEnumerable<AccountAuditLog>> GetAccountLockoutLogsAsync(int limit = 100)
         {
-            var context = _context as ShippingContext;
+            return await GetAuditLogsByActionAsync("FailedLoginAttempt_LockedOut", limit);
+        }
 
+        /// <summary>
+        /// Retrieves all password change events.
+        /// </summary>
+        public async Task<IEnumerable<AccountAuditLog>> GetPasswordChangeLogsAsync(int limit = 100)
+        {
+            return await GetAuditLogsByActionAsync("PasswordChanged", limit);
+        }
+
+        /// <summary>
+        /// Retrieves audit logs from a specific time period.
+        /// </summary>
+        public async Task<IEnumerable<AccountAuditLog>> GetAuditLogsByTimeRangeAsync(
+            DateTime startTime, DateTime endTime, int limit = 100)
+        {
             return await _context.AccountAuditLogs
-                .Join(
-                    context.Users,
-                    audit => audit.UserId,
-                    user => user.Id,
-                    (audit, user) => new
-                    {
-                        audit.Id,
-                        audit.Action,
-                        audit.Reason,
-                        audit.InitiatedBy,
-                        audit.IpAddress,
-                        audit.Timestamp,
-                        UserEmail = user.Email,
-                        UserName = $"{user.FirstName} {user.LastName}",
-                        UserIsDeactivated = user.IsDeactivated
-                    }
-                )
+                .Where(a => a.Timestamp >= startTime && a.Timestamp <= endTime)
                 .OrderByDescending(a => a.Timestamp)
                 .Take(limit)
                 .ToListAsync();
         }
 
+
+
         /// <summary>
-        /// Searches audit logs by user email.
+        /// Gets all deactivated users (for admin dashboard).
+        /// </summary>
+        public async Task<IEnumerable<AccountAuditLog>> GetDeactivatedUsersAsync(int limit = 100)
+        {
+            return await _context.AccountAuditLogs
+                .Where(a => a.Action == "Deactivated")
+                .OrderByDescending(a => a.Timestamp)
+                .Distinct()
+                .Take(limit)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets audit logs filtered by user email (with user details).
         /// </summary>
         public async Task<IEnumerable<dynamic>> GetAuditLogsByUserEmailAsync(string email, int limit = 100)
         {
-            var context = _context as ShippingContext;
-
             return await _context.AccountAuditLogs
-                .Where(a => a.InitiatedBy == email || a.UserId == email)
-                .Join(
-                    context.Users,
-                    audit => audit.UserId,
-                    user => user.Id,
-                    (audit, user) => new
-                    {
-                        audit.Id,
-                        audit.Action,
-                        audit.Reason,
-                        audit.InitiatedBy,
-                        audit.IpAddress,
-                        audit.Timestamp,
-                        UserEmail = user.Email,
-                        UserName = $"{user.FirstName} {user.LastName}"
-                    }
-                )
+                .Where(a => a.InitiatedBy.Contains(email))
                 .OrderByDescending(a => a.Timestamp)
                 .Take(limit)
+                .Select(a => new
+                {
+                    a.Id,
+                    a.UserId,
+                    a.Action,
+                    a.Reason,
+                    a.InitiatedBy,
+                    a.IpAddress,
+                    a.Timestamp,
+                    UserEmail = a.User != null ? a.User.Email : "Unknown"
+                })
                 .ToListAsync();
         }
 
         /// <summary>
-        /// Searches audit logs by action type with filters.
+        /// Gets audit logs by action with detailed user information.
         /// </summary>
         public async Task<IEnumerable<dynamic>> GetAuditLogsByActionWithDetailsAsync(string action, int limit = 100)
         {
-            var context = _context as ShippingContext;
-
             return await _context.AccountAuditLogs
                 .Where(a => a.Action == action)
-                .Join(
-                    context.Users,
-                    audit => audit.UserId,
-                    user => user.Id,
-                    (audit, user) => new
-                    {
-                        audit.Id,
-                        audit.Action,
-                        audit.Reason,
-                        audit.InitiatedBy,
-                        audit.IpAddress,
-                        audit.Timestamp,
-                        UserId = user.Id,
-                        UserEmail = user.Email,
-                        UserName = $"{user.FirstName} {user.LastName}",
-                        UserIsDeactivated = user.IsDeactivated
-                    }
-                )
                 .OrderByDescending(a => a.Timestamp)
                 .Take(limit)
+                .Select(a => new
+                {
+                    a.Id,
+                    a.UserId,
+                    a.Action,
+                    a.Reason,
+                    a.InitiatedBy,
+                    a.IpAddress,
+                    a.Timestamp,
+                    UserEmail = a.User != null ? a.User.Email : "Unknown",
+                    UserPhoneNumber = a.User != null ? a.User.PhoneNumber : null
+                })
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets all audit logs with user information included.
+        /// </summary>
+        public async Task<IEnumerable<dynamic>> GetAuditLogsWithUserInfoAsync(int limit = 100)
+        {
+            return await _context.AccountAuditLogs
+                .OrderByDescending(a => a.Timestamp)
+                .Take(limit)
+                .Select(a => new
+                {
+                    a.Id,
+                    a.UserId,
+                    a.Action,
+                    a.Reason,
+                    a.InitiatedBy,
+                    a.IpAddress,
+                    a.Timestamp,
+                    UserEmail = a.User != null ? a.User.Email : "Unknown",
+                    UserPhoneNumber = a.User != null ? a.User.PhoneNumber : null,
+                    UserIsDeactivated = a.User != null ? a.User.IsDeactivated : false
+                })
                 .ToListAsync();
         }
 
 
 
+
+
+        /// <summary>
+        /// Gets audit statistics for dashboard.
+        /// </summary>
+        public async Task<AccountAuditStats> GetAuditStatsAsync(int hoursBack = 24)
+        {
+            var cutoffTime = DateTime.UtcNow.AddHours(-hoursBack);
+
+            var recentAudits = await _context.AccountAuditLogs
+                .Where(a => a.Timestamp >= cutoffTime)
+                .ToListAsync();
+
+            return new AccountAuditStats
+            {
+                TotalEvents = recentAudits.Count,
+                Deactivations = recentAudits.Count(a => a.Action == "Deactivated"),
+                Reactivations = recentAudits.Count(a => a.Action == "Reactivated"),
+                FailedLogins = recentAudits.Count(a => a.Action.Contains("FailedLoginAttempt")),
+                PasswordChanges = recentAudits.Count(a => a.Action == "PasswordChanged"),
+                AccountLockouts = recentAudits.Count(a => a.Action.Contains("LockedOut")),
+                UniqueUsersAffected = recentAudits.Select(a => a.UserId).Distinct().Count()
+            };
+        }
+    }
+
+    /// <summary>
+    /// Account audit statistics for admin dashboard.
+    /// </summary>
+    public class AccountAuditStats
+    {
+        public int TotalEvents { get; set; }
+        public int Deactivations { get; set; }
+        public int Reactivations { get; set; }
+        public int FailedLogins { get; set; }
+        public int PasswordChanges { get; set; }
+        public int AccountLockouts { get; set; }
+        public int UniqueUsersAffected { get; set; }
     }
 }

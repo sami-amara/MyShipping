@@ -1,5 +1,4 @@
 using AutoMapper;
-using Business.Contracts;
 using Business.DTOS;
 using DataAccessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using UI.Constants;
 using UI.Helpers;
 using AppResource;
+using Business.Contracts.Payments;
 
 namespace UI.Areas.admin.Controllers
 {

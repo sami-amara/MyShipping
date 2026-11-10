@@ -7,21 +7,62 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Security.AccessControl;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+ 
 
 namespace DataAccessLayer.DbContext;
 
 public partial class ShippingContext : IdentityDbContext<ApplicationUser>
 {
+
+
+    private readonly IHttpContextAccessor? _httpContextAccessor;
     public ShippingContext()
     {
     }
 
-    public ShippingContext(DbContextOptions<ShippingContext> options)
+    //public ShippingContext(DbContextOptions<ShippingContext> options)
+    //    : base(options)
+    //{
+    //}
+    // ✅ Inject IHttpContextAccessor here (optional = null for migrations/design-time)
+    public ShippingContext(
+        DbContextOptions<ShippingContext> options,
+        IHttpContextAccessor? httpContextAccessor = null)
         : base(options)
     {
+        _httpContextAccessor = httpContextAccessor;
     }
-
-
+    // ══════════════════════════════════════════════════════════════════════
+    // ✅ AUTOMATIC AUDITING ON EVERY SAVE
+    // ══════════════════════════════════════════════════════════════════════
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        // 1. Get current logged-in user ID from Claims
+        var userIdClaim = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        Guid? currentUserId = Guid.TryParse(userIdClaim, out var parsedGuid) ? parsedGuid : null;
+        var now = DateTime.UtcNow;
+        // 2. Loop through all entities that inherit from BaseTable
+        foreach (var entry in ChangeTracker.Entries<BaseTable>())
+        {
+            switch (entry.State)
+            {
+                case Microsoft.EntityFrameworkCore.EntityState.Added:
+                    if (entry.Entity.CreatedDate == default)
+                        entry.Entity.CreatedDate = now;
+                    if (currentUserId.HasValue && (entry.Entity.CreatedBy == null || entry.Entity.CreatedBy == Guid.Empty))
+                        entry.Entity.CreatedBy = currentUserId.Value;
+                    break;
+                case Microsoft.EntityFrameworkCore.EntityState.Modified:
+                    entry.Entity.UpdatedDate = now;
+                    if (currentUserId.HasValue)
+                        entry.Entity.UpdatedBy = currentUserId.Value;
+                    break;
+            }
+        }
+        return base.SaveChangesAsync(cancellationToken);
+    }
 
     public virtual DbSet<CustomersWhoditnotcreateShippment> CustomersWhoditnotcreateShippments { get; set; }
 
@@ -72,7 +113,7 @@ public partial class ShippingContext : IdentityDbContext<ApplicationUser>
 
 
     public DbSet<AccountAuditLog> AccountAuditLogs { get; set; }
-
+    public DbSet<SecurityAuditLog> SecurityAuditLogs { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -301,6 +342,11 @@ public partial class ShippingContext : IdentityDbContext<ApplicationUser>
                 .HasForeignKey(d => d.ShippingTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TbShippments_TbShippingTypes");
+
+            entity.Property(e => e.DelivryDate)
+              .HasColumnType("datetime")
+              .IsRequired(false); // 👈 Ensure it's optional
+
         });
 
 
@@ -520,7 +566,57 @@ public partial class ShippingContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Timestamp);
         });
 
+        //// ✅ Configure SecurityAuditLog entity
+        modelBuilder.Entity<SecurityAuditLog>(entity =>
+        {
+            entity.HasKey(e => e.Id);
 
+            entity.Property(e => e.EventType)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Severity)
+                .IsRequired()
+                .HasMaxLength(20); // "CRITICAL", "HIGH", "MEDIUM", "LOW"
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(256);
+
+            entity.Property(e => e.IpAddress)
+                .HasMaxLength(45); // IPv6 max length
+
+            entity.Property(e => e.Endpoint)
+                .HasMaxLength(500);
+
+            entity.Property(e => e.Description)
+                .HasMaxLength(1000);
+
+            entity.Property(e => e.Metadata)
+                .HasColumnType("nvarchar(max)"); // For JSON metadata
+
+            entity.Property(e => e.AdminNotes)
+                .HasMaxLength(1000);
+
+            entity.Property(e => e.Timestamp)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            entity.Property(e => e.IsReviewed)
+                .HasDefaultValue(false);
+
+            // Foreign key relationship (optional - UserId can be null for IP-based attacks)
+            entity.HasOne(e => e.User)
+                .WithMany(u => u.SecurityAuditLogs)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.SetNull); // Set null if user deleted (preserve audit history)
+
+            // Create indexes for efficient querying
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.EventType);
+            entity.HasIndex(e => e.Severity);
+            entity.HasIndex(e => e.IpAddress);
+            entity.HasIndex(e => e.Timestamp);
+            entity.HasIndex(e => e.IsReviewed); // For admin dashboard "unreviewed" filter
+        });
         modelBuilder.Entity<VwCities>().ToView("VwCities");
 
 

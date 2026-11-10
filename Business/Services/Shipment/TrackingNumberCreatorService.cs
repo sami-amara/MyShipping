@@ -1,4 +1,4 @@
-using Business.Contracts;
+ï»¿using Business.Contracts;
 using DataAccessLayer.Contracts;
 using DataAccessLayer.Repositories;
 using Domains;
@@ -25,16 +25,19 @@ namespace Business.Services.Shipment
             var now = DateTime.UtcNow;
 
             // Date component: YY + DDD (e.g. 25 + 031 ? 25031);
-            int year        = now.Year % 100;               // 2-digit year
-            int dayOfYear   = now.DayOfYear;                // 1–366
-            long datePart   = (year * 1000L) + dayOfYear;  // e.g. 25031
+            int year = now.Year % 100;               // 2-digit year
+            int dayOfYear = now.DayOfYear;                // 1â€“366
+            long datePart = (year * 1000L) + dayOfYear;  // e.g. 25031
 
-            // Random component: 7 digits (1000000 – 9999999);
+            // Random component: 7 digits (1000000 â€“ 9999999);
             int randomPart = _random.Next(1_000_000, 9_999_999);
-            // Combine: datePart (5 digits) × 10^7 + randomPart (7 digits) = 12 digits
+            // Combine: datePart (5 digits) Ã— 10^7 + randomPart (7 digits) = 12 digits
             long trackingNumber = (datePart * 10_000_000L) + randomPart;
 
             return (double)trackingNumber;
         }
+
+
+     
     }
 }

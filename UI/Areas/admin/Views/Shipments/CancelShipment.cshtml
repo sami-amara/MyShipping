@@ -52,6 +52,12 @@
                     </dl>
                 </div>
 
+                <div class="mb-3">
+                    <label for="reason" class="form-label">@(AppResource.Labels.CancellationReason ?? "Cancellation Reason")</label>
+                    <textarea id="cancelReason" name="cancelReason" class="form-control" rows="3" required
+                              placeholder="@(AppResource.Labels.CancellationReasonPlaceholder ?? "Enter the reason for cancellation this shipment")"></textarea>
+                </div>
+
                 <div class="alert alert-warning">
                     <i class="fas fa-exclamation-triangle"></i>
                     Clicking "Cancel Shipment" will mark this shipment as cancelled. This cannot be undone.
@@ -75,4 +81,5 @@
     <script src="~/Modules/ShipmentApiClient.js"></script>
     <script src="~/Modules/ShipmentService.js"></script>
     <script src="~/Modules/UpdateStatus.js"></script>
+
 }

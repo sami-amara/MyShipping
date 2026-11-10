@@ -60,8 +60,6 @@ namespace UI.Controllers
                     ViewData["DefaultShippingPackageId"] = user.DefaultShippingPackageId?.ToString() ?? "";
                     ViewData["DefaultShippingTypeId"] = user.DefaultShippingTypeId?.ToString() ?? "";
 
-                    _logger.LogInformation("🎯 Create shipment - loaded user defaults: Package={Package}, Type={Type}",
-                        user.DefaultShippingPackageId, user.DefaultShippingTypeId);
                 }
 
                 return View();

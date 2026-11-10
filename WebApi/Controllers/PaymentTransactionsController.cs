@@ -1,4 +1,4 @@
-using Business.Contracts;
+using Business.Contracts.Payments;
 using Business.DTOS;
 using DataAccessLayer.Exceptions;
 using Microsoft.AspNetCore.Authorization;

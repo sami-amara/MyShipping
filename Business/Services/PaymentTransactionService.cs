@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Business.Contracts.Payments;
 
 namespace Business.Services
 {
@@ -614,14 +615,14 @@ namespace Business.Services
 
             // Update transaction in database
             await _repository.Update(transaction);
-            // Update shipment status to refunded
-            await _shipmentRepository.UpdateFields(shipment.Id, s =>
-            {
-                s.IsPaid = false;
-                s.CurrentState = (int)Business.Services.Shipment.ManageShipmentsState.ShipmentStatusEnum.Refunded;
-                s.UpdatedBy = _userService.GetLoggedInUser();
-                s.UpdatedDate = refundTimestamp;
-            });
+            //// Update shipment status to refunded
+            //await _shipmentRepository.UpdateFields(shipment.Id, s =>
+            //{
+            //    s.IsPaid = false;
+            //    s.CurrentState = (int)Business.Services.Shipment.ManageShipmentsState.ShipmentStatusEnum.Refunded;
+            //    s.UpdatedBy = _userService.GetLoggedInUser();
+            //    s.UpdatedDate = refundTimestamp;
+            //});
             var dto = _mapper.Map<PaymentTransactionDto>(transaction);
             dto.TransactionStatusName = GetStatusName(transaction.TransactionStatus);
             dto.PaymentMethodName = transaction.PaymentMethod?.MethodEname ?? transaction.PaymentMethod?.MethdAname;

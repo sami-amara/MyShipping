@@ -1,10 +1,13 @@
+using Business.Contracts;
 using Business.Contracts.Shipment;
 using Business.DTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Business.Services.Shipment.ManageShipmentsState
 {
@@ -13,20 +16,27 @@ namespace Business.Services.Shipment.ManageShipmentsState
         IShipmentCommand _shipment;
         IShipmentsStatus _status;
         IShipmentQuery _shipmentQuery;
+        IUserService _userService;
 
-        public ApproveShipment(IShipmentCommand shipment, IShipmentsStatus status, IShipmentQuery shipmentQuery)
+        public ApproveShipment(IShipmentCommand shipment, IShipmentsStatus status, 
+            IShipmentQuery shipmentQuery, IUserService userService)
         {
             _shipment = shipment;
             _status = status;
             _shipmentQuery = shipmentQuery;
+            _userService = userService;
         }
 
-        public ShipmentStatusEnum TargetState { get => ShipmentStatusEnum.Approved; }
+
+        public ShipmentStatusEnum TargetState => ShipmentStatusEnum.Approved;
+
+
+
+        //public ShipmentStatusEnum TargetState { get => ShipmentStatusEnum.Approved; }
 
         public async Task HandleState(ShippmentDto shipment)
         {
-            // ? PAYMENT VALIDATION: Shipment MUST be paid before approval
-            // Load current shipment from database to get accurate IsPaid status
+
             var currentShipment = await _shipmentQuery.GetByIdAsync(shipment.Id);
             if (currentShipment == null)
                 throw new InvalidOperationException("Shipment not found.");
@@ -35,17 +45,22 @@ namespace Business.Services.Shipment.ManageShipmentsState
                 throw new InvalidOperationException("Shipment must be paid before it can be approved.");
             }
 
-            // ? Optional: Validate that shipment is in Created or Updated status
-            // Uncomment if you want to enforce this business rule
-            // if (currentShipment.CurrentState != (int)ShipmentStatusEnum.Created && 
-            //     currentShipment.CurrentState != (int)ShipmentStatusEnum.Updated);
-            // {
-            //     throw new InvalidOperationException("Only shipments in Created or Updated status can be approved.");
-            // }
 
-            await _shipment.Edit(shipment);
+            var userId = _userService.GetLoggedInUser();
+            //await _shipment.Edit(shipment);
+            await _shipment.Approved(shipment.Id, userId);
             await _shipment.ChangeStatusAsync(shipment.Id, (int)TargetState);
             await _status.Add(shipment.Id, TargetState);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

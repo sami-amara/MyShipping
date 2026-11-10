@@ -1,4 +1,4 @@
-using Business.Contracts;
+using Business.Contracts.Payments;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;

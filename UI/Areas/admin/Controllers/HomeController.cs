@@ -1,5 +1,4 @@
-﻿
-using Business.Contracts;
+﻿using Business.Contracts.Dashboard;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UI.Constants;
@@ -50,10 +49,5 @@ namespace UI.Areas.admin.Controllers
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
         }
-
-
-
-
-
     }
 }

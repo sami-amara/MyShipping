@@ -23,39 +23,3 @@ namespace Business.Contracts.Shipment
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using Business.DTOS;
-//using DataAccessLayer.Contracts;
-//using Domains;
-//using DataAccessLayer.Model;
-
-//namespace Business.Contracts.Shipment
-//{
-//    public interface IShipments : IBaseService<TbShippment, ShippmentDto>
-//    {
-
-//        public Task Create(ShippmentDto shippmentDto);
-
-//        public Task<List<ShippmentDto>> GetShippments();
-
-//        // New: server-side paged list
-//        public Task<PagedResult<ShippmentDto>> GetShippmentsPaged(int page = 1, int pageSize = 10, string sortBy = null, string sortDir = "desc");
-//    }
-//}

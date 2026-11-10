@@ -18,28 +18,6 @@ namespace Business.Contracts.Shipment
 {
     public interface IShipments : IBaseService<TbShippment, ShippmentDto>
     {
-        
-        //Task Create(ShippmentDto shippment);
-        
-        //public Task<PagedResult<ShippmentDto>> GetAllShipments(int pageNumber, int pageSize, string searchTerm = null);
-
-        //public Task<PagedResult<ShippmentDto>> GetShipments(int pageNumber, int pageSize, bool isUserData, ShipmentStatusEnum? status, string searchTerm = null);
-        //Task<ShippmentDto?> GetByIdAsync(Guid id);
-
-        //Task<bool> ChangeStatusAsync(Guid id, int status = 1);
-        //Task<bool> DeleteAsync(Guid id);
-        //Task Approved(ShippmentDto shippment);
-        ////public Task Approve(ShippmentDto shippment);
-        //public Task ReadyForShip(Guid id, Guid carrierId);
-        //public Task Shipped(Guid id, DateTime deliveryDate);
-        ////Task Update(TbShippment updatedShipment);
-
-        
-        //public Task Edit(ShippmentDto shippment);
-        //public Task EditFields(Guid id, Action<TbShippment> updateAction);
-        //public Task<List<ShippmentDto>> GetShipments();
-        //public Task<ShippmentDto> GetShipment(Guid Id);
-        //public Task<PagedResult<ShippmentDto>> GetAllShipments(int pageNumber, int pageSize);
        
 
     }

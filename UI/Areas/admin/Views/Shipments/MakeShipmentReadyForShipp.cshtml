@@ -69,8 +69,6 @@
             <form id="makeReadyForm" method="post" novalidate>
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="Id" value="@Model.Id" />
-               @*  <input type="hidden" name="PaymentMethodId" value="@Model.PaymentMethodId" />
-                <input type="hidden" name="IsPaid" value="@Model.IsPaid" /> *@
 
                 <div class="mb-3">
                     <label for="deliveryManId">@AppResource.Labels.Carrier</label>

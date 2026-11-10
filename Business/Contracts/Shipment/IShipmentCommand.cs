@@ -14,13 +14,22 @@ namespace Business.Contracts.Shipment
         Task Create(ShippmentDto shippment);
         Task<bool> ChangeStatusAsync(Guid id, int status = 1);
         Task<bool> DeleteAsync(Guid id);
-        Task Approved(ShippmentDto shippment);
-        //public Task Approve(ShippmentDto shippment);
-        public Task ReadyForShip(Guid id, Guid carrierId);
-        public Task Shipped(Guid id, DateTime deliveryDate);
+        //Task Approved(ShippmentDto shippment);
+        //Task Approved(ShippmentDto shippment, Guid userId);
+         Task Approved(Guid shipmentId, Guid userId);
+        public Task ReadyForShip(Guid id, Guid carrierId, Guid userId);
+       
+        public Task Shipped(Guid id, Guid userId);
+
+        Task Delivered(Guid shipmentId, Guid userId);
         //Task Update(TbShippment updatedShipment);
         public Task Edit(ShippmentDto shippment);
         public Task EditFields(Guid id, Action<TbShippment> updateAction);
+        Task Delete(Guid id, Guid userId);
 
+        Task Refunded(Guid id, Guid userId, string? reason = null);
+
+        Task Cancelled(Guid id, Guid userId, string? reason = null);
+        Task Returned(Guid id, Guid userId, string? reason = null);
     }
 }

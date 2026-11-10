@@ -1,4 +1,5 @@
 ﻿using Business.Contracts;
+using Business.Contracts.Logging;
 using Business.DTOS;
 using DataAccessLayer.Exceptions;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -15,20 +16,21 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     [Authorize]
     
-
     public class CarrierController : ControllerBase
     {
         private readonly ILogger<CarrierController> _logger;
+        private readonly ISecurityEventLogger _securityLogger;
         private readonly ICarrier _carrier;
-        public CarrierController(ICarrier carrier, ILogger<CarrierController> logger)
+        public CarrierController(ICarrier carrier, ILogger<CarrierController> logger,
+            ISecurityEventLogger securityLogger)
         {
              _carrier = carrier;
             _logger = logger;
+            _securityLogger = securityLogger;
         }
 
 
         [HttpGet]
-        
         public async Task<ActionResult<ApiResponse<List<CarrierDto>>>> Get()
         {
             try

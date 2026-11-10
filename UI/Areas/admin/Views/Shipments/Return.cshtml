@@ -8,7 +8,6 @@
     var currentState = Model?.CurrentState ?? 0;
     var statuses = Enum.GetValues(typeof(ShipmentStatusEnum)).Cast<ShipmentStatusEnum>().ToList();
 }
-
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">@ViewData["Title"]</h3>
@@ -31,10 +30,10 @@
 
             <form id="returnForm" method="post" novalidate>
                 @Html.AntiForgeryToken()
-                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="Id" id="shipmentId" value="@Model.Id" />
 
                 <div class="mb-3">
-                    <label class="form-label">Shipment Details</label>
+                    <label class="form-label fw-bold">Shipment Details</label>
                     <dl class="row">
                         <dt class="col-sm-3">Tracking Number</dt>
                         <dd class="col-sm-9">@Model.TrackingNumber</dd>
@@ -52,9 +51,20 @@
                     </dl>
                 </div>
 
+                @* ✅ NEW: Return Reason Input *@
+                <div class="mb-3">
+                    <label for="returnReason" class="form-label fw-bold">
+                        Return Reason <span class="text-danger">*</span>
+                    </label>
+                    <textarea class="form-control" id="returnReason" name="ReturnReason" rows="3"
+                              placeholder="Please specify why this shipment is being returned (e.g. Customer refused at door, incorrect address, 3 failed delivery attempts, damaged goods)..."
+                              required></textarea>
+                    <div class="form-text text-muted">This reason will be recorded permanently in the shipment's audit trail.</div>
+                </div>
+
                 <div class="alert alert-secondary">
                     <i class="fas fa-undo"></i>
-                    Clicking "Mark as Returned" will record this shipment as returned.
+                    Clicking "Mark as Returned" will record this shipment as returned to origin.
                 </div>
 
                 <div class="d-flex">
@@ -74,6 +84,5 @@
     <script src="~/Modules/ApiClient.js"></script>
     <script src="~/Modules/ShipmentApiClient.js"></script>
     <script src="~/Modules/ShipmentService.js"></script>
-
     <script src="~/Modules/UpdateStatus.js"></script>
 }

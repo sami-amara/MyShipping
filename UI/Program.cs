@@ -1,11 +1,15 @@
+using Business.Contracts;
+using Business.Contracts.Logging;
+using Business.Services.Logging.Filters;
+using Business.Services.Logging.Middleware;
 using DataAccessLayer.DbContext;
 using DataAccessLayer.UserModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using System.Text;
 using UI.Services;
-using Microsoft.AspNetCore.Localization;
 
 namespace UI
 {
@@ -15,12 +19,21 @@ namespace UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // ✅ Configure Serilog BEFORE registering services
+            RegisterServicesHelper.ConfigureSerilog(builder);
+
             RegisterServicesHelper.RegisterServices(builder);
 
-            builder.Services.AddControllersWithViews();
+            // ✅ Register MVC with global exception filter
+            builder.Services.AddControllersWithViews(options =>
+            {
+                // Add Business layer exception logging filter globally
+                options.Filters.AddService(typeof(ExceptionLoggingFilter));
+            });
             //builder.Services.AddRazorPages();
 
             var app = builder.Build();
+
 
             var startupLogger = app.Services.GetRequiredService<ILogger<Program>>();
             var sendGridApiKey = app.Configuration["SendGrid:ApiKey"];
@@ -41,6 +54,9 @@ namespace UI
             {
                 startupLogger.LogWarning("SendGrid:FromName is missing. Default sender name will be used.");
             }
+
+
+            app.UseMiddleware<SerilogContextMiddleware>();
 
             // ═══════════════════════════════════════════════════════════════
             // ✅ MIDDLEWARE ORDER - CRITICAL!
@@ -105,7 +121,9 @@ namespace UI
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            //app.MapRazorPages();
+           
+
+
 
             // Database migration
             using (var scope = app.Services.CreateScope())
@@ -117,6 +135,8 @@ namespace UI
                 await dbContext.Database.MigrateAsync();
               // await ContextConfigruration.SeedDataAsync(dbContext, userManager, roleManager);
             }
+
+
 
             await app.RunAsync();
         }

@@ -32,37 +32,3 @@ namespace Business.DTOS
     }
 
 }
-
-
-
-
-//public class CountryDto : BaseDto
-//{
-
-//    [Required(ErrorMessageResourceName = "NameArRequired", ErrorMessageResourceType = typeof(message))]
-//    [StringLength(100, MinimumLength = 3, ErrorMessage = "Arabic name must be between 3 and 100 characters.")]
-//    [RegularExpression(@"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF\s]+$", ErrorMessage = "Only valid Arabic characters allowed.")]
-//    public string CountryAname { get; set; }
-
-//    [Required(ErrorMessage = "English name is required.")]
-//    [StringLength(100, MinimumLength = 3, ErrorMessage = "English name must be between 3 and 100 characters.")]
-//    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only valid English characters allowed.")]
-//    public string CountryEname { get; set; }
-//}
-//namespace Business.DTOS
-//{
-//    public partial class CountryDto : BaseDto
-//    {
-//        //[Required(ErrorMessageResourceName = "NameArRequired", ErrorMessageResourceType = typeof(message), AllowEmptyStrings = false)]
-//        [StringLength(100, MinimumLength = 3, ErrorMessageResourceName = "NameLenght", ErrorMessageResourceType = typeof(message))]
-//        [RegularExpression(@"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF\s]{3,70}$", ErrorMessageResourceName = "OnlyValidArabicNamesAllowed", ErrorMessageResourceType = typeof(message))]
-//        public string? CountryAname { get; set; }
-
-//        //[Required(ErrorMessageResourceName = "NameEnRequired", ErrorMessageResourceType = typeof(message), AllowEmptyStrings = false)]
-//        [StringLength(100, MinimumLength = 3, ErrorMessageResourceName = "NameLenght", ErrorMessageResourceType = typeof(message))]
-//        [RegularExpression(@"^[a-zA-Z\s]{3,70}$", ErrorMessageResourceName = "OnlyValidEnglishWordsAllowed", ErrorMessageResourceType = typeof(message))]
-//        public string? CountryEname { get; set; }
-
-
-//    }
-//}

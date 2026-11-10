@@ -29,6 +29,40 @@ namespace UI.Helpers
                 $"<i class=\"mdi {icon}\"></i>{encodedText}</span>");
         }
 
+
+
+        public static IHtmlContent StatusBadge(string? shipmentEventType)
+        {
+            if (string.IsNullOrWhiteSpace(shipmentEventType))
+            {
+                return new HtmlString(
+                    "<span class=\"badge bg-secondary\" style=\"display: inline-flex; align-items: center; gap: 4px;\">" +
+                    "<i class=\"mdi mdi-help-circle\"></i>-" +
+                    "</span>");
+            }
+
+            var (cssClass, icon, text) = shipmentEventType switch
+            {
+                "Created" => ("badge bg-warning text-dark", "mdi-file-document-outline", "Created"),
+                "Updated" => ("badge bg-info text-dark", "mdi-update", "Updated"),
+                "Approved" => ("badge bg-primary", "mdi-check-circle", "Approved"),
+                "ReadyForShipping" => ("badge bg-info text-dark", "mdi-package-variant", "Ready"),
+                "Shipped" => ("badge bg-primary", "mdi-truck-delivery", "Shipped"),
+                "Delivered" => ("badge bg-success", "mdi-inbox-arrow-down", "Delivered"),
+                "Cancelled" => ("badge bg-danger", "mdi-close-circle", "Cancelled"),
+                "Returned" => ("badge bg-dark", "mdi-keyboard-return", "Returned"),
+                "Refunded" => ("badge bg-secondary", "mdi-cash-refund", "Refunded"),
+                _ => ("badge bg-secondary", "mdi-help-circle", shipmentEventType)
+            };
+
+            var encodedText = HtmlEncoder.Default.Encode(text);
+
+            return new HtmlString(
+                $"<span class=\"{cssClass}\" style=\"display:inline-flex;align-items:center;gap:4px;justify-content:center;\">" +
+                $"<i class=\"mdi {icon}\"></i>{encodedText}</span>");
+        }
+
+
         /// <summary>
         /// Maps shipment status to badge CSS class and display text
         /// </summary>
@@ -42,17 +76,17 @@ namespace UI.Helpers
                 var status = (ShipmentStatusEnum)state;
                 return status switch
                 {
-                    ShipmentStatusEnum.Deleted          => ("badge bg-secondary",          "mdi-delete",              AppResource.Labels.Deleted          ?? "Deleted"),
-                    ShipmentStatusEnum.Created          => ("badge bg-warning text-dark",  "mdi-file-document-outline", AppResource.Labels.Created        ?? "Created"),
-                    ShipmentStatusEnum.Updated          => ("badge bg-info text-dark",     "mdi-update",              AppResource.Labels.Updated          ?? "Updated"),
-                    ShipmentStatusEnum.Approved         => ("badge bg-primary",            "mdi-check-circle",        AppResource.Labels.Approved         ?? "Approved"),
-                    ShipmentStatusEnum.ReadyForShipping => ("badge bg-info text-dark",     "mdi-package-variant",     AppResource.Labels.ReadyForShipping  ?? "Ready for Shipping"),
-                    ShipmentStatusEnum.Shipped          => ("badge bg-primary",            "mdi-truck-delivery",      AppResource.Labels.Shipped           ?? "Shipped"),
-                    ShipmentStatusEnum.Delivered        => ("badge bg-success",            "mdi-inbox-arrow-down",   AppResource.Labels.Delivered         ?? "Delivered"),
-                    ShipmentStatusEnum.Cancelled        => ("badge bg-danger",             "mdi-close-circle",        AppResource.Labels.Cancelled         ?? "Cancelled"),
-                    ShipmentStatusEnum.Returned         => ("badge bg-dark",               "mdi-keyboard-return",     AppResource.Labels.Returned          ?? "Returned"),
-                    ShipmentStatusEnum.Refunded         => ("badge bg-secondary",          "mdi-cash-refund",         AppResource.Labels.Refunded          ?? "Refunded"),
-                    _                                   => ("badge bg-info text-dark",     "mdi-help-circle",         status.ToString())
+                    ShipmentStatusEnum.Deleted          => ("badge bg-secondary",          "mdi-delete",                 AppResource.Labels.Deleted           ?? "Deleted"),
+                    ShipmentStatusEnum.Created          => ("badge bg-warning text-dark",  "mdi-file-document-outline",  AppResource.Labels.Created           ?? "Created"),
+                    ShipmentStatusEnum.Updated          => ("badge bg-info text-dark",     "mdi-update",                 AppResource.Labels.Updated           ?? "Updated"),
+                    ShipmentStatusEnum.Approved         => ("badge bg-primary",            "mdi-check-circle",           AppResource.Labels.Approved          ?? "Approved"),
+                    ShipmentStatusEnum.ReadyForShipping => ("badge bg-info text-dark",     "mdi-package-variant",        AppResource.Labels.ReadyForShipping  ?? "Ready for Shipping"),
+                    ShipmentStatusEnum.Shipped          => ("badge bg-primary",            "mdi-truck-delivery",         AppResource.Labels.Shipped           ?? "Shipped"),
+                    ShipmentStatusEnum.Delivered        => ("badge bg-success",            "mdi-inbox-arrow-down",       AppResource.Labels.Delivered         ?? "Delivered"),
+                    ShipmentStatusEnum.Cancelled        => ("badge bg-danger",             "mdi-close-circle",           AppResource.Labels.Cancelled         ?? "Cancelled"),
+                    ShipmentStatusEnum.Returned         => ("badge bg-dark",               "mdi-keyboard-return",        AppResource.Labels.Returned          ?? "Returned"),
+                    ShipmentStatusEnum.Refunded         => ("badge bg-secondary",          "mdi-cash-refund",            AppResource.Labels.Refunded          ?? "Refunded"),
+                    _                                   => ("badge bg-info text-dark",     "mdi-help-circle",           status.ToString())
                 };
             }
 
@@ -62,5 +96,29 @@ namespace UI.Helpers
                 ? ("badge bg-secondary", "mdi-help-circle", "-")
                 : ("badge bg-info text-dark", "mdi-help-circle", raw);
         }
+
+        /// <summary>
+        /// Renders a Bootstrap badge for audit event severity.
+        /// </summary>
+        public static IHtmlContent SeverityBadge(string? severity)
+        {
+            var cssClass = (severity ?? string.Empty).ToLowerInvariant() switch
+            {
+                "low" => "badge bg-success",
+                "medium" => "badge bg-warning text-dark",
+                "high" => "badge bg-danger",
+                "critical" => "badge bg-dark",
+                "information" => "badge bg-info text-dark",
+                "warning" => "badge bg-warning text-dark",
+                _ => "badge bg-secondary"
+            };
+
+            var encodedText = HtmlEncoder.Default.Encode(severity ?? "-");
+
+            return new HtmlString(
+                $"<span class=\"{cssClass}\">{encodedText}</span>");
+        }
+
+
     }
 }

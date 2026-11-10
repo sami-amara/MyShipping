@@ -11,6 +11,20 @@ namespace Business.Contracts
     public interface IUIUserService : IUserService
     {
 
+
+
+        
+        /// <summary>
+        /// Registers a new user account with the specified role.
+        /// IMPLEMENTATION DIFFERS BY PROJECT:
+        /// - UI: May sign in user after registration (cookie-based)
+        /// - WebApi: Does NOT sign in (user must login to get JWT tokens)
+        /// </summary>
+        /// <param name="registerDto">Registration data (email, password, name, phone, role)</param>
+        /// <returns>Result indicating success/failure and validation errors</returns>
+        /// 
+        Task<UserResultDto> RegisterAsync(UserDto registerDto);
+
         /// <summary>
         /// Retrieves a user by email from the supplied identity name value.
         /// Returns null when identity name is empty.
@@ -39,5 +53,8 @@ namespace Business.Contracts
 
 
         Task<IdentityResult> ReactivateUserAsync(string userId, string adminEmail, string? reason = null);
+
+
+        
     }
 }

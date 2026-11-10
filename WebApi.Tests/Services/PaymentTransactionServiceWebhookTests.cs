@@ -1,5 +1,6 @@
 using AutoMapper;
 using Business.Contracts;
+using Business.Contracts.Payments;
 using Business.Services;
 using DataAccessLayer.Contracts;
 using Domains;

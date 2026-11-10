@@ -111,8 +111,7 @@
                                                 }
                                             </td>
                                             
-                                            @* ✅ NEW: Use Tag Helper instead of function *@
-                                          @*   <td><shipment-status-badge shipment="@shipment" /></td> *@
+                                        
                                             <td class="align-middle">
                                                 <div class="admin-shipments-status-wrapper">
                                                     @ShipmentHelpers.StatusBadge(shipment)
@@ -206,14 +205,7 @@
                                                             <i class="mdi mdi-truck-check"></i>
                                                         </a>
                                                     }
-                                                
-                                                @*     @if (User.IsInRole(RoleNames.Admin))
-                                                    {
-                                                        <button type="button" class="btn btn-sm btn-gradient-danger ms-1 btn-delete"
-                                                                data-id="@shipment.Id" title="Delete">
-                                                            <i class="mdi mdi-delete"></i>
-                                                        </button>
-                                                    } *@
+                                     
                                                 </div>
                                             </td>
                                         </tr>

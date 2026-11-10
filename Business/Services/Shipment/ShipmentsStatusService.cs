@@ -30,7 +30,8 @@ namespace Business.Services.Shipment
         private readonly ILogger<ShipmentsStatusService> _logger;
         public ShipmentsStatusService(IGenericRepository<TbShippmentStatus> repository,
             IMapper mapper, IUserService userService,
-            IUserReceiver userReceiver, IUserSender userSender, IUnitOfWork unitOfWork, ILogger<ShipmentsStatusService> logger) : base(unitOfWork, mapper, userService)
+            IUserReceiver userReceiver, IUserSender userSender, IUnitOfWork unitOfWork, ILogger<ShipmentsStatusService> logger) 
+            : base(unitOfWork, mapper, userService)
         {
             _userService = userService;
             _userReceiver = userReceiver;
@@ -54,10 +55,7 @@ namespace Business.Services.Shipment
             };
 
             var dbObject = _mapper.Map<ShippmentStatusDto, TbShippmentStatus>(oStatus);
-            //dbObject.CreatedBy = _userService.GetLoggedInUser();
-            //dbObject.CreatedDate = DateTime.UtcNow;
-            //dbObject.CurrentState = 1;
-
+           
 
             var now = DateTime.UtcNow;
             var userId = _userService.GetLoggedInUser();
@@ -67,9 +65,6 @@ namespace Business.Services.Shipment
             // record the actual passed state
             dbObject.CurrentState = oStatus.CurrentState;
 
-            // set Updated* so history rows have the actor/timestamp
-            dbObject.UpdatedBy = userId;
-            dbObject.UpdatedDate = now;
             var (ok, id) = await _repo.Add(dbObject);
             return (ok, id);
         }

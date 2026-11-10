@@ -1,9 +1,10 @@
 using Business.Configuration;
-using Business.Contracts;
+using Business.Contracts.Payments;
 using Business.Contracts.Shipment;
+using Business.DTOS;
 using Business.Payments.PayPal;
-using Business.Payments.Stripe;
 using Business.Payments.Shared;
+using Business.Payments.Stripe;
 using Business.Services.Shipment.ManageShipmentsState;
 using DataAccessLayer.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,7 @@ namespace WebApi.Controllers
         private readonly ILogger<PaymentController> _logger;
         private readonly IHubContext<YourHub> _hubContext;
         private readonly IShipmentCommand _shipmentCommand;
-
+        private readonly IShipmentStateHandlerFactory _shipmentStateHandlerFactory;
         public PaymentController(
             IShipmentQuery shipmentQuery,
             IPaymentGatewayFactory gatewayFactory,
@@ -50,7 +51,8 @@ namespace WebApi.Controllers
             IOptions<PaymentGatewayOptions> paymentOptions,
             ILogger<PaymentController> logger,
             IHubContext<YourHub> hubContext,
-            IShipmentCommand shipmentCommand)
+            IShipmentCommand shipmentCommand,
+            IShipmentStateHandlerFactory shipmentStateHandlerFactory)
         {
             _shipmentQuery = shipmentQuery;
             _gatewayFactory = gatewayFactory;
@@ -59,6 +61,7 @@ namespace WebApi.Controllers
             _logger = logger;
             _hubContext = hubContext;
             _shipmentCommand = shipmentCommand;
+            _shipmentStateHandlerFactory = shipmentStateHandlerFactory;
         }
 
         /// <summary>
@@ -142,26 +145,89 @@ namespace WebApi.Controllers
             }
         }
 
+        //[HttpPost("Refund")]
+        ////[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Refund([FromBody] ShipmentRefundRequest request)
+        //{
+        //    try
+        //    {
+        //        if (request == null || request.ShipmentId == Guid.Empty)
+        //            return BadRequest(new { error = "Shipment ID is required" });
+
+        //        if (string.IsNullOrWhiteSpace(request.Reason))
+        //            return BadRequest(new { error = "Refund reason is required" });
+
+        //        var refundedTransaction = await _paymentTransactionService.RefundPayment(request.ShipmentId, request.Reason);
+
+        //        await _hubContext.Clients.All.SendAsync("ShipmentStatusUpdated", new
+        //        {
+        //            shipmentId = request.ShipmentId,
+        //            newState   = (int)Business.Services.Shipment.ManageShipmentsState.ShipmentStatusEnum.Refunded,
+        //            statusName = "Refunded",
+        //            isPaid     = false
+        //        });
+
+        //        return Ok(new
+        //        {
+        //            success = true,
+        //            shipmentId = request.ShipmentId,
+        //            transactionId = refundedTransaction.Id,
+        //            status = refundedTransaction.TransactionStatusName,
+        //            message = "Payment refunded successfully"
+        //        });
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        return NotFound(new { error = ex.Message });
+        //    }
+        //    catch (InvalidOperationException ex)
+        //    {
+        //        return BadRequest(new { error = ex.Message });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error refunding shipment payment for request {@Request}", request);
+        //        return StatusCode(500, new
+        //        {
+        //            error = "An error occurred while refunding the payment",
+        //            details = ex.Message
+        //        });
+        //    }
+        //}
+
         [HttpPost("Refund")]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Refund([FromBody] ShipmentRefundRequest request)
         {
+            if (request == null || request.ShipmentId == Guid.Empty)
+                return BadRequest(new { error = "Shipment ID is required" });
+
+            if (string.IsNullOrWhiteSpace(request.Reason))
+                return BadRequest(new { error = "Refund reason is required" });
+
             try
             {
-                if (request == null || request.ShipmentId == Guid.Empty)
-                    return BadRequest(new { error = "Shipment ID is required" });
-
-                if (string.IsNullOrWhiteSpace(request.Reason))
-                    return BadRequest(new { error = "Refund reason is required" });
-
+                // 1. Execute money refund via Stripe/PayPal
                 var refundedTransaction = await _paymentTransactionService.RefundPayment(request.ShipmentId, request.Reason);
 
+                // 2. Delegate state transition to the State Handler Factory (Matches MarkReady!)
+                var dto = new ShippmentDto
+                {
+                    Id = request.ShipmentId,
+                    CurrentState = (int)ShipmentStatusEnum.Refunded,
+                    RefundReason = request.Reason  // ✅ ADD THIS
+                };
+
+                var handler = _shipmentStateHandlerFactory.GetHandler(ShipmentStatusEnum.Refunded);
+                await handler.HandleState(dto);
+
+                // 3. Notify connected clients via SignalR
                 await _hubContext.Clients.All.SendAsync("ShipmentStatusUpdated", new
                 {
                     shipmentId = request.ShipmentId,
-                    newState   = (int)Business.Services.Shipment.ManageShipmentsState.ShipmentStatusEnum.Refunded,
+                    newState = (int)ShipmentStatusEnum.Refunded,
                     statusName = "Refunded",
-                    isPaid     = false
+                    isPaid = false
                 });
 
                 return Ok(new
@@ -170,7 +236,7 @@ namespace WebApi.Controllers
                     shipmentId = request.ShipmentId,
                     transactionId = refundedTransaction.Id,
                     status = refundedTransaction.TransactionStatusName,
-                    message = "Payment refunded successfully"
+                    message = "Payment refunded and shipment marked as Refunded successfully"
                 });
             }
             catch (ArgumentException ex)
@@ -191,6 +257,8 @@ namespace WebApi.Controllers
                 });
             }
         }
+
+
 
         [HttpGet("GetPayPalConfig")]
         [AllowAnonymous]

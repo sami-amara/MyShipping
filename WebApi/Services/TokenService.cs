@@ -24,21 +24,7 @@ namespace WebApi.Services
             //_secretKey = configuration["JwtSettings:SecretKey"]; // Get the secret key from appsettings.json
         }
 
-        //public string GenerateAccessToken(IEnumerable<Claim> claims)
-        //{
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
-        //    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        //    var token = new JwtSecurityToken(
-        //        issuer: _configuration["JwtSettings:Issuer"],
-        //        audience: _configuration["JwtSettings:Audience"],
-        //        claims: claims,
-        //        expires: DateTime.UtcNow.AddMinutes(AccessTokenExpiryMinutes),
-        //        signingCredentials: credentials
-        //    );
-
-        //    return new JwtSecurityTokenHandler().WriteToken(token);
-        //}
+      
         public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
             var secretKey = _configuration["JwtSettings:SecretKey"];
@@ -49,7 +35,7 @@ namespace WebApi.Services
             var expirationMinutes = _configuration.GetValue<int>("JwtSettings:AccessTokenExpirationMinutes");
             if (expirationMinutes == 0)
             {
-                expirationMinutes = 30; // Default
+                expirationMinutes = 3; // Default
             }
 
             var token = new JwtSecurityToken(

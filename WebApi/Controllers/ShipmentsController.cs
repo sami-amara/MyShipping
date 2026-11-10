@@ -46,6 +46,118 @@ namespace WebApi.Controllers
         }
 
 
+        [HttpPost("Create")]
+        [EnableRateLimiting("form-submit")]
+        public async Task<IActionResult> Create([FromBody] ShippmentDto shipment)
+        {
+            if (shipment == null)
+            {
+                return BadRequest(ApiResponse<string>.FailureResponse("Shipment data is null"));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var msErrors = ModelState
+                    .Where(kvp => kvp.Value.Errors.Any())
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()
+                    );
+
+                return BadRequest(new { errors = msErrors });
+            }
+
+            try
+            {
+                // Use the factory handler for Created state (ShipmentStatusEnum.Created = 1)
+                var handler = _shipmentStateHandlerFactory.GetHandler(ShipmentStatusEnum.Created);
+                await handler.HandleState(shipment);
+                return Ok(ApiResponse<bool>.SuccessResponse(true, "Shipment Created Successfully"));
+
+
+            }
+            catch (DataAccessExceptions daex)
+            {
+                _logger.LogError(daex, "Create database error");
+                var error = new Error("E002", "Database error");
+                return StatusCode(500, ApiResponse<string>.FailureResponse("Database error", new List<Error> { error }));
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex, "An error occurred while creating shipment");
+                var error = new Error("E001", "An error occurred");
+                return StatusCode(500, ApiResponse<List<ShippmentDto>>.FailureResponse("An error occurred", new List<Error> { error }));
+            }
+        }
+
+
+        [HttpGet("paged")]
+        public async Task<ActionResult> GetPaged(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string sortBy = "CreatedDate",
+            [FromQuery] string sortDir = "desc")
+        {
+            try
+            {
+                var paged = await _shipmentQuery.GetAllShipments(page, pageSize);
+                //var paged = await _shipment.;
+                paged ??= new PagedResult<ShippmentDto>
+                {
+                    Items = new List<ShippmentDto>(),
+                    TotalCount = 0,
+                    Page = Math.Max(1, page),
+                    PageSize = Math.Max(1, pageSize)
+                };
+
+                var result = new
+                {
+                    Items = paged.Items ?? new List<ShippmentDto>(),
+                    Page = paged.Page,
+                    PageSize = paged.PageSize,
+                    TotalCount = paged.TotalCount,
+                    TotalPages = paged.TotalPages
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetPaged failed");
+                return StatusCode(500, "Failed to get paged shipments");
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ApiResponse<List<ShippmentDto>>>> Get()
+        {
+            try
+            {
+                //var shipments = await _shipment.GetShippments();
+                var shipments = await _shipmentQuery.GetShipments();
+                if (shipments == null || shipments.Count == 0)
+                {
+                    var error = new Error("E003", "Shipments not found");
+                    return ApiResponse<List<ShippmentDto>>.FailureResponse("Shipments not found", new List<Error> { error });
+                }
+
+                return Ok(ApiResponse<List<ShippmentDto>>.SuccessResponse(shipments));
+            }
+            catch (DataAccessExceptions ex)
+            {
+                var error = new Error("E002", "Database error");
+                return StatusCode(500, ApiResponse<List<ShippmentDto>>.FailureResponse("Database error", new List<Error> { error }));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting shipments");
+                var error = new Error("E001", "An error occurred");
+                return StatusCode(500, ApiResponse<List<ShippmentDto>>.FailureResponse("An error occurred", new List<Error> { error }));
+            }
+        }
+
+
         [HttpPost("{id}/ready")]
         [EnableRateLimiting("form-submit")]
         public async Task<IActionResult> MarkReady(Guid id, [FromQuery] Guid? carrierId = null)
@@ -81,9 +193,154 @@ namespace WebApi.Controllers
         }
 
 
+        [HttpPost("{id}/ChangeStatus")]
+        [EnableRateLimiting("form-submit")]
+        // NOTE: this endpoint handles change status to make Edit Shipment and to Approve shipment
+
+        public async Task<IActionResult> ChangeStatus(Guid id, [FromBody] ShippmentDto data)
+        {
+            if (data == null)
+            {
+                return BadRequest(ApiResponse<object>.FailureResponse("Invalid request payload"));
+            }
+
+            try
+            {
+                ShipmentStatusEnum targetStatus = (ShipmentStatusEnum)data.CurrentState;
+
+                // REMOVED: Payment validation moved to state handlers
+                // Each state handler (ApproveShipment, EditShipment) 
 
 
+                var result = _shipmentStateHandlerFactory.GetHandler(targetStatus);
+                await result.HandleState(data);
 
+                return Ok(ApiResponse<object>.SuccessResponse(result, "Shipment status changed successfully."));
+            }
+            catch (InvalidOperationException invOpEx)
+            {
+                // State handler business rule violation (e.g., unpaid shipment cannot be approved)
+                _logger.LogWarning(invOpEx, "Business rule violation for shipment {Id}", id);
+                return BadRequest(ApiResponse<object>.FailureResponse(invOpEx.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error changing status for shipment {Id}", id);
+                var error = new Error("E001", "An error occurred");
+                return StatusCode(500, ApiResponse<object>.FailureResponse("An error occurred", new List<Error> { error }));
+            }
+        }
+
+        //[HttpPost("{id}/UpdateStatus")]
+        //[EnableRateLimiting("form-submit")]
+        //// MINIMAL STATUS UPDATE ENDPOINT - Should NOT require full DTO validation
+        //// Used by: Shipped, Delivered, Cancelled, Returned, Deleted terminal states
+        //// THIS ENDPOINT WAS CAUSING 400 VALIDATION ERRORS because it passes minimal DTO to state handlers
+
+        //public async Task<IActionResult> UpdateStatus(Guid id, [FromQuery] int newState)
+        //{
+        //    if (id == Guid.Empty)
+        //        return BadRequest(ApiResponse<object>.FailureResponse("Invalid shipment ID"));
+
+        //    if (!Enum.IsDefined(typeof(ShipmentStatusEnum), newState))
+        //        return BadRequest(ApiResponse<object>.FailureResponse($"Invalid status value: {newState}"));
+
+        //    try
+        //    {
+        //        ShipmentStatusEnum targetStatus = (ShipmentStatusEnum)newState;
+
+        //        // PROBLEM: This minimal DTO only has Id and CurrentState
+        //        // But state handlers might require full shipment data for validation
+        //        var data = new ShippmentDto { Id = id, CurrentState = newState };
+
+        //        // ISSUE: GetHandler returns handlers that may validate full DTO fields
+        //        // causing errors like: Width, Height, Length, Weight, UserSender, UserReceiver required
+        //        var result = _shipmentStateHandlerFactory.GetHandler(targetStatus);
+        //        await result.HandleState(data);
+
+        //        return Ok(ApiResponse<object>.SuccessResponse(null, "Status updated successfully"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Failed to update status for shipment {Id} to {State}", id, newState);
+        //        var error = new Error("E001", "An error occurred");
+        //        return StatusCode(500, ApiResponse<object>.FailureResponse("An error occurred", new List<Error> { error }));
+        //    }
+        //}
+
+
+        [HttpPost("{id}/UpdateStatus")]
+        [EnableRateLimiting("form-submit")]
+        public async Task<IActionResult> UpdateStatus(
+            Guid id,
+            [FromQuery] int newState,
+            [FromQuery] string? reason = null,       // 👈 Receives the user's typed reason!
+            [FromQuery] Guid? carrierId = null)      // 👈 Receives carrier if applicable
+        {
+            if (id == Guid.Empty)
+                return BadRequest(ApiResponse<object>.FailureResponse("Invalid shipment ID"));
+
+            if (!Enum.IsDefined(typeof(ShipmentStatusEnum), newState))
+                return BadRequest(ApiResponse<object>.FailureResponse($"Invalid status value: {newState}"));
+
+            try
+            {
+                ShipmentStatusEnum targetStatus = (ShipmentStatusEnum)newState;
+
+                // ✅ Now the DTO carries the reason and carrier into the State Handlers!
+                var data = new ShippmentDto
+                {
+                    Id = id,
+                    CurrentState = newState,
+                    CarrierId = carrierId,
+                    CancellationReason = reason,
+                    ReturnReason = reason,
+                    RefundReason = reason
+                };
+
+                var handler = _shipmentStateHandlerFactory.GetHandler(targetStatus);
+                await handler.HandleState(data);
+
+                return Ok(ApiResponse<object>.SuccessResponse(null, "Status updated successfully"));
+            }
+            catch (InvalidOperationException invOpEx)
+            {
+                _logger.LogWarning(invOpEx, "Business rule violation for shipment {Id}", id);
+                return BadRequest(ApiResponse<object>.FailureResponse(invOpEx.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update status for shipment {Id} to {State}", id, newState);
+                var error = new Error("E001", "An error occurred");
+                return StatusCode(500, ApiResponse<object>.FailureResponse("An error occurred", new List<Error> { error }));
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ApiResponse<ShippmentDto>>> GetById(Guid id)
+        {
+            try
+            {
+                var dto = await _shipmentQuery.GetByIdAsync(id);
+                if (dto == null)
+                {
+                    return NotFound(ApiResponse<ShippmentDto>.FailureResponse("Shipment not found", new List<Error> { new Error("E003", "Shipment not found") }));
+                }
+                return Ok(ApiResponse<ShippmentDto>.SuccessResponse(dto));
+            }
+            catch (DataAccessExceptions ex)
+            {
+                _logger.LogError(ex, "Database error getting shipment with ID {id}", id);
+                var error = new Error("E002", "Database error");
+                return StatusCode(500, ApiResponse<ShippmentDto>.FailureResponse("Database error", new List<Error> { error }));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting shipment with ID {id}", id);
+                var error = new Error("E001", "An error occurred");
+                return StatusCode(500, ApiResponse<ShippmentDto>.FailureResponse("An error occurred", new List<Error> { error }));
+            }
+        }
 
 
 
@@ -179,117 +436,10 @@ namespace WebApi.Controllers
         //}
 
 
-        [HttpGet("paged")]
-        public async Task<ActionResult> GetPaged(
-            [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10,
-            [FromQuery] string sortBy = "CreatedDate",
-            [FromQuery] string sortDir = "desc")
-        {
-            try
-            {
-                var paged = await _shipmentQuery.GetAllShipments(page, pageSize);
-                //var paged = await _shipment.;
-                paged ??= new PagedResult<ShippmentDto>
-                {
-                    Items = new List<ShippmentDto>(),
-                    TotalCount = 0,
-                    Page = Math.Max(1, page),
-                    PageSize = Math.Max(1, pageSize)
-                };
-
-                var result = new
-                {
-                    Items = paged.Items ?? new List<ShippmentDto>(),
-                    Page = paged.Page,
-                    PageSize = paged.PageSize,
-                    TotalCount = paged.TotalCount,
-                    TotalPages = paged.TotalPages
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "GetPaged failed");
-                return StatusCode(500, "Failed to get paged shipments");
-            }
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<ShippmentDto>>>> Get()
-        {
-            try
-            {
-                //var shipments = await _shipment.GetShippments();
-                var shipments = await _shipmentQuery.GetShipments();
-                if (shipments == null || shipments.Count == 0)
-                {
-                    var error = new Error("E003", "Shipments not found");
-                    return ApiResponse<List<ShippmentDto>>.FailureResponse("Shipments not found", new List<Error> { error });
-                }
-
-                return Ok(ApiResponse<List<ShippmentDto>>.SuccessResponse(shipments));
-            }
-            catch (DataAccessExceptions ex)
-            {
-                var error = new Error("E002", "Database error");
-                return StatusCode(500, ApiResponse<List<ShippmentDto>>.FailureResponse("Database error", new List<Error> { error }));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting shipments");
-                var error = new Error("E001", "An error occurred");
-                return StatusCode(500, ApiResponse<List<ShippmentDto>>.FailureResponse("An error occurred", new List<Error> { error }));
-            }
-        }
 
 
 
-        [HttpPost("Create")]
-        [EnableRateLimiting("form-submit")]
-        public async Task<IActionResult> Create([FromBody] ShippmentDto shipment)
-        {
-            if (shipment == null)
-            {
-                return BadRequest(ApiResponse<string>.FailureResponse("Shipment data is null"));
-            }
 
-            if (!ModelState.IsValid)
-            {
-                var msErrors = ModelState
-                    .Where(kvp => kvp.Value.Errors.Any())
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToList()
-                    );
-
-                return BadRequest(new { errors = msErrors });
-            }
-
-            try
-            {
-                // Use the factory handler for Created state (ShipmentStatusEnum.Created = 1)
-                var handler = _shipmentStateHandlerFactory.GetHandler(ShipmentStatusEnum.Created);
-                await handler.HandleState(shipment);
-                return Ok(ApiResponse<bool>.SuccessResponse(true, "Shipment Created Successfully"));
-              
-
-            }
-            catch (DataAccessExceptions daex)
-            {
-                _logger.LogError(daex, "Create database error");
-                var error = new Error("E002", "Database error");
-                return StatusCode(500, ApiResponse<string>.FailureResponse("Database error", new List<Error> { error }));
-            }
-            catch (Exception ex)
-            {
-
-                _logger.LogError(ex, "An error occurred while creating shipment");
-                var error = new Error("E001", "An error occurred");
-                return StatusCode(500, ApiResponse<List<ShippmentDto>>.FailureResponse("An error occurred", new List<Error> { error }));
-            }
-        }
 
 
 
@@ -339,80 +489,6 @@ namespace WebApi.Controllers
 
 
 
-        [HttpPost("{id}/ChangeStatus")]
-        [EnableRateLimiting("form-submit")]
-        // NOTE: this endpoint handles change status to make Edit Shipment and to Approve shipment
-       
-        public async Task<IActionResult> ChangeStatus(Guid id, [FromBody] ShippmentDto data)
-        {
-            if (data == null)
-            {
-                return BadRequest(ApiResponse<object>.FailureResponse("Invalid request payload"));
-            }
-
-            try
-            {
-                ShipmentStatusEnum targetStatus = (ShipmentStatusEnum)data.CurrentState;
-
-                // REMOVED: Payment validation moved to state handlers
-                // Each state handler (ApproveShipment, EditShipment) 
-              
-
-                var result = _shipmentStateHandlerFactory.GetHandler(targetStatus);
-                await result.HandleState(data);
-
-                return Ok(ApiResponse<object>.SuccessResponse(result, "Shipment status changed successfully."));
-            }
-            catch (InvalidOperationException invOpEx)
-            {
-                // State handler business rule violation (e.g., unpaid shipment cannot be approved)
-                _logger.LogWarning(invOpEx, "Business rule violation for shipment {Id}", id);
-                return BadRequest(ApiResponse<object>.FailureResponse(invOpEx.Message));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error changing status for shipment {Id}", id);
-                var error = new Error("E001", "An error occurred");
-                return StatusCode(500, ApiResponse<object>.FailureResponse("An error occurred", new List<Error> { error }));
-            }
-        }
-
-        [HttpPost("{id}/UpdateStatus")]
-        [EnableRateLimiting("form-submit")]
-        // MINIMAL STATUS UPDATE ENDPOINT - Should NOT require full DTO validation
-        // Used by: Shipped, Delivered, Cancelled, Returned, Deleted terminal states
-        // THIS ENDPOINT WAS CAUSING 400 VALIDATION ERRORS because it passes minimal DTO to state handlers
-        
-        public async Task<IActionResult> UpdateStatus(Guid id, [FromQuery] int newState)
-        {
-            if (id == Guid.Empty)
-                return BadRequest(ApiResponse<object>.FailureResponse("Invalid shipment ID"));
-
-            if (!Enum.IsDefined(typeof(ShipmentStatusEnum), newState))
-                return BadRequest(ApiResponse<object>.FailureResponse($"Invalid status value: {newState}"));
-
-            try
-            {
-                ShipmentStatusEnum targetStatus = (ShipmentStatusEnum)newState;
-
-                // PROBLEM: This minimal DTO only has Id and CurrentState
-                // But state handlers might require full shipment data for validation
-                var data = new ShippmentDto { Id = id, CurrentState = newState };
-
-                // ISSUE: GetHandler returns handlers that may validate full DTO fields
-                // causing errors like: Width, Height, Length, Weight, UserSender, UserReceiver required
-                var result = _shipmentStateHandlerFactory.GetHandler(targetStatus);
-                await result.HandleState(data);
-
-                return Ok(ApiResponse<object>.SuccessResponse(null, "Status updated successfully"));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to update status for shipment {Id} to {State}", id, newState);
-                var error = new Error("E001", "An error occurred");
-                return StatusCode(500, ApiResponse<object>.FailureResponse("An error occurred", new List<Error> { error }));
-            }
-        }
 
 
 
@@ -469,31 +545,7 @@ namespace WebApi.Controllers
 
 
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<ShippmentDto>>> GetById(Guid id)
-        {
-            try
-            {
-                var dto = await _shipmentQuery.GetByIdAsync(id);
-                if (dto == null)
-                {
-                    return NotFound(ApiResponse<ShippmentDto>.FailureResponse("Shipment not found", new List<Error> { new Error("E003", "Shipment not found") }));
-                }
-                return Ok(ApiResponse<ShippmentDto>.SuccessResponse(dto));
-            }
-            catch (DataAccessExceptions ex)
-            {
-                _logger.LogError(ex, "Database error getting shipment with ID {id}", id);
-                var error = new Error("E002", "Database error");
-                return StatusCode(500, ApiResponse<ShippmentDto>.FailureResponse("Database error", new List<Error> { error }));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting shipment with ID {id}", id);
-                var error = new Error("E001", "An error occurred");
-                return StatusCode(500, ApiResponse<ShippmentDto>.FailureResponse("An error occurred", new List<Error> { error }));
-            }
-        }
+
 
 
     }

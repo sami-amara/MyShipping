@@ -160,15 +160,11 @@
                                 <a href="/PaymentTransactions/Index"><i class="fas fa-receipt"></i> @(ResourceTextHelper.L("PaymentHistory", "Payments"))</a>
                             </li>
 
-                       @*      <li>
-                                <a href="blog.html">@(ResourceTextHelper.L("Blog", "Blog"))</a>
-                            </li> *@
+               
                             <li>
                                 <a asp-controller="Home" asp-action="ContactUs">@(AppResource.Labels.Contact ?? "Contact Us")</a>
                             </li>
-                           @*  <li>
-                                <a href="profile.html"><img class="header-profile-pic" src="~/assets/images/profile.jpg"> @(ResourceTextHelper.L("Profile", "Profile"))</a>
-                            </li> *@
+                       
                         </ul>
                     </nav>
                     <!-- Main menu end -->
@@ -311,7 +307,7 @@
 
 
 
-    @await Html.PartialAsync("_ClientResourceScripts")
+    await Html.PartialAsync("_ClientResourceScripts")
 
     <script src="~/App/Shared/showAlert.js"></script>
     <script src="~/js/site-view-bridges.js" asp-append-version="true"></script>

@@ -40,13 +40,8 @@ namespace Business.Services.Shipment.ManageShipmentsState
             }
 
             var userId = _userService.GetLoggedInUser();
-            await _shipment.EditFields(shipment.Id, a =>
-            {
-                a.DelivryDate = shipment.DelivryDate;
-                a.CurrentState = (int)TargetState;
-                a.UpdatedBy = userId;
-                a.UpdatedDate = DateTime.UtcNow;
-            });
+           
+            await _shipment.Shipped(shipment.Id, userId);
             await _shipment.ChangeStatusAsync(shipment.Id, (int)TargetState);
             await _status.Add(shipment.Id, TargetState);
         }

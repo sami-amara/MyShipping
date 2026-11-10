@@ -24,7 +24,6 @@
 
 <link rel="stylesheet" href="~/Admin/assets/css/shipments.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/Admin/assets/css/shipment-show.css" asp-append-version="true" />
-
 <div class="content-wrapper">
     <div class="container-fluid">
         <div class="page-header mb-3">
@@ -54,33 +53,31 @@
                             <div class="text-end">
                                 @* ✅ Hidden input for shipment ID *@
                                 <input type="hidden" id="shipmentId" value="@Model?.Id" />
-                                
+
                                 <a class="btn btn-sm btn-outline-secondary me-1" asp-action="List" asp-controller="Shipments">
                                     <i class="mdi mdi-arrow-left"></i>
                                     <span>@((AppResource.Labels.Back) ?? "Back")</span>
                                 </a>
 
-                                @* ✅ Workflow action buttons - navigate to their pages *@
+                                @* ✅ Workflow action buttons *@
                                 <div class="d-inline-block">
-                                    @* Approve: Navigate to Approve page - Only show if paid *@
-                                    @if ((currentState == (int)ShipmentStatusEnum.Created || 
-                                    currentState == (int)ShipmentStatusEnum.Updated) && 
-                                    (Model?.IsPaid ?? false) && 
-                                    (isAdmin || isReviewer))
+                                    @* 1. Approve: Only show if Created/Updated and Paid *@
+                                    @if ((currentState == (int)ShipmentStatusEnum.Created ||
+                                          currentState == (int)ShipmentStatusEnum.Updated) &&
+                                         (Model?.IsPaid ?? false) &&
+                                         (isAdmin || isReviewer))
                                     {
-
                                         <a asp-action="Approve" asp-controller="Shipments" asp-route-id="@Model?.Id"
-                                               class="btn btn-sm btn-gradient-primary btn-workflow me-1" title="Approve Shipment">
+                                           class="btn btn-sm btn-gradient-primary btn-workflow me-1" title="Approve Shipment">
                                             <i class="mdi mdi-check-circle"></i>
                                             <span>@((AppResource.Labels.Approved) ?? "Approve")</span>
                                         </a>
                                     }
 
-
-                                    @* Mark Ready: Navigate to Ready page - Only show if paid *@
-                                    @if (currentState == (int)ShipmentStatusEnum.Approved && 
-                                        (Model?.IsPaid ?? false) && 
-                                        (isAdmin || isOperation))
+                                    @* 2. Mark Ready: Only show if Approved and Paid *@
+                                    @if (currentState == (int)ShipmentStatusEnum.Approved &&
+                                         (Model?.IsPaid ?? false) &&
+                                         (isAdmin || isOperation))
                                     {
                                         <a asp-action="MakeShipmentReadyForShipp" asp-controller="Shipments" asp-route-id="@Model?.Id"
                                            class="btn btn-sm btn-gradient-primary btn-workflow me-1" title="Mark Ready for Shipping">
@@ -89,10 +86,10 @@
                                         </a>
                                     }
 
-                                    @* Ship: Navigate to Shipped page - Only show if paid *@
-                                    @if (currentState == (int)ShipmentStatusEnum.ReadyForShipping && 
-                                        (Model?.IsPaid ?? false) && 
-                                        (isAdmin || isOperationManager))
+                                    @* 3. Ship: Only show if ReadyForShipping and Paid *@
+                                    @if (currentState == (int)ShipmentStatusEnum.ReadyForShipping &&
+                                         (Model?.IsPaid ?? false) &&
+                                         (isAdmin || isOperationManager))
                                     {
                                         <a asp-action="Shipped" asp-controller="Shipments" asp-route-id="@Model?.Id"
                                            class="btn btn-sm btn-gradient-primary btn-workflow me-1" title="Mark as Shipped">
@@ -101,10 +98,10 @@
                                         </a>
                                     }
 
-                                    @* Deliver: Navigate to Deliver page - Only show if paid *@
-                                    @if (currentState == (int)ShipmentStatusEnum.Shipped && 
-                                        (Model?.IsPaid ?? false) && 
-                                        (isAdmin || isOperationManager))
+                                    @* 4. Deliver: Only show if Shipped and Paid *@
+                                    @if (currentState == (int)ShipmentStatusEnum.Shipped &&
+                                         (Model?.IsPaid ?? false) &&
+                                         (isAdmin || isOperationManager))
                                     {
                                         <a asp-action="Deliver" asp-controller="Shipments" asp-route-id="@Model?.Id"
                                            class="btn btn-sm btn-gradient-success btn-workflow me-1" title="Mark as Delivered">
@@ -113,21 +110,50 @@
                                         </a>
                                     }
 
+                                    @* 5. ✅ RETURNED: Only when Shipped (courier return) or Delivered (customer return) *@
+                                    @if ((currentState == (int)ShipmentStatusEnum.Shipped ||
+                                          currentState == (int)ShipmentStatusEnum.Delivered) &&
+                                         (isAdmin || isOperationManager))
+                                    {
+                                        <a asp-action="Return" asp-controller="Shipments" asp-route-id="@Model?.Id"
+                                           class="btn btn-sm btn-gradient-dark btn-workflow me-1" title="Mark as Returned">
+                                            <i class="mdi mdi-keyboard-return"></i>
+                                            <span>@(AppResource.Labels.Returned ?? "Mark Returned")</span>
+                                        </a>
+                                    }
+
+                                    @* 6. ✅ CANCEL BUTTON: Allowed before the shipment leaves the warehouse! *@
+                                    @if ((currentState == (int)ShipmentStatusEnum.Created ||
+                                          currentState == (int)ShipmentStatusEnum.Updated ||
+                                          currentState == (int)ShipmentStatusEnum.Approved ||
+                                          currentState == (int)ShipmentStatusEnum.ReadyForShipping) &&
+                                         (isAdmin || isReviewer || isOperationManager))
+                                    {
+                                        <a asp-action="CancelShipment" asp-controller="Shipments" asp-route-id="@Model?.Id"
+                                           id="btnCancelShipment"
+                                           class="btn btn-sm btn-gradient-danger btn-workflow me-1" title="Cancel Shipment">
+                                            <i class="mdi mdi-close-circle"></i>
+                                            <span>@(AppResource.Labels.Cancell ?? "Cancel")</span>
+                                        </a>
+                                    }
+                                    @* 7. ✅ REFUND: Available for Paid shipments prior to shipping/delivery/closing *@
                                     @if ((Model?.IsPaid ?? false)
                                         && isAdmin
                                         && currentState != (int)ShipmentStatusEnum.Shipped
                                         && currentState != (int)ShipmentStatusEnum.Delivered
                                         && currentState != (int)ShipmentStatusEnum.Cancelled
-                                        && currentState != (int)ShipmentStatusEnum.Returned)
+                                        && currentState != (int)ShipmentStatusEnum.Returned
+                                        && currentState != (int)ShipmentStatusEnum.Refunded)
                                     {
                                         <a asp-action="Refund" asp-controller="Shipments" asp-route-id="@Model?.Id"
                                            id="btnCancelShipment"
-                                           class="btn btn-sm btn-gradient-warning btn-workflow me-1" title="Cancel Shipment">
-                                            <i class="mdi mdi-close-circle"></i>
-                                            <span>@(AppResource.Labels.Cancell ?? "Cancell")</span>
+                                           class="btn btn-sm btn-gradient-warning btn-workflow me-1" title="Refund Shipment">
+                                            <i class="mdi mdi-cash-refund"></i>
+                                            <span>@(AppResource.Labels.Refund ?? "Refund")</span>
                                         </a>
                                     }
-                                    @* ✅ Current status badge - same size as buttons *@
+
+                                    @* ✅ Current status badge *@
                                     @{
                                         string statusClass;
                                         string statusText;
@@ -168,7 +194,7 @@
                                             case 6:
                                                 statusClass = "btn btn-sm badge bg-success badge-status-large";
                                                 statusText = AppResource.Labels.Delivered ?? "Delivered";
-                                                statusIcon = "mdi mdi-inbox-arrow-down";
+                                                statusIcon = "mdi-inbox-arrow-down";
                                                 break;
                                             case 7:
                                                 statusClass = "btn btn-sm badge bg-danger badge-status-large";
@@ -183,7 +209,7 @@
                                             case 9:
                                                 statusClass = "btn btn-sm badge bg-dark badge-status-large";
                                                 statusText = AppResource.Labels.Refunded ?? "Refunded";
-                                                statusIcon = "mdi-keyboard-return";
+                                                statusIcon = "mdi-cash-refund";
                                                 break;
                                             default:
                                                 statusClass = "btn btn-sm badge bg-secondary badge-status-large";
@@ -227,10 +253,9 @@
                                     }
                                 </div>
 
-                                @* ✅ Admin controls on separate line *@
+                                @* ✅ Admin controls: Only show Delete for Created status AND Unpaid *@
                                 <div class="d-block mt-2">
-                                    @* Only show Delete for Created status and Admin only *@
-                                    @if (isCreated && isAdmin)
+                                    @if (isCreated && !(Model?.IsPaid ?? false) && isAdmin)
                                     {
                                         <button type="button" id="btnDeleteShipment" class="btn btn-sm btn-gradient-danger me-1" title="Delete Shipment">
                                             <i class="mdi mdi-delete"></i>
@@ -254,6 +279,7 @@
         </div>
     </div>
 </div>
+
 
 @await Html.PartialAsync("_AlertMessage")
 @Html.AntiForgeryToken()

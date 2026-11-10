@@ -1,12 +1,17 @@
 using AutoMapper;
 using Business.Contracts;
+using Business.Contracts.Exceptions;
 using Business.Contracts.Shipment;
 using Business.DTOS;
 using Business.Services.Shipment.ManageShipmentsState;
 using DataAccessLayer.Contracts;
 using DataAccessLayer.Model;
+using DataAccessLayer.UserModels;
 using Domains;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +23,13 @@ namespace Business.Services.Shipment
 {
     public class ShipmentQueryServic : BaseService<TbShippment, ShippmentDto>, IShipmentQuery
     {
-        
+
 
         IUserService _userService;
+       
         IGenericRepository<TbShippment> _repo;
+      
+        //private readonly UserManager<ApplicationUser> _userManager; // 👈 Add this
         IMapper _mapper;
         /// <summary>
         /// Constructor for ShipmentQueryServic - initializes dependencies for shipment querying.
@@ -30,14 +38,46 @@ namespace Business.Services.Shipment
         /// <param name="userService">Service for retrieving current logged-in user information</param>
         /// <param name="userSender">Service for managing user sender data (currently unused in constructor)</param>
         /// <param name="mapper">AutoMapper instance for entity-to-DTO mapping</param>
-        public ShipmentQueryServic(IGenericRepository<TbShippment> repo, 
-                                 IUserService userService, IUserSender userSender,
+        public ShipmentQueryServic(IGenericRepository<TbShippment> repo,
+                                 IUserService userService, 
                                  IMapper mapper) : base(repo, mapper, userService)
         {
             // Initialize dependencies for shipment queries
             _repo = repo;
             _userService = userService;
             _mapper = mapper;
+           
+        }
+
+
+        private async Task PopulateAuditUserNamesAsync(ShippmentDto dto)
+        {
+
+
+            if (dto == null) return;
+            var names = await _userService.GetUserDisplayNamesAsync(new[]
+            {
+                    dto.CreatedBy,
+                    dto.ApprovedBy,
+                    dto.ReadyBy,
+                    dto.ShippedBy,
+                    dto.DeliveredBy,
+                    dto.CancelledBy,  
+                    dto.ReturnedBy,    
+                    dto.DeletedBy,
+                    dto.RefundedBy,
+                  
+
+                });
+            dto.ApprovedByUserName = dto.ApprovedBy.HasValue && names.TryGetValue(dto.ApprovedBy.Value, out var aName) ? aName : null;
+            dto.CreatedByUserName = dto.CreatedBy.HasValue && names.TryGetValue(dto.CreatedBy.Value, out var cName) ? cName : null;
+            dto.ReadyByUserName = dto.ReadyBy.HasValue && names.TryGetValue(dto.ReadyBy.Value, out var rName) ? rName : null;
+            dto.ShippedByUserName = dto.ShippedBy.HasValue && names.TryGetValue(dto.ShippedBy.Value, out var sName) ? sName : null;
+            dto.DeliveredByUserName = dto.DeliveredBy.HasValue && names.TryGetValue(dto.DeliveredBy.Value, out var dName) ? dName : null;
+            dto.CancelledByUserName = dto.CancelledBy.HasValue && names.TryGetValue(dto.CancelledBy.Value, out var cancelledName) ? cancelledName : null;
+            dto.ReturnedByUserName = dto.ReturnedBy.HasValue && names.TryGetValue(dto.ReturnedBy.Value, out var returenName) ? returenName : null;
+            dto.DeletedByUserName = dto.DeletedBy.HasValue && names.TryGetValue(dto.DeletedBy.Value, out var deletedName) ? deletedName : null;
+            dto.RefundedByUserName = dto.RefundedBy.HasValue && names.TryGetValue(dto.RefundedBy.Value, out var refundedName) ? refundedName : null;
 
         }
         /// <summary>
@@ -58,7 +98,7 @@ namespace Business.Services.Shipment
                     {
                         Id = a.Id,
                         ShippingDate = a.ShippingDate,
-                        DelivryDate = a.DelivryDate,
+                       // DelivryDate = a.DelivryDate,
                         SenderId = a.SenderId,
                         ReceiverId = a.ReceiverId,
                         ShippingTypeId = a.ShippingTypeId,
@@ -99,7 +139,7 @@ namespace Business.Services.Shipment
             }
             catch (Exception ex)
             {
-                throw new Exception("Error while getting shipments", ex);
+                throw new ShipmentLoadException("Error while getting shipments", ex);
             }
         }
 
@@ -118,8 +158,13 @@ namespace Business.Services.Shipment
             List<ShipmentStatusEnum>? statuses, 
             string searchTerm = null, bool? isPaid = null)
         {
+
+
+
             try
             {
+
+
                 // ✅ Convert enum list to integer list for database filtering
                 // If statuses is null or empty, statusList will be null (meaning no status filter - show all)
                 List<int>? statusList = null;
@@ -148,22 +193,30 @@ namespace Business.Services.Shipment
                 {
                     // ✅ With search term - add name/tracking number search to the filter
                     var lowerSearch = searchTerm.ToLower();
-                    filter = a => (a.CreatedBy == userId || !isUserData) &&  // Filter by user if isUserData=true
-                                  (statusList == null || statusList.Contains(a.CurrentState)) &&  // ✅ Multi-status filter using Contains (OR logic)
-                                  (!a.IsDeleted || statusList == null) &&  // Exclude soft-deleted records
-                                  (a.IsPaid == isPaid || isPaid == null) &&  // Filter by payment status
-                                  (a.Sender.SenderName.ToLower().Contains(lowerSearch) ||  // Search in sender name
-                                   a.Receiver.ReceiverName.ToLower().Contains(lowerSearch) ||  // Search in receiver name
-                                   (a.TrackingNumber.HasValue && a.TrackingNumber.Value.ToString().Contains(searchTerm)));  // Search in tracking number
+                    // Try to parse searchTerm into a double
+                    bool parsedOk = double.TryParse(searchTerm, out double parsedTracking);
+
+                    filter = a => (a.CreatedBy == userId || !isUserData) &&
+                                  (statusList == null || statusList.Contains(a.CurrentState)) &&
+                                  (!a.IsDeleted || statusList == null) &&
+                                  (a.IsPaid == isPaid || isPaid == null) &&
+                                  (
+                                      a.Sender.SenderName.ToLower().Contains(lowerSearch) ||
+                                      a.Receiver.ReceiverName.ToLower().Contains(lowerSearch) ||
+                                      (parsedOk && a.TrackingNumber.HasValue && a.TrackingNumber.Value == parsedTracking)
+                                  );
+                   
                 }
 
+            
+           
                 var result = await _repo.GetPagedList(
                     filter: filter,
                     selector: a => new ShippmentDto
                     {
                         Id = a.Id,
                         ShippingDate = a.ShippingDate,
-                        DelivryDate = a.DelivryDate,
+                        //DelivryDate = a.DelivryDate,
                         SenderId = a.SenderId,
                         ReceiverId = a.ReceiverId,
                         ShippingTypeId = a.ShippingTypeId,
@@ -207,7 +260,7 @@ namespace Business.Services.Shipment
             }
             catch (Exception ex)
             {
-                throw new Exception("Error while getting shipments", ex);
+                throw new ShipmentLoadException("Error while getting paged shipments", ex);
             }
         }
         /// <summary>
@@ -247,7 +300,7 @@ namespace Business.Services.Shipment
                     {
                         Id = a.Id,
                         ShippingDate = a.ShippingDate,
-                        DelivryDate = a.DelivryDate,
+                        //DelivryDate = a.DelivryDate,
                         SenderId = a.SenderId,
                         ReceiverId = a.ReceiverId,
                         ShippingTypeId = a.ShippingTypeId,
@@ -290,7 +343,7 @@ namespace Business.Services.Shipment
             }
             catch (Exception ex)
             {
-                throw new Exception("Error while getting shipments", ex);
+                throw new ShipmentLoadException("Error while getting shipments", ex);
             }
         }
 
@@ -313,7 +366,7 @@ namespace Business.Services.Shipment
                     {
                         Id = a.Id,
                         ShippingDate = a.ShippingDate,
-                        DelivryDate = a.DelivryDate,
+                        //DelivryDate = a.DelivryDate,
                         SenderId = a.SenderId,
                         ReceiverId = a.ReceiverId,
                         ShippingTypeId = a.ShippingTypeId,
@@ -356,7 +409,7 @@ namespace Business.Services.Shipment
             }
             catch (Exception ex)
             {
-                throw new Exception("Error while getting shipments", ex);
+                throw new ShipmentLoadException("Error retrieving user receiver", ex);
             }
         }
 
@@ -377,7 +430,7 @@ namespace Business.Services.Shipment
                     {
                         Id = a.Id,
                         ShippingDate = a.ShippingDate,
-                        DelivryDate = a.DelivryDate,
+                       // DelivryDate = a.DelivryDate,
                         SenderId = a.SenderId,
                         ReceiverId = a.ReceiverId,
                         ShippingTypeId = a.ShippingTypeId,
@@ -437,7 +490,7 @@ namespace Business.Services.Shipment
             }
             catch (Exception ex)
             {
-                throw new Exception("Error while getting shipments", ex);
+                throw new ShipmentLoadException("Error retrieving user sender", ex);
             }
         }
         /// <summary>
@@ -460,7 +513,7 @@ namespace Business.Services.Shipment
                     {
                         Id = a.Id,
                         ShippingDate = a.ShippingDate,
-                        DelivryDate = a.DelivryDate,
+                        //DelivryDate = a.DelivryDate,
                         SenderId = a.SenderId,
                         ReceiverId = a.ReceiverId,
                         CarrierId = a.CarrierId,
@@ -478,6 +531,43 @@ namespace Business.Services.Shipment
                         ReferenceId = a.ReferenceId,
                         CurrentState = a.CurrentState,
                         IsPaid = a.IsPaid,
+
+
+                        // ✅ Map the audit fields from TbShippment
+                        CreatedDate = a.CreatedDate,
+                        CreatedBy = a.CreatedBy,
+                        
+                        ApprovedAt = a.ApprovedAt,
+                        ApprovedBy = a.ApprovedBy,
+                        ReadyAt = a.ReadyAt,
+                        ReadyBy = a.ReadyBy,
+                        ShippedAt = a.ShippedAt,
+                        ShippedBy = a.ShippedBy,
+
+
+                        DeliveredAt = a.DeliveredAt,
+                        DeliveredBy = a.DeliveredBy,
+
+                        CancelledBy = a.CancelledBy,
+                        CancelledAt = a.CancelledAt,
+                        CancellationReason = a.CancellationReason,
+
+                        ReturnedBy = a.ReturnedBy,
+                        ReturnedAt = a.ReturnedAt,
+
+                        DeletedBy = a.DeletedBy,
+                        DeletedDate = a.DeletedDate,
+                        
+
+                        RefundedBy = a.RefundedBy,
+                        RefundedAt = a.RefundedAt,
+                        RefundReason = a.RefundReason,
+                        ReturnReason = a.ReturnReason,
+
+
+                        
+                             // 👈 Was missing!
+                            // 👈 Was missing!
 
                         // ✅ Include related entity names for display (avoids additional queries)
                         PackagingName = a.ShipingPackging != null ? a.ShipingPackging.TbShipingPackginEname : null,  // Packaging type name
@@ -518,6 +608,9 @@ namespace Business.Services.Shipment
                             CountryId = a.Receiver.City != null ? a.Receiver.City.CountryId : Guid.Empty
                         }
                     },
+
+
+
                     orderBy: null,  // No sorting needed for single-item query
                     isDescending: false,
                     // ✅ Include navigation chains - EF Core loads all related entities in one query (avoids N+1 problem)
@@ -525,11 +618,24 @@ namespace Business.Services.Shipment
                     a => a.Receiver, a => a.Receiver.City, a => a.Receiver.City.Country,  // Receiver's full address hierarchy
                     a => a.ShipingPackging, a => a.ShippingType, a => a.Carrier, a => a.PaymentMethod  // Shipment configuration entities
                 );
-                return list?.FirstOrDefault();  // Return first match or null (should only be one result)
+
+                ;
+                // Before returning:
+                var singleShipment = list.FirstOrDefault();
+                if (singleShipment != null)
+                {
+                    await PopulateAuditUserNamesAsync(singleShipment);
+                }
+
+               // return list?.FirstOrDefault();  // Return first match or null (should only be one result)
+                //var singleShipment = list?.FirstOrDefault();
+                //// ✅ Just call the helper
+                //await PopulateAuditUserNamesAsync(singleShipment);
+                return singleShipment;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error while getting shipment by id", ex);
+                throw new ShipmentLoadException("Error retrieving shipment details", ex);
             }
         }
 

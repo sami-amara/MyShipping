@@ -21,10 +21,6 @@ namespace Business.DTOS
         ErrorMessageResourceName = "InvalidPassword")]
         public string Password { get; set; }
 
-        //[Required(ErrorMessageResourceType = typeof(Shipping), ErrorMessageResourceName = "PasswordRequired")]
-        //[MinLength(6, ErrorMessageResourceType = typeof(Shipping), ErrorMessageResourceName = "PasswordMinLength")]
-
-        //public string Password { get; set; }
 
         public bool RememberMe { get; set; }
 

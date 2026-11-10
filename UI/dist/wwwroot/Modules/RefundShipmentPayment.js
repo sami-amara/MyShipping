@@ -20,11 +20,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     // Read localized strings from AppResourceAlerts injected by _ClientResourceScripts.cshtml
     const alerts = window.AppResourceAlerts || {};
     const t = {
-        errorTitle: alerts.cancelErrorTitle || 'Cancellation Error',
-        successTitle: alerts.cancelSuccessTitle || 'Cancel Shipment',
-        successMessage: alerts.cancelSuccessMessage || 'Shipment cancelled and payment refunded successfully.',
-        missingId: alerts.cancelMissingId || 'Shipment ID is missing.',
-        reasonRequired: alerts.cancelReasonRequired || 'Cancellation reason is required.'
+        errorTitle: alerts.refundErrorTitle || 'Refund Error', // ✅ FIXED
+        successTitle: alerts.refundSuccessTitle || 'Refund Successful', // ✅ FIXED
+        successMessage: alerts.refundSuccessMessage || 'Payment refunded and shipment marked as Refunded successfully.', // ✅ FIXED
+        missingId: alerts.refundMissingId || 'Shipment ID is missing.', // ✅ FIXED
+        reasonRequired: alerts.refundReasonRequired || 'Refund reason is required.' // ✅ FIXED
     };
     function refundShipmentPayment() {
         return __awaiter(this, void 0, void 0, function* () {

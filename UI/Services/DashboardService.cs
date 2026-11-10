@@ -1,4 +1,5 @@
 using Business.Contracts;
+using Business.Contracts.Dashboard;
 using Business.DTOS;
 using DataAccessLayer.DbContext;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,3 @@
-using Business.Contracts;
 using Business.Payments.Gateway;
 using Business.Payments.Shared;
 using Business.Configuration;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Payments.Stripe;
+using Business.Contracts.Payments;
 
 namespace Business.Services.PaymentGateways
 {

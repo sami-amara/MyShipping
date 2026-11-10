@@ -29,18 +29,136 @@
                         </div>
                     </div>
                     <div class="mt-3">
+                        <div class="shipment-prop-row">
+                        <strong>Created By:</strong>
+                        <strong class="ms-2 value">
+                            ${safe(dto.CreatedByUserName ?? dto.CreatedBy)} 
+                            ${dto.CreatedDate ? `<small class="text-muted">(${fmtDate(dto.CreatedDate)})</small>` : ''}
+                            </strong>
+                            </div>
+                            <div class="shipment-prop-row">
+                            <strong>Delivery Date:</strong>
+                            <strong class="ms-2 value">
+                                ${dto.DelivryDate && !dto.DelivryDate.startsWith('0001')
+                                        ? fmtDate(dto.DelivryDate)
+                                        : '<span class="text-muted">Pending Delivery</span>'}
+                            </strong>
+                        </div>
                         <div class="shipment-prop-row"><strong>Shipping Date:</strong> <strong class="ms-2 value">${fmtDate(dto.ShippingDate)}</strong></div>
-                        <div class="shipment-prop-row"><strong>Delivery Date:</strong> <strong class="ms-2 value">${fmtDate(dto.DelivryDate)}</strong></div>
                         <div class="shipment-prop-row"><strong>Package Value:</strong> <strong class="ms-2 value">${fmtCurrency(dto.PackageValue)}</strong></div>
                         <div class="shipment-prop-row"><strong>Shipping Rate:</strong> <strong class="ms-2 value">${fmtCurrency(dto.ShippingRate)}</strong></div>
                         <div class="shipment-prop-row"><strong>Weight (kg):</strong> <strong class="ms-2 value">${safe(dto.Weight)}</strong></div>
                         <div class="shipment-prop-row"><strong>Dimensions (W×H×L cm):</strong> <strong class="ms-2 value">${safe(dto.Width)} × ${safe(dto.Height)} × ${safe(dto.Length)}</strong></div>
                         <div class="shipment-prop-row"><strong>Packaging:</strong> <strong class="ms-2 value">${safe(dto.PackagingName ?? dto.ShipingPackgingId)}</strong></div>
                         <div class="shipment-prop-row"><strong>Shipping Type:</strong> <strong class="ms-2 value">${safe(dto.ShippingTypeName ?? dto.ShippingTypeId)}</strong></div>
-                        <div class="shipment-prop-row"><strong>Payment Method:</strong> <strong class="ms-2 value">${safe(dto.PaymentMethodName || dto.PaymentMethodId)}</strong></div>
-                        <div class="shipment-prop-row"><strong>Carrier:</strong> <strong class="ms-2 value">${safe(dto.CarrierName ?? dto.CarrierId)}</strong></div>
-                        <div class="shipment-prop-row"><strong>Tracking Number:</strong> <strong class="ms-2 value">${safe(dto.TrackingNumber)}</strong></div>
-                    </div>
+                          <div class="shipment-prop-row">
+                            <strong> Payment Mothod:</strong>
+                            <strong class="ms-2 value">
+                                ${(dto.PaymentMethodName ?? dto.PaymentMethodName) ? `
+                                    ${safe(dto.PaymentMethodName ?? dto.PaymentMethodName)} 
+                                    ${dto.ApprovedAt ? `<small class="text-muted">(${fmtDate(dto.ApprovedAt)})</small>` : ''}
+                                ` : `<span class="text-muted fst-italic">No Payment yet</span>`}
+                            </strong>
+                        </div>
+                        
+
+                            <!-- Carrier -->
+                        <div class="shipment-prop-row">
+                            <strong>Carrier:</strong>
+                            <strong class="ms-2 value">
+                                ${dto.CarrierName ?? (dto.CarrierName
+                                    ? safe(dto.CarrierName)
+                                    : `<span class="text-muted fst-italic">${dto.CarrierName ? 'Carrier not assigned yet' : 'Not approved yet'}</span>`)}
+                            </strong>
+                        </div>
+                        <!-- Approved By -->
+                        <div class="shipment-prop-row">
+                            <strong>Approved By:</strong>
+                            <strong class="ms-2 value">
+                                ${(dto.ApprovedByUserName ?? dto.ApprovedBy) ? `
+                                    ${safe(dto.ApprovedByUserName ?? dto.ApprovedBy)} 
+                                    ${dto.ApprovedAt ? `<small class="text-muted">(${fmtDate(dto.ApprovedAt)})</small>` : ''}
+                                ` : `<span class="text-muted fst-italic">Not approved yet</span>`}
+                            </strong>
+                        </div>
+                        <!-- Ready For Shipping By -->
+                        <div class="shipment-prop-row">
+                            <strong>Ready For Shipping By:</strong> 
+                            <strong class="ms-2 value">
+                                ${(dto.ReadyByUserName ?? dto.ReadyBy) ? `
+                                    ${safe(dto.ReadyByUserName ?? dto.ReadyBy)} 
+                                    ${dto.ReadyAt ? `<small class="text-muted">(${fmtDate(dto.ReadyAt)})</small>` : ''}
+                                ` : `<span class="text-muted fst-italic">Shipment not ready for shipping yet</span>`}
+                            </strong>
+                        </div>
+                        <!-- Shipped By -->
+                        <div class="shipment-prop-row">
+                            <strong>Shipped By:</strong> 
+                            <strong class="ms-2 value">
+                                ${(dto.ShippedByUserName ?? dto.ShippedBy) ? `
+                                    ${safe(dto.ShippedByUserName ?? dto.ShippedBy)} 
+                                    ${dto.ShippedAt ? `<small class="text-muted">(${fmtDate(dto.ShippedAt)})</small>` : ''}
+                                ` : `<span class="text-muted fst-italic">Not shipped yet</span>`}
+                            </strong>
+                        </div>
+                        <!-- Delivered By -->
+                        <div class="shipment-prop-row">
+                            <strong>Delivered By:</strong> 
+                            <strong class="ms-2 value">
+                                ${(dto.DeliveredByUserName ?? dto.DeliveredBy) ? `
+                                    ${safe(dto.DeliveredByUserName ?? dto.DeliveredBy)} 
+                                    ${dto.DeliveredAt ? `<small class="text-muted">(${fmtDate(dto.DeliveredAt)})</small>` : ''}
+                                ` : `<span class="text-muted fst-italic">Not delivered yet</span>`}
+                            </strong>
+                        </div>
+                        <!-- Cancelled By (Only displays if shipment was actually cancelled) -->
+                        ${(dto.CancelledByUserName || dto.CancelledBy) ? `
+                            <div class="shipment-prop-row text-danger">
+                                <strong>Cancelled By:</strong>
+                                <strong class="ms-2 value">
+                                    ${safe(dto.CancelledByUserName ?? dto.CancelledBy)} 
+                                    ${dto.CancelledAt ? `<small>(${fmtDate(dto.CancelledAt)})</small>` : ''}
+                                </strong>
+                                ${dto.CancellationReason ? `<div class="small text-muted ms-2">Reason: ${safe(dto.CancellationReason)}</div>` : ''}
+                            </div>
+                        ` : ''}
+                         <!-- Deleted By (Only displays if shipment was actually Deleted) -->
+                        ${(dto.DeletedByUserName || dto.DeletedBy) ? `
+                            <div class="shipment-prop-row text-danger">
+                                <strong>Deleted By:</strong>
+                                <strong class="ms-2 value">
+                                    ${safe(dto.DeletedByUserName ?? dto.DeletedBy)}
+                                    ${dto.DeletedDate ? `<small>(${fmtDate(dto.DeletedDate)})</small>` : ''}
+                                </strong>
+                            
+                            </div>
+                        ` : ''}
+
+                               <!-- Refunded By (Only displays if shipment was actually Refunded) -->
+                                   ${(dto.RefundedByUserName || dto.RefundedBy) ? `
+                            <div class="shipment-prop-row text-danger">
+                                <strong>Refunded By:</strong>
+                                <strong class="ms-2 value">
+                                    ${safe(dto.RefundedByUserName ?? dto.RefundedBy)}
+                                    ${dto.RefundedAt ? `<small>(${fmtDate(dto.RefundedAt)})</small>` : ''}
+                                </strong>
+                                ${dto.RefundReason ? `<div class="small text-muted ms-2">Reason: ${safe(dto.RefundReason)}</div>` : ''}
+                            </div>
+                        ` : ''}
+                     
+                        <!-- Returned By (Only displays if shipment was actually returned) -->
+                        ${(dto.ReturnedByUserName || dto.ReturnedBy) ? `
+                            <div class="shipment-prop-row text-warning">
+                                <strong>Returned By:</strong>
+                                <strong class="ms-2 value">
+                                    ${safe(dto.ReturnedByUserName ?? dto.ReturnedBy)} 
+                                    ${dto.ReturnedAt ? `<small>(${fmtDate(dto.ReturnedAt)})</small>` : ''}
+                                </strong>
+                                ${dto.ReturnReason ? `<div class="small text-muted ms-2">Reason: ${safe(dto.ReturnReason)}</div>` : ''}
+                            </div>
+                        ` : ''}
+                     
+                        <div class="shipment-prop-row"><strong>Tracking Number:</strong> <strong class="ms-2 value">${safe(dto.TrackingNumber)}</strong></div
                 </div>
             </div>
         `;
@@ -201,6 +319,9 @@
             if (shipEl) shipEl.innerHTML = '<div class="alert alert-danger">Error loading details.</div>';
         }
     }
+
+
+
 
     ShipmentShow.init = function (serverDto, options) {
         if (document.readyState === 'loading') {

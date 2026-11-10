@@ -1,4 +1,5 @@
 ﻿using Business.Contracts;
+using Business.Contracts.Logging;
 using Business.DTOS;
 using DataAccessLayer.UserModels;
 using Domains;
@@ -31,6 +32,8 @@ namespace UI.Services
         private readonly GenericApiClient _apiClient;
         private readonly ILogger<UserService> _logger;
         private readonly AccountAuditService _auditService;
+
+        private readonly ISecurityEventLogger _securityEventLogger;
         /// <summary>
         /// Initializes the UI UserService with ASP.NET Core Identity managers.
         /// </summary>
@@ -44,7 +47,8 @@ namespace UI.Services
             IHttpContextAccessor httpContextAccessor, 
             GenericApiClient apiClient, 
             ILogger<UserService> logger,
-            AccountAuditService auditService)
+            AccountAuditService auditService,
+            ISecurityEventLogger securityEventLogger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -52,6 +56,8 @@ namespace UI.Services
             _apiClient = apiClient;
             _logger = logger;
             _auditService = auditService;
+            _securityEventLogger = securityEventLogger;
+
         }
 
         /// <summary>
@@ -69,24 +75,24 @@ namespace UI.Services
         /// </summary>
         /// <param name="model">Login credentials (email, password, remember me flag)</param>
         /// <returns>UserResultDto indicating success/failure and any validation errors</returns>
+        /// 
         public async Task<UserResultDto> LoginAsync(LoginDto model)
         {
             // Find user by email
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
+                await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
                 return new UserResultDto
                 {
                     Success = false,
-                    Errors = new[] { "Email:Invalid email" }
+                    Errors = new[] { "Email:Invalid credentials" }
                 };
             }
 
             // ✅ Check if user has deactivated their account
             if (user.IsDeactivated)
-            {
-                _logger.LogWarning("⛔ Login attempt by deactivated user {Email}", model.Email);
-
+            {  
                 // Log the failed login attempt
                 await _auditService.LogAccountActionAsync(
                     userId: user.Id,
@@ -96,6 +102,9 @@ namespace UI.Services
                     ipAddress: GetClientIpAddress()
                 );
 
+                // ✅ Log security event (will be filtered to security.txt with masked email)
+                await _securityEventLogger.LogFailedLogin(model.Email, "Account deactivated");
+
                 return new UserResultDto
                 {
                     Success = false,
@@ -103,18 +112,11 @@ namespace UI.Services
                 };
             }
 
-            _logger.LogInformation("Login attempt for {Email}. LockoutEnabled: {LockoutEnabled}, LockoutEnd: {LockoutEnd}",
-                model.Email, user.LockoutEnabled, user.LockoutEnd);
-
-            _logger.LogInformation("Login attempt for {Email}. LockoutEnabled: {LockoutEnabled}, LockoutEnd: {LockoutEnd}", 
-                model.Email, user.LockoutEnabled, user.LockoutEnd);
-
             // Attempt sign-in with password, lockout enabled after failed attempts
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
             if (result.Succeeded)
             {
-
-                // ✅ Log successful login
+                // ✅ Log successful login to audit trail (full email for auditing)
                 await _auditService.LogAccountActionAsync(
                     userId: user.Id,
                     action: "SuccessfulLogin",
@@ -122,9 +124,11 @@ namespace UI.Services
                     ipAddress: GetClientIpAddress()
                 );
 
+         
+
                 return new UserResultDto { Success = true };
             }
-
+      
             // Handle lockout scenario - check if it's admin lock or temporary lockout
             if (result.IsLockedOut)
             {
@@ -136,10 +140,8 @@ namespace UI.Services
                 var oneHourFromNow = DateTimeOffset.UtcNow.AddHours(1);
                 var isAdminLock = user.LockoutEnd.HasValue && user.LockoutEnd.Value > oneHourFromNow;
 
-                _logger.LogWarning("🔒 User {Email} is locked out. LockoutEnd: {LockoutEnd}, OneHourFromNow: {OneHourFromNow}, IsAdminLock: {IsAdminLock}",
-                    model.Email, user.LockoutEnd, oneHourFromNow, isAdminLock);
 
-                // ✅ Log lockout attempt
+                // ✅ Log lockout attempt to audit trail
                 await _auditService.LogAccountActionAsync(
                     userId: user.Id,
                     action: "FailedLoginAttempt_LockedOut",
@@ -148,6 +150,8 @@ namespace UI.Services
                     ipAddress: GetClientIpAddress()
                 );
 
+                // ✅ Log security event
+                await _securityEventLogger.LogFailedLogin(model.Email, isAdminLock ? "Admin lockout" : "Account temporarily locked");
 
                 // Return with proper flags - AccountController will set the appropriate message
                 return new UserResultDto
@@ -156,26 +160,27 @@ namespace UI.Services
                     IsLockedOut = true,
                     IsAdminLocked = isAdminLock
                 };
-
-             
-
             }
 
-
-            // ✅ Log failed password attempt
+            // ✅ Log failed password attempt to audit trail
             await _auditService.LogAccountActionAsync(
                 userId: user.Id,
                 action: "FailedLoginAttempt_InvalidPassword",
                 initiatedBy: model.Email,
                 ipAddress: GetClientIpAddress()
             );
+
+            // ✅ Log security event
+             await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
+
             return new UserResultDto
             {
                 Success = false,
-                Errors = new[] { "Password:Invalid password" }
+                Errors = new[] { "Password:Invalid credentials" }
             };
         }
 
+    
         /// <summary>
         /// Signs out the current user by clearing the authentication cookie.
         /// Called by AccountController.LogoutConfirmed() after the user confirms logout.
@@ -184,6 +189,7 @@ namespace UI.Services
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+           
         }
 
         /// <summary>
@@ -225,6 +231,13 @@ namespace UI.Services
 
             if (errors.Any())
             {
+
+                // Log failed registration with validation reason
+                var failureReason = errors.Count == 1
+                    ? errors.First()
+                    : $"Multiple validation errors: {string.Join("; ", errors)}";
+
+                _securityEventLogger.LogRegistrationFailed(registerDto.Email, failureReason);
                 return new UserResultDto
                 { 
                     Success = false, Errors = errors 
@@ -247,15 +260,31 @@ namespace UI.Services
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (result.Succeeded)
             {
+                // Log successful registration with user ID
+                _securityEventLogger.LogRegistrationSuccess(user.Id.ToString(), registerDto.Email);
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return new UserResultDto { Success = true };
             }
+
+            // ✅ Registration failed at user creation - log it
+            _securityEventLogger.LogRegistrationFailed(
+                registerDto.Email,
+                $"User creation failed: {string.Join("; ", result.Errors.Select(e => e.Description))}"
+            );
+
 
             var roleName = (string.IsNullOrEmpty(registerDto.Role)) ? "User" : registerDto.Role;
             var roleResult = await _userManager.AddToRoleAsync(user, roleName);
 
             if (!roleResult.Succeeded)
             {
+
+                // ✅ Role assignment failed - log it as registration failure
+                _securityEventLogger.LogRegistrationFailed(
+                    registerDto.Email,
+                    $"Role assignment failed: {string.Join("; ", roleResult.Errors.Select(e => e.Description))}"
+                );
                 return new UserResultDto
                 {
                     Success = false,
@@ -444,6 +473,7 @@ namespace UI.Services
         /// This is different from ResetPasswordAsync which is for forgotten passwords (uses token).
         /// 
         /// SECURITY: Validates the current password before allowing the change.
+        /// Logs all security-relevant events (success and failures).
         /// </summary>
         /// <param name="email">User's email address</param>
         /// <param name="currentPassword">User's current password (for validation)</param>
@@ -451,17 +481,58 @@ namespace UI.Services
         /// <returns>IdentityResult indicating success or validation errors</returns>
         public async Task<IdentityResult> ChangePasswordAsync(string email, string currentPassword, string newPassword)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
+            // ✅ Validate input
+            if (string.IsNullOrWhiteSpace(email))
             {
-                // Return a failed result to avoid revealing user existence.
+                _securityEventLogger.LogPasswordResetFailed("Unknown", "Email cannot be empty");
                 return IdentityResult.Failed(new IdentityError { Description = "Unable to change password." });
             }
 
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                // ✅ Log failed attempt (security event - someone trying to change password for non-existent user)
+                _securityEventLogger.LogPasswordResetFailed(email, "User not found");
 
-            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
-            //var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
-            //return result;
+                // Return a failed result to avoid revealing user existence
+                return IdentityResult.Failed(new IdentityError { Description = "Unable to change password." });
+            }
+
+            // ✅ Attempt password change
+            var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+            // ✅ Log the result
+            if (result.Succeeded)
+            {
+                // Log successful password change
+                _securityEventLogger.LogPasswordResetSuccess(user.Id.ToString(), email);
+
+                // Also log to audit trail
+                await _auditService.LogAccountActionAsync(
+                    userId: user.Id,
+                    action: "PasswordChanged",
+                    initiatedBy: email,
+                    reason: "User changed their password",
+                    ipAddress: GetClientIpAddress()
+                );
+            }
+            else
+            {
+                // ✅ Log password change failure with reason
+                var failureReason = string.Join("; ", result.Errors.Select(e => e.Description));
+                _securityEventLogger.LogPasswordResetFailed(email, $"Password change failed: {failureReason}");
+
+                // Also log to audit trail
+                await _auditService.LogAccountActionAsync(
+                    userId: user.Id,
+                    action: "PasswordChangeFailed",
+                    initiatedBy: email,
+                    reason: failureReason,
+                    ipAddress: GetClientIpAddress()
+                );
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -670,7 +741,7 @@ namespace UI.Services
                 // Refresh the current session with the new security stamp
                 await _signInManager.RefreshSignInAsync(appUser);
 
-                _logger.LogInformation("✅ Security stamp updated for user {Email}. Other sessions signed out.", email);
+                _logger.LogWarning("✅ Security stamp updated for user {Email}. Other sessions signed out.", email);
 
                 return new AccountOperationResultDto
                 {
@@ -911,7 +982,7 @@ namespace UI.Services
                 // Sign out the current session after deactivation
                 await LogoutAsync();
 
-                _logger.LogInformation("✅ User {Email} has deactivated their account at {Time}",
+                _logger.LogWarning("✅ User {Email} has deactivated their account at {Time}",
                     identityName, appUser.DeactivatedAt);
 
                 return new AccountOperationResultDto
@@ -968,7 +1039,7 @@ namespace UI.Services
                     ipAddress: ipAddress
                 );
 
-                _logger.LogInformation("✅ Admin {Admin} reactivated user {UserId} at {Time}",
+                _logger.LogWarning("✅ Admin {Admin} reactivated user {UserId} at {Time}",
                     adminEmail, userId, DateTime.UtcNow);
 
                 return IdentityResult.Success;
@@ -1027,7 +1098,7 @@ namespace UI.Services
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("✅ Admin reactivated user {UserId}", userId);
+                    _logger.LogWarning("✅ Admin reactivated user {UserId}", userId);
                 }
                 else
                 {
@@ -1044,7 +1115,37 @@ namespace UI.Services
             }
         }
 
+        public async Task<string?> GetUserDisplayNameAsync(Guid? userId)
+        {
+            if (!userId.HasValue) return null;
 
+            var user = await _userManager.FindByIdAsync(userId.Value.ToString());
+            if (user == null) return null;
+
+            var fullName = $"{user.FirstName} {user.LastName}".Trim();
+            return !string.IsNullOrWhiteSpace(fullName) ? fullName : user.UserName;
+        }
+
+        public async Task<Dictionary<Guid, string>> GetUserDisplayNamesAsync(IEnumerable<Guid?> userIds)
+        {
+            var validIds = userIds.Where(x => x.HasValue).Select(x => x.Value).Distinct().ToList();
+            if (!validIds.Any()) return new Dictionary<Guid, string>();
+
+            var strIds = validIds.Select(id => id.ToString()).ToList();
+
+            var users = await _userManager.Users
+                .Where(u => strIds.Contains(u.Id))
+                .Select(u => new
+                {
+                    u.Id,
+                    DisplayName = !string.IsNullOrWhiteSpace(u.FirstName + " " + u.LastName)
+                        ? (u.FirstName + " " + u.LastName).Trim()
+                        : u.UserName
+                })
+                .ToDictionaryAsync(u => Guid.Parse(u.Id), u => u.DisplayName);
+
+            return users;
+        }
 
     }
 }

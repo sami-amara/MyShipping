@@ -4,13 +4,21 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <UserSecretsId>MyShipping-UI-aa9b6786-498b-4415-b251-02bfbe995dee</UserSecretsId>
   </PropertyGroup>
 
+	
+	
   <ItemGroup>
+    <Compile Remove="Areas\admin\Views\Accounts\**" />
     <Compile Remove="wwwroot\Admin\vendors\**" />
+    <Content Remove="Areas\admin\Views\Accounts\**" />
     <Content Remove="wwwroot\Admin\vendors\**" />
+    <EmbeddedResource Remove="Areas\admin\Views\Accounts\**" />
     <EmbeddedResource Remove="wwwroot\Admin\vendors\**" />
+    <None Remove="Areas\admin\Views\Accounts\**" />
     <None Remove="wwwroot\Admin\vendors\**" />
+    <TypeScriptCompile Remove="Areas\admin\Views\Accounts\**" />
     <TypeScriptCompile Remove="wwwroot\Admin\vendors\**" />
   </ItemGroup>
 
@@ -58,8 +66,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\admin\Views\Accounts\" />
-    <Folder Include="Areas\admin\Views\Logs\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
 
 </Project>

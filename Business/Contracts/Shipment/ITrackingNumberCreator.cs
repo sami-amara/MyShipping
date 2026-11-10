@@ -12,5 +12,6 @@ namespace Business.Contracts
     public interface ITrackingNumberCreator 
     {
         public double GenerateTrackingNumber(ShippmentDto shippment);
+        //public string GenerateTrackingNumber(ShippmentDto shippment);
     }
 }

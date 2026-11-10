@@ -46,9 +46,13 @@ namespace DataAccessLayer.UserModels
         /// </summary>
         public DateTime? DeactivatedAt { get; set; }
 
-        // ✅ NEW: Navigation property for audit logs
+        // ✅ Navigation property for account audit logs (user lifecycle events)
         public virtual ICollection<AccountAuditLog> AuditLogs { get; set; } = new List<AccountAuditLog>();
 
+
+
+        // ✅ Navigation property for security audit logs (suspicious activities)
+        public virtual ICollection<SecurityAuditLog> SecurityAuditLogs { get; set; } = new List<SecurityAuditLog>();
 
     }
 }

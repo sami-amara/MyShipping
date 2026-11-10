@@ -1,4 +1,5 @@
 ﻿using Business.Contracts;
+using Business.Contracts.Logging;
 using Business.DTOS;
 using DataAccessLayer.UserModels;
 using Domains;
@@ -32,13 +33,16 @@ namespace UI.Controllers
         private readonly GenericApiClient _genericApiClient;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<AccountController> _logger;
+        private readonly ISecurityEventLogger _securityEventLogger;
         private readonly AccountHelper _accountHelper;
         public AccountController(
              IUIUserService userService,
             SignInManager<ApplicationUser> signInManager,
             GenericApiClient genericApiClient,
             IEmailSender emailSender,
-            ILogger<AccountController> logger, AccountHelper accountHelper)
+            ILogger<AccountController> logger,
+            ISecurityEventLogger securityEventLogger,
+            AccountHelper accountHelper)
         {
            // _userManager = signInManager.UserManager;
             _signInManager = signInManager;
@@ -46,10 +50,11 @@ namespace UI.Controllers
             _genericApiClient = genericApiClient;
             _emailSender = emailSender;
             _logger = logger;
+            _securityEventLogger = securityEventLogger;
             _accountHelper = accountHelper;
         }
 
-        
+
 
         /// <summary>
         /// Returns the JWT access token stored in the user's authentication claims.
@@ -60,24 +65,33 @@ namespace UI.Controllers
         /// before redirecting, so this endpoint will always find the AccessToken claim on first load.
         /// </summary>
         /// <returns>JSON object containing the access token, or 401 Unauthorized if token is missing</returns>
+        /// 
         [HttpGet]
         [Authorize]  // ✅ Must be authenticated to retrieve token
         public IActionResult GetAccessToken()
         {
-            // ✅ Retrieve AccessToken from authenticated user's claims
-            // This claim was added during login in the Login() POST action
             var token = User.FindFirst("AccessToken")?.Value;
 
             if (string.IsNullOrEmpty(token))
             {
-                _logger.LogWarning("⚠️ GetAccessToken called but AccessToken claim is missing for user {User}",
-                    User.Identity?.Name ?? "Unknown");
+                // ✅ Use security logger for anomalies (masked in file logs, full in DB)
+                _securityEventLogger.LogFailedLogin(
+                    User.Identity?.Name ?? "Unknown",
+                    "AccessToken claim missing"
+                );
+
                 return Unauthorized(new { message = "Token not found in claims" });
             }
 
-            _logger.LogInformation("✅ GetAccessToken returning token for {User}", User.Identity?.Name);
+            // ✅ Use generic logger for normal flow (no masking needed)
+            _logger.LogInformation(
+                "✅ GetAccessToken returning token for {User}",
+                User.Identity?.Name
+            );
+
             return Ok(new { token });
         }
+
 
         // 🔐 GET: /Account/Login
         [HttpGet]
@@ -110,13 +124,15 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         [EnableRateLimiting("login")]
         public async Task<IActionResult> Login(LoginDto model, string? returnUrl = null)
-       {
+        { 
             ViewData["ReturnUrl"] = returnUrl;
 
             // ✅ STEP 0: Validate model state
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Login failed: Invalid ModelState for {Email}", model.Email);
+                // Optional: diagnostic logging, NOT security
+                _logger.LogWarning("Login attempt with invalid ModelState: {ValidationErrors}",
+                    string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
                 return View(model);
             }
 
@@ -132,19 +148,20 @@ namespace UI.Controllers
                     {
                         if (result.IsAdminLocked)
                         {
-                            _logger.LogWarning("Login failed: Account permanently locked by admin for {Email}", model.Email);
+                            //_securityEventLogger.LogFailedLogin(model.Email, "Account permanently locked by admin From AcountController");
                             TempData["MessageType"] = MessageType.AdminLocked;
+                                
                             return View(model);
                         }
                         else
                         {
-                            _logger.LogWarning("Login failed: Account temporarily locked out for {Email}", model.Email);
-                            //TempData["MessageType"] = MessageType.TempLocked;
+                            //_securityEventLogger.LogFailedLogin(model.Email, "Account locked due to failed login attempts From AcountController");
+                            TempData["MessageType"] = MessageType.TempLocked;
                             return View(model);
                         }
                     }
 
-                    _logger.LogWarning("Login failed: Invalid credentials for {Email}", model.Email);
+                   // _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials From AcountController");
                     //AddErrorsToModelState(result.Errors);
                     _accountHelper.AddErrorsToModelState(ModelState, result.Errors);
                     return View(model);
@@ -155,7 +172,7 @@ namespace UI.Controllers
                 var loginResponse = await _genericApiClient.PostAsync<LoginResponse>("api/auth/login", model);
                 if (loginResponse == null || string.IsNullOrEmpty(loginResponse.AccessToken))
                 {
-                    _logger.LogError("Login failed: API returned null response for {Email}", model.Email);
+                    await _securityEventLogger.LogFailedLogin(model.Email, "API returned null response");
                     ModelState.AddModelError(string.Empty, "An error occurred during login. Please try again.");
                     return View(model);
                 }
@@ -184,7 +201,7 @@ namespace UI.Controllers
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                // ✅ Await SignInAsync to ensure cookie is written before redirect
+                //// ✅ Await SignInAsync to ensure cookie is written before redirect
                 await HttpContext.SignInAsync(
                     IdentityConstants.ApplicationScheme,  // ✅ Use Identity's scheme
                     principal,
@@ -198,20 +215,48 @@ namespace UI.Controllers
                         IssuedUtc = DateTimeOffset.UtcNow
                     });
 
-                _logger.LogInformation("✅ LOGIN SUCCESS: User {Email} authenticated with role {Role}", 
-                    model.Email, dbUser.Role ?? "User");
+                //_securityEventLogger.LogSuccessfulLogin(dbUser.Id.ToString(), model.Email);
 
                 // ✅ STEP 4: Redirect based on role
                 // At this point, the authentication cookie is fully committed to the HTTP response.
                 // When the browser navigates to the redirect URL, it will include this cookie in the request.
                 // The next page load will have full authentication context, allowing JavaScript to call
                 // /Account/GetAccessToken successfully and populate dropdowns via ManagePageControlls.
-                if (!string.IsNullOrEmpty(dbUser.Role) && dbUser.Role.Equals("admin", StringComparison.OrdinalIgnoreCase))
+                //if (!string.IsNullOrEmpty(dbUser.Role) && dbUser.Role.Equals("admin", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    _logger.LogInformation("Redirecting Admin user {Email} to admin dashboard", model.Email);
+                //    return RedirectToAction("Index", "Home", new { area = "admin" });
+                //}
+                // ✅ STEP 4: Redirect based on role
+                if (!string.IsNullOrEmpty(dbUser.Role))
                 {
-                    _logger.LogInformation("Redirecting Admin user {Email} to admin dashboard", model.Email);
-                    return RedirectToAction("Index", "Home", new { area = "admin" });
-                }
 
+
+                    switch (dbUser.Role?.ToLowerInvariant())
+                    {
+                        case "admin":
+                            _logger.LogInformation("Redirecting Admin user {Email} to admin dashboard", model.Email);
+                            return RedirectToAction("Index", "Home", new { area = "admin" });
+
+                        case "reviewer":
+                            _logger.LogInformation("Redirecting Reviewer user {Email} to Shipments List", model.Email);
+                            return RedirectToAction("List", "Shipments", new { area = "admin" });
+
+                        case "operation":
+                            _logger.LogInformation("Redirecting Operation user {Email} to Shipments List", model.Email);
+                            return RedirectToAction("List", "Shipments", new { area = "admin" });
+
+                        case "operationmanager":
+                            _logger.LogInformation("Redirecting OperationManager user {Email} to Shipments List", model.Email);
+                            return RedirectToAction("List", "Shipments", new { area = "admin" });
+
+                        default:
+                            _logger.LogInformation("Redirecting user {Email} to home page", model.Email);
+                            return RedirectToAction("Index", "Home");
+                    }
+
+
+                }
                 // ✅ Redirect to returnUrl if valid and local (prevents open redirect vulnerability)
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 {
@@ -225,11 +270,11 @@ namespace UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ EXCEPTION during login for {Email}", model.Email);
+                await _securityEventLogger.LogFailedLogin(model.Email, $"Exception during login: {ex.Message}");
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
                 return View(model);
             }
-       }
+        }
 
         /// <summary>
         /// GET: Displays the logout confirmation view.
@@ -249,32 +294,22 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]  // ✅ CSRF protection - requires valid anti-forgery token
         [Authorize]  // ✅ Must be authenticated to logout
+        [HttpPost]
         public async Task<IActionResult> LogoutConfirmed()
         {
-            var userName = User?.Identity?.Name ?? "Unknown";
+            var userId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            try
-            {
-                // ✅ STEP 1: Clear authentication cookies
-                // Remove access and refresh tokens from browser
-                Response.Cookies.Delete("AccessToken");
-                Response.Cookies.Delete("RefreshToken");
+            await _userService.LogoutAsync();
 
-                // ✅ STEP 2: Sign out using ASP.NET Core Identity
-                // This removes the authentication cookie and clears the user's claims principal
-                await _userService.LogoutAsync();
-
-                _logger.LogInformation("✅ LOGOUT SUCCESS: User {UserName} logged out", userName);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "❌ ERROR during logout for user {UserName}", userName);
-            }
+            // ✅ EXCEPTION: Log logout here because controller is the only handler
+            // There is no UserService.LogoutAsync security logging needed
+            _securityEventLogger.LogLogout(userId);
 
             return RedirectToAction("Index", "Home");
         }
+       
 
-        
+
         // ═══════════════════════════════════════════════════════════════
         // 🔓 REGISTER
         // ═══════════════════════════════════════════════════════════════
@@ -287,55 +322,56 @@ namespace UI.Controllers
 
 
         // 🔓 POST: /Account/Register
-
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [EnableRateLimiting("login")]  // ✅ Same strict policy for registration
+        [EnableRateLimiting("login")]
         public async Task<IActionResult> Register(UserDto user)
         {
             TempData["MessageType"] = null;
 
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Registration failed: Invalid ModelState for {Email}", user.Email);
+                // ✅ Optional: diagnostic logging only (not security)
+                _logger.LogWarning("Register attempt with invalid ModelState: {Errors}",
+                    string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
                 return View(user);
             }
 
             try
             {
+                // ✅ UserService.RegisterAsync handles ALL security event logging internally
                 var result = await _userService.RegisterAsync(user);
 
                 if (result.Success)
                 {
-                    _logger.LogInformation("✅ REGISTRATION SUCCESS: User {Email} registered successfully", user.Email);
+                    // ✅ UserService already logged registration success
                     TempData["MessageType"] = MessageType.RegistrationSuccess;
                     TempData["SuccessMessage"] = "Registration successful! Please log in.";
                     return RedirectToAction(nameof(Login));
                 }
 
-                _logger.LogWarning("Registration failed for {Email}: {Errors}",
-                    user.Email, string.Join(", ", result.Errors ?? new List<string>()));
-
-                //_accountHelper.AddErrorsToModelState(result.Errors);
+                // ✅ UserService already logged registration failure
                 _accountHelper.AddErrorsToModelState(ModelState, result.Errors);
                 TempData["MessageType"] = MessageType.RegistrationFailed;
                 return View(user);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ EXCEPTION during registration for {Email}", user.Email);
+                // ✅ Only log unexpected exceptions here
+                _logger.LogError(ex, "Unexpected error during registration");
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
                 TempData["MessageType"] = MessageType.RegistrationFailed;
                 return View(user);
             }
         }
 
+     
+
         // ═══════════════════════════════════════════════════════════════
         // GET: /Account/AccessDenied
         // ═══════════════════════════════════════════════════════════════
-       
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult AccessDenied()
@@ -606,28 +642,31 @@ namespace UI.Controllers
             try
             {
                 var userEmail = User?.Identity?.Name;
+
                 if (string.IsNullOrWhiteSpace(userEmail))
                 {
-                    TempData["MessageType"] = MessageType.UpdateFailed;
-                    TempData["UpdateFailedTitle"] = ResourceTextHelper.L("SaveFailedTitle", "Update Failed");
-                    TempData["UpdateFailedMessage"] = ResourceTextHelper.L("PasswordChangedFailedMessage", "Password change failed.");
+                    // ⚠️ REMOVED: _securityEventLogger.LogPasswordResetFailed("Unknown", "User email not found");
+                    // UserService will handle this validation
+                    ModelState.AddModelError(string.Empty, "User not found.");
                     return RedirectToAction(nameof(Login));
                 }
 
-                // Use UserService.ChangePasswordAsync which validates current password and changes password
-                // This follows the same pattern as ResetPasswordAsync but for authenticated users
+                // ✅ UserService.ChangePasswordAsync handles ALL security event logging internally
                 var result = await _userService.ChangePasswordAsync(userEmail, model.CurrentPassword, model.NewPassword);
+
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning("ChangePassword failed for {User}. Errors: {Errors}",
-                        User?.Identity?.Name,
-                        string.Join(" | ", result.Errors.Select(e => e.Description)));
+                    // ⚠️ REMOVED: _securityEventLogger.LogPasswordResetFailed(...);
+                    // UserService already logged this failure
 
                     TempData["MessageType"] = MessageType.UpdateFailed;
                     TempData["UpdateFailedTitle"] = ResourceTextHelper.L("SaveFailedTitle", "Update Failed");
                     TempData["UpdateFailedMessage"] = ResourceTextHelper.L("PasswordChangedFailedMessage", "Password change failed.");
                     return RedirectToAction(nameof(Settings));
                 }
+
+                // ⚠️ REMOVED: _securityEventLogger.LogPasswordResetSuccess(userId, userEmail);
+                // UserService already logged this success
 
                 TempData["MessageType"] = MessageType.UpdateSuccess;
                 TempData["UpdateSuccessTitle"] = ResourceTextHelper.L("UpdateSuccessTitle", "Updated Successfully.");
@@ -652,25 +691,29 @@ namespace UI.Controllers
                 try
                 {
                     await _emailSender.SendAccountPasswordChangedNotificationAsync(userEmail);
-                    _logger.LogInformation("🔐 Critical password change notification sent to {Email}", userEmail);
+                    _logger.LogInformation("🔒 Critical password change notification sent to {Email}", userEmail);
                 }
                 catch (Exception emailEx)
                 {
                     _logger.LogError(emailEx, "❌ Failed to send password change notification to {Email}", userEmail);
-                    // Don't fail the password change if email sending fails - security notification failure should not block the change
+                    // Don't fail the password change if email sending fails
                 }
 
                 return RedirectToAction(nameof(Settings));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error changing password for {User}", User?.Identity?.Name);
+                // ⚠️ REMOVED: _securityEventLogger.LogPasswordResetFailed(...);
+                // UserService will handle this, only log unexpected exceptions
+
+                _logger.LogError(ex, "Unexpected error during password change for {User}", User?.Identity?.Name);
                 TempData["MessageType"] = MessageType.UpdateFailed;
                 TempData["UpdateFailedTitle"] = ResourceTextHelper.L("SaveFailedTitle", "Update Failed");
                 TempData["UpdateFailedMessage"] = ResourceTextHelper.L("PasswordChangedFailedMessage", "Password change failed.");
                 return RedirectToAction(nameof(Settings));
             }
         }
+    
 
         [HttpPost]
         [Authorize]
@@ -1000,7 +1043,7 @@ namespace UI.Controllers
         {
             try
             {
-                _logger.LogInformation("🔄 Updating AccessToken in session");
+                //_logger.LogInformation("🔄 Updating AccessToken in session");
 
                 if (string.IsNullOrEmpty(request?.AccessToken))
                 {
@@ -1027,7 +1070,7 @@ namespace UI.Controllers
                         AllowRefresh = true
                     });
 
-                _logger.LogInformation("✅ AccessToken updated in claims");
+                //_logger.LogInformation("✅ AccessToken updated in claims");
                 return Ok(new { success = true, message = "Token updated" });
             }
             catch (Exception ex)
@@ -1053,9 +1096,6 @@ namespace UI.Controllers
         {
             return await _userService.GetCurrentUserByIdentityNameAsync(User?.Identity?.Name);
         }
-
-       
-
     }
 }
 

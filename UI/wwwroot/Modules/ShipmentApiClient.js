@@ -406,9 +406,14 @@ const ShipmentApiClient = (function () {
 
         // Calls POST /api/Shipments/{id}/UpdateStatus?newState=N
         // Serves: Deleted=0, Shipped=5, Delivered=6, Cancelled=7, Returned=8
-        updateStatus: function (id, newState) {
+        updateStatus: function (id, newState, reason = null) {
             if (!id) return Promise.reject(new Error('Invalid id'));
-            const relativeUrl = `${this.apiListUrl}/${encodeURIComponent(id)}/UpdateStatus?newState=${encodeURIComponent(newState)}`;
+
+            // ✅ Build URL with optional reason parameter
+            let relativeUrl = `${this.apiListUrl}/${encodeURIComponent(id)}/UpdateStatus?newState=${encodeURIComponent(newState)}`;
+            if (reason) {
+                relativeUrl += `&reason=${encodeURIComponent(reason)}`;
+            }
 
             if (typeof ApiClient !== 'undefined' && typeof ApiClient.postJson === 'function') {
                 return ApiClient.postJson(relativeUrl, null, true)
@@ -432,6 +437,32 @@ const ShipmentApiClient = (function () {
                     throw err;
                 });
         },
+        // updateStatus: function (id, newState) {
+        //     if (!id) return Promise.reject(new Error('Invalid id'));
+        //     const relativeUrl = `${this.apiListUrl}/${encodeURIComponent(id)}/UpdateStatus?newState=${encodeURIComponent(newState)}`;
+
+        //     if (typeof ApiClient !== 'undefined' && typeof ApiClient.postJson === 'function') {
+        //         return ApiClient.postJson(relativeUrl, null, true)
+        //             .then(resp => {
+        //                 console.debug('ShipmentApiClient.updateStatus response:', resp);
+        //                 return resp;
+        //             });
+        //     }
+
+        //     const headers = Object.assign({ Accept: 'application/json' }, this._getAntiForgeryHeaders());
+        //     return fetch(relativeUrl, { method: 'POST', credentials: 'include', headers })
+        //         .then(async resp => {
+        //             const text = await resp.text().catch(() => null);
+        //             let json = null;
+        //             try { json = text ? JSON.parse(text) : null; } catch { json = null; }
+        //             if (resp.ok) return json ?? {};
+        //             const err = new Error('Request failed: ' + resp.status);
+        //             err.status = resp.status;
+        //             err.responseJSON = json || null;
+        //             err.responseText = text || null;
+        //             throw err;
+        //         });
+        // },
 
         shipped: function (id) {
             if (!id) return Promise.reject(new Error('Invalid id'));

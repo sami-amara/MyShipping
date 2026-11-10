@@ -1,8 +1,11 @@
 ﻿using Business.Contracts;
+using Business.Contracts.Logging;
 using Business.DTOS;
 using DataAccessLayer.Models;
 using DataAccessLayer.UserModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text;
@@ -32,7 +35,7 @@ namespace WebApi.Services
     /// 4. UI stores access token in claims and refresh token in HttpOnly cookie
     /// 5. Subsequent API calls from UI include the JWT access token in Authorization header
     /// </summary>
-    public class UserService : IUserService
+    public class UserService : IWebApiUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -40,7 +43,10 @@ namespace WebApi.Services
         private readonly IRefreshTokenRetriver _refreshTokenRetriver;
         private readonly TokenService _tokenService;
         private readonly ILogger<UserService> _logger;
-       
+        private readonly ISecurityEventLogger _securityEventLogger;
+
+        private readonly Business.Contracts.IEmailSender _emailSender;
+
 
         /// <summary>
         /// Initializes the WebApi UserService with dependencies for credential validation and token management.
@@ -54,7 +60,9 @@ namespace WebApi.Services
         public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, 
             IRefreshTokenRetriver _refreshTokenRetriver,
             IHttpContextAccessor httpContextAccessor,
-            TokenService tokenService, ILogger<UserService> logger
+            TokenService tokenService, ILogger<UserService> logger,
+            ISecurityEventLogger securityEventLogger,
+            Business.Contracts.IEmailSender emailSender
             )
         {
             _userManager = userManager;
@@ -63,6 +71,8 @@ namespace WebApi.Services
             this._refreshTokenRetriver = _refreshTokenRetriver;
             _tokenService = tokenService;
             _logger = logger;
+            _securityEventLogger = securityEventLogger;
+            _emailSender = emailSender;
         }
 
         /// <summary>
@@ -88,6 +98,8 @@ namespace WebApi.Services
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             {
+                // 🔒 Log failed login: user not found
+               await _securityEventLogger.LogFailedLogin(loginDto.Email, "User not found");
                 return new UserResultDto
                 {
                     Success = false,
@@ -99,6 +111,9 @@ namespace WebApi.Services
             if (await _userManager.IsLockedOutAsync(user))
             {
                 var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+
+                // 🔒 Log account lockout
+               await _securityEventLogger.LogAccountLockout(user.Id, user.Email, lockoutEnd);
                 return new UserResultDto
                 {
                     Success = false,
@@ -120,10 +135,16 @@ namespace WebApi.Services
                 // ✅ STEP 3: Record failed attempt (Identity auto-locks after 5 attempts)
                 await _userManager.AccessFailedAsync(user);
 
+                // 🔒 Log failed login: invalid password
+               await _securityEventLogger.LogFailedLogin(loginDto.Email, "Invalid password");
+
                 // Check if account just got locked
                 if (await _userManager.IsLockedOutAsync(user))
                 {
                     var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+                    // 🔒 Log account lockout (triggered by invalid password)
+                   await _securityEventLogger.LogAccountLockout(user.Id, user.Email, lockoutEnd);
+
                     return new UserResultDto
                     {
                         Success = false,
@@ -145,8 +166,13 @@ namespace WebApi.Services
                 };
             }
 
+           
+
             // ✅ STEP 4: Reset failed login count on successful authentication
             await _userManager.ResetAccessFailedCountAsync(user);
+
+            // 🔒 Log successful login
+            _securityEventLogger.LogSuccessfulLogin(user.Id, user.Email);
 
             return new UserResultDto { Success = true };
         }
@@ -182,9 +208,21 @@ namespace WebApi.Services
         /// </summary>
         /// <param name="userDto">User registration data including email, password, name, phone, and role</param>
         /// <returns>UserResultDto with success/failure and detailed validation errors</returns>
-        public async Task<UserResultDto> RegisterAsync(UserDto userDto)
+        /// 
+        /// <summary>
+        /// Registers a new user and sends email confirmation link.
+        /// Handles all registration logic AND post-registration operations.
+        /// 
+        /// FLOW:
+        /// 1. Validate registration data
+        /// 2. Create user account
+        /// 3. Assign default role
+        /// 4. Generate email confirmation token
+        /// 5. Send confirmation email
+        /// 6. Log registration success or detailed failure
+        /// </summary>
+        public async Task<UserResultDto> RegisterAsync(UserDto userDto, Business.Contracts.IEmailSender emailSender, string uiBaseUrl = "https://localhost:7065")
         {
-
             var errors = new List<string>();
 
             // ✅ STEP 1: Validate ConfirmPassword
@@ -210,14 +248,13 @@ namespace WebApi.Services
                 errors.Add("Email is already in use");
             }
 
-            // ✅ STEP 3: Check if username exists (if different from email)
+            // ✅ Check username, phone, etc...
             var existingUserName = await _userManager.FindByNameAsync(userDto.Email);
             if (existingUserName != null && existingUserName.Id != existingEmail?.Id)
             {
                 errors.Add("Username is already in use");
             }
 
-            // ✅ STEP 4: Check if phone exists (if provided)
             if (!string.IsNullOrEmpty(userDto.Phone))
             {
                 var existingPhone = await _userManager.Users
@@ -227,32 +264,18 @@ namespace WebApi.Services
                     errors.Add("Phone number is already in use");
                 }
             }
+
             // ✅ Return early if validation failed
             if (errors.Any())
             {
-                return new UserResultDto
-                {
-                    Success = false,
-                    Errors = errors
-                };
+                _securityEventLogger.LogRegistrationFailed(userDto.Email, string.Join("; ", errors));
+                return new UserResultDto { Success = false, Errors = errors };
             }
+
             try
             {
                 _logger.LogInformation("Attempting to register user: {Email}", userDto.Email);
 
-                // Check if user already exists
-                var existingUser = await _userManager.FindByEmailAsync(userDto.Email);
-                if (existingUser != null)
-                {
-                    _logger.LogWarning("Registration failed: Email {Email} already exists", userDto.Email);
-                    return new UserResultDto
-                    {
-                        Success = false,
-                        Errors = new List<string> { "Email address is already registered" }
-                    };
-                }
-
-                // ✅ STEP 5: Create user with all properties
                 var user = new ApplicationUser
                 {
                     UserName = userDto.Email,
@@ -260,34 +283,87 @@ namespace WebApi.Services
                     FirstName = userDto.FirstName,
                     LastName = userDto.LastName,
                     Phone = userDto.Phone,
-                    EmailConfirmed = false // ✅ Require email confirmation (set to true if not using email)
+                    EmailConfirmed = false
                 };
-                // Create user with password
+
                 var result = await _userManager.CreateAsync(user, userDto.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("✅ User created successfully: {Email}", userDto.Email);
+                    // ✅ Assign role
+                    var roleResult = await _userManager.AddToRoleAsync(user, "User");
 
-                    // Assign default role
-                    await _userManager.AddToRoleAsync(user, "User");
-                    _logger.LogInformation("✅ User {Email} assigned to 'User' role", userDto.Email);
-
-                    // ❌ REMOVED: await _signInManager.SignInAsync(user, isPersistent: false);
-                    // ✅ WebApi doesn't sign users in - they must login to get JWT tokens
-
-                    return new UserResultDto
+                    if (roleResult.Succeeded)
                     {
-                        Success = true,
-                        Errors = new List<string> { "Registration successful. Please login." }
-                        
-                    };
+                        // ✅ STEP 5: Generate email confirmation token
+                        try
+                        {
+                            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                            var uiResetPasswordUrl = $"{uiBaseUrl.TrimEnd('/')}/Account/ConfirmEmail";
+                            var confirmationLink = QueryHelpers.AddQueryString(
+                                uiResetPasswordUrl,
+                                new Dictionary<string, string?>
+                                {
+                                    ["userId"] = user.Id,
+                                    ["token"] = token
+                                });
+
+                            var subject = "Confirm your email - MyShipping";
+                            var body = $@"
+                        <p>Hi {user.UserName ?? user.Email},</p>
+                        <p>Please confirm your email address by clicking the link below:</p>
+                        <p><a href='{confirmationLink}'>Confirm Email</a></p>
+                        <p>If you did not create this account, please ignore this email.</p>";
+
+                            // ✅ Send confirmation email
+                            await emailSender.SendEmailAsync(userDto.Email, subject, body);
+
+                            // 🔒 Log successful registration AND email sent
+                            _securityEventLogger.LogRegistrationSuccess(user.Id, user.Email);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Failed to send confirmation email to {Email}", userDto.Email);
+
+                            // ⚠️ Registration succeeded but email failed - log it
+                            _securityEventLogger.LogRegistrationFailed(userDto.Email,
+                                $"Email confirmation send failed: {ex.Message}");
+
+                            // Still return success - user account was created
+                            return new UserResultDto
+                            {
+                                Success = true,
+                                Errors = new List<string> { "Registration successful but confirmation email failed to send. Please contact support." }
+                            };
+                        }
+
+                        return new UserResultDto
+                        {
+                            Success = true,
+                            Errors = new List<string> { "Registration successful. Please check your email to confirm your account." }
+                        };
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Registration succeeded but role assignment failed for {Email}", userDto.Email);
+                        _securityEventLogger.LogRegistrationFailed(userDto.Email,
+                            $"Role assignment failed: {string.Join("; ", roleResult.Errors.Select(e => e.Description))}");
+
+                        return new UserResultDto
+                        {
+                            Success = false,
+                            Errors = roleResult.Errors.Select(e => e.Description).ToList()
+                        };
+                    }
                 }
 
-                // Registration failed
                 _logger.LogWarning("Registration failed for {Email}: {Errors}",
                     userDto.Email, string.Join(", ", result.Errors.Select(e => e.Description)));
-               
+
+                _securityEventLogger.LogRegistrationFailed(userDto.Email,
+                    string.Join("; ", result.Errors.Select(e => e.Description)));
+
                 return new UserResultDto
                 {
                     Success = false,
@@ -297,16 +373,18 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Exception during registration for {Email}", userDto.Email);
+                _securityEventLogger.LogRegistrationFailed(userDto.Email, $"Exception: {ex.Message}");
+
                 return new UserResultDto
                 {
                     Success = false,
                     Errors = new List<string> { "An error occurred during registration. Please try again." }
                 };
-               
             }
         }
+       
 
-        
+
 
         /// <summary>
         /// Retrieves a user by ID from the Identity database (WebApi context).
@@ -508,16 +586,100 @@ namespace WebApi.Services
         /// <param name="token">Password reset token (from email link)</param>
         /// <param name="newPassword">New password (must meet Identity password requirements)</param>
         /// <returns>IdentityResult with success/failure and validation errors</returns>
+        /// 
         public async Task<IdentityResult> ResetPasswordAsync(string email, string token, string newPassword)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
+                // 🔒 Log password reset failure: user not found
+                _securityEventLogger.LogPasswordResetFailed(email, "User not found");
+
                 // Return a generic failed result to avoid revealing whether the email exists
                 return IdentityResult.Failed(new IdentityError { Description = "Unable to reset password." });
             }
 
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+            // 🔒 Log success or failure
+            if (result.Succeeded)
+            {
+                _securityEventLogger.LogPasswordResetSuccess(user.Id, user.Email);
+            }
+            else
+            {
+                var errorMessages = string.Join("; ", result.Errors.Select(e => e.Description));
+                _securityEventLogger.LogPasswordResetFailed(email, errorMessages);
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Confirms a user's email address using a confirmation token.
+        /// 
+        /// EMAIL CONFIRMATION FLOW:
+        /// 1. User receives confirmation email with link containing token
+        /// 2. User clicks link, UI calls THIS endpoint
+        /// 3. Validate token and confirm email
+        /// 4. Send welcome email on success
+        /// 5. Log confirmation success or failure
+        /// 
+        /// SECURITY:
+        /// - Token is single-use and time-limited
+        /// - AllowAnonymous endpoint (user not yet authenticated)
+        /// - Generic error messages prevent information disclosure
+        /// - All attempts logged for audit trail
+        /// </summary>
+        /// <param name="userId">User's ID (GUID as string)</param>
+        /// <param name="token">Email confirmation token from email link</param>
+        /// <param name="emailSender">Email service to send welcome email</param>
+        /// <returns>IdentityResult with success/failure status</returns>
+        public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token, Business.Contracts.IEmailSender emailSender)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                // 🔒 Log invalid request
+                _securityEventLogger.LogEmailConfirmationFailed(userId ?? "unknown", "Missing userId or token");
+                return IdentityResult.Failed(new IdentityError { Description = "Invalid confirmation request" });
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                // 🔒 Log attempt for non-existent user
+                _securityEventLogger.LogEmailConfirmationFailed(userId, "User not found");
+                return IdentityResult.Failed(new IdentityError { Description = "User not found" });
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+            if (result.Succeeded)
+            {
+                // ✅ Send welcome email (best-effort, doesn't block success)
+                try
+                {
+                    var welcomeSubject = "Welcome to MyShipping";
+                    var welcomeBody = $"<p>Hi {user.UserName ?? user.Email},</p><p>Your email has been confirmed successfully. You can now log in.</p>";
+                    await emailSender.SendEmailAsync(user.Email, welcomeSubject, welcomeBody);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send welcome email to {Email}", user.Email);
+                    // Don't throw - email confirmation already succeeded
+                }
+
+                // 🔒 Log successful email confirmation
+                _securityEventLogger.LogEmailConfirmed(user.Id, user.Email);
+            }
+            else
+            {
+                // 🔒 Log confirmation failure
+                var errorMessages = string.Join("; ", result.Errors.Select(e => e.Description));
+                _securityEventLogger.LogEmailConfirmationFailed(user.Id, errorMessages);
+            }
+
             return result;
         }
 
@@ -525,24 +687,123 @@ namespace WebApi.Services
         /// Changes a user's password for an authenticated user who knows their current password.
         /// This is different from ResetPasswordAsync which is for forgotten passwords (uses token).
         /// 
-        /// SECURITY: Validates the current password before allowing the change.
+        /// SECURITY:
+        /// - Requires current password verification (prevents unauthorized changes)
+        /// - Validates against identity password policy
+        /// - All password changes logged for audit trail
+        /// - Logs success and detailed failure reasons
         /// </summary>
         /// <param name="email">User's email address</param>
         /// <param name="currentPassword">User's current password (for validation)</param>
         /// <param name="newPassword">New password (must meet Identity requirements)</param>
-        /// <returns>IdentityResult with success/failure and errors</returns>
+        /// <returns>IdentityResult with success/failure and validation errors</returns>
         public async Task<IdentityResult> ChangePasswordAsync(string email, string currentPassword, string newPassword)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                // Return a generic failed result to avoid revealing whether the email exists
+                // 🔒 Log password change attempt for non-existent user
+                _securityEventLogger.LogPasswordChangeFailed(email, "User not found");
                 return IdentityResult.Failed(new IdentityError { Description = "Unable to change password." });
             }
 
             var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+            // 🔒 Log success or failure
+            if (result.Succeeded)
+            {
+                _securityEventLogger.LogPasswordChangeSuccess(user.Id, user.Email);
+            }
+            else
+            {
+                var errorMessages = string.Join("; ", result.Errors.Select(e => e.Description));
+                _securityEventLogger.LogPasswordChangeFailed(email, errorMessages);
+            }
+
             return result;
         }
+
+
+        /// <summary>
+        /// Initiates password reset flow by generating reset token and sending email.
+        /// This is the first step in the forgotten password recovery process.
+        /// 
+        /// SECURITY ARCHITECTURE:
+        /// - Generates URL-safe, time-limited, single-use reset token
+        /// - Sends reset link via email (async, errors don't break the flow)
+        /// - Always returns generic success to prevent username enumeration
+        /// - Logs password reset request for audit trail (even if email doesn't exist)
+        /// 
+        /// FLOW:
+        /// 1. Lookup user by email
+        /// 2. Generate password reset token
+        /// 3. Build reset link with token
+        /// 4. Send email (best-effort; failures logged but not blocking)
+        /// 5. Log the reset request
+        /// 6. Return generic success (prevents username enumeration)
+        /// </summary>
+        /// <param name="email">User's email address</param>
+        /// <param name="uiResetPasswordUrl">UI URL for password reset page (e.g., "https://localhost:7065/Account/ResetPassword")</param>
+        /// <returns>Task (always succeeds for security reasons; check logs for failures)</returns>
+        public async Task ForgotPasswordAsync(string email, string uiResetPasswordUrl)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                try
+                {
+                    // ✅ Generate single-use, time-limited reset token
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                    // ✅ Build reset link with token and email
+                    var resetLink = QueryHelpers.AddQueryString(
+                        uiResetPasswordUrl,
+                        new Dictionary<string, string?>
+                        {
+                            ["email"] = email,
+                            ["token"] = token
+                        });
+
+                    var subject = "Reset your password";
+                    var body = $@"
+                <p>We received a request to reset your password.</p>
+                <p><a href='{resetLink}'>Click here to reset your password</a></p>
+                <p>If you did not request this, please ignore this email.</p>";
+
+                    try
+                    {
+                        // ✅ Send email (async, graceful failure)
+                        await _emailSender.SendEmailAsync(email, subject, body);
+
+                        // 🔒 Log successful password reset request
+                        _securityEventLogger.LogPasswordResetRequested(email);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to send password reset email to {Email}", email);
+
+                        // 🔒 Log email failure but don't throw (prevents client knowing email failed)
+                        _securityEventLogger.LogPasswordResetFailed(email, $"Email send failed: {ex.Message}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Exception during forgot password processing for {Email}", email);
+
+                    // 🔒 Log token generation or other unexpected failures
+                    _securityEventLogger.LogPasswordResetFailed(email, $"Exception: {ex.Message}");
+                }
+            }
+            else
+            {
+                // 🔒 Log password reset attempt for non-existent user (security audit)
+                _securityEventLogger.LogPasswordResetFailed(email, "User not found");
+            }
+
+            // Note: Always complete successfully from caller's perspective (prevents username enumeration)
+        }
+
 
         /// <summary>
         /// Updates an existing user's information (admin operation - WebApi context).
@@ -698,6 +959,94 @@ namespace WebApi.Services
             return addResult;
         }
 
+
+        /// <summary>
+        /// Builds JWT claims array for a user identified by email.
+        /// Used internally by LoginAsync to create claims for the access token.
+        /// 
+        /// CLAIMS INCLUDED:
+        /// - NameIdentifier: User's GUID (used to identify user in subsequent API requests)
+        /// - Name: User's email address
+        /// - Email: User's email address (duplicate for compatibility)
+        /// - Role: User's role from database (Admin, User, Reviewer, etc.)
+        /// 
+        /// These claims are embedded in the JWT access token and available via
+        /// User.Claims when the token is validated by [Authorize] endpoints.
+        /// </summary>
+        /// <param name="email">User's email address</param>
+        /// <returns>Tuple containing claims array and UserDto</returns>
+        public async Task<(Claim[] Claims, UserDto User)> GetClaimsAsync(string email)
+        {
+            var user = await GetUserByEmailAsync(email);
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  // ✅ User ID for authorization
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Email, user.Email),  // ✅ Email claim
+                new Claim(ClaimTypes.Role, user.Role ?? "User")  // ✅ Role for role-based authorization
+            };
+            return (claims, user);
+        }
+
+        /// <summary>
+        /// Builds JWT claims array for a user identified by ID.
+        /// Used internally by RefreshAccessToken to create claims for the new access token.
+        /// 
+        /// CLAIMS INCLUDED:
+        /// - NameIdentifier: User's GUID
+        /// - Name: User's email address
+        /// - Email: User's email address
+        /// - Role: User's current role from database (refreshed from DB to get latest role)
+        /// 
+        /// IMPORTANT: This method fetches the user's CURRENT role from the database,
+        /// so if an admin changes a user's role, the new role will be reflected in
+        /// the refreshed access token.
+        /// </summary>
+        /// <param name="userId">User's ID (GUID as string)</param>
+        /// <returns>Claims array for JWT token generation</returns>
+        public async Task<Claim[]> GetClaimsByIdAsync(string userId)
+        {
+            var user = await GetUserByIdAsync(userId);
+            return new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  // ✅ User ID
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Email, user.Email),  // ✅ Email claim
+                new Claim(ClaimTypes.Role, user.Role ?? "User")  // ✅ Current role (refreshed from DB)
+            };
+        }
+
+        public async Task<string?> GetUserDisplayNameAsync(Guid? userId)
+        {
+            if (!userId.HasValue) return null;
+
+            var user = await _userManager.FindByIdAsync(userId.Value.ToString());
+            if (user == null) return null;
+
+            var fullName = $"{user.FirstName} {user.LastName}".Trim();
+            return !string.IsNullOrWhiteSpace(fullName) ? fullName : user.UserName;
+        }
+
+        public async Task<Dictionary<Guid, string>> GetUserDisplayNamesAsync(IEnumerable<Guid?> userIds)
+        {
+            var validIds = userIds.Where(x => x.HasValue).Select(x => x.Value).Distinct().ToList();
+            if (!validIds.Any()) return new Dictionary<Guid, string>();
+
+            var strIds = validIds.Select(id => id.ToString()).ToList();
+
+            var users = await _userManager.Users
+                .Where(u => strIds.Contains(u.Id))
+                .Select(u => new
+                {
+                    u.Id,
+                    DisplayName = !string.IsNullOrWhiteSpace(u.FirstName + " " + u.LastName)
+                        ? (u.FirstName + " " + u.LastName).Trim()
+                        : u.UserName
+                })
+                .ToDictionaryAsync(u => Guid.Parse(u.Id), u => u.DisplayName);
+
+            return users;
+        }
 
     }
 }

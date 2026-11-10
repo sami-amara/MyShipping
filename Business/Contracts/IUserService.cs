@@ -56,15 +56,7 @@ namespace Business.Contracts
         /// <returns>Completed task</returns>
         Task LogoutAsync();
 
-        /// <summary>
-        /// Registers a new user account with the specified role.
-        /// IMPLEMENTATION DIFFERS BY PROJECT:
-        /// - UI: May sign in user after registration (cookie-based)
-        /// - WebApi: Does NOT sign in (user must login to get JWT tokens)
-        /// </summary>
-        /// <param name="registerDto">Registration data (email, password, name, phone, role)</param>
-        /// <returns>Result indicating success/failure and validation errors</returns>
-        Task<UserResultDto> RegisterAsync(UserDto registerDto);
+     
 
         /// <summary>
         /// Retrieves a user by ID.
@@ -135,17 +127,7 @@ namespace Business.Contracts
         /// <returns>IdentityResult with success/failure and errors</returns>
         Task<IdentityResult> ResetPasswordAsync(string email, string token, string newPassword);
 
-        /// <summary>
-        /// Changes a user's password for an authenticated user who knows their current password.
-        /// This is different from ResetPasswordAsync which is for forgotten passwords (uses token).
-        /// 
-        /// SECURITY: Validates the current password before allowing the change.
-        /// </summary>
-        /// <param name="email">User's email address</param>
-        /// <param name="currentPassword">User's current password (for validation)</param>
-        /// <param name="newPassword">New password (must meet Identity requirements)</param>
-        /// <returns>IdentityResult with success/failure and errors</returns>
-        Task<IdentityResult> ChangePasswordAsync(string email, string currentPassword, string newPassword);
+        
 
         /// <summary>
         /// Updates an existing user's information (admin operation).
@@ -186,24 +168,15 @@ namespace Business.Contracts
         Task<IdentityResult> ChangeUserRoleAsync(string userId, string newRole);
 
 
+        /// WebApi-specific: Logs all password changes with security events
+        /// </summary>
+        /// <param name="email">User's email address</param>
+        /// <param name="currentPassword">User's current password (for validation)</param>
+        /// <param name="newPassword">New password (must meet Identity requirements)</param>
+        /// <returns>IdentityResult with success/failure and validation errors</returns>
+        Task<IdentityResult> ChangePasswordAsync(string email, string currentPassword, string newPassword);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-
+        Task<Dictionary<Guid, string>> GetUserDisplayNamesAsync(IEnumerable<Guid?> userIds);
     }
 }

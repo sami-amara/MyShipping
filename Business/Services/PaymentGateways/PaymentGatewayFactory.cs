@@ -1,4 +1,4 @@
-using Business.Contracts;
+using Business.Contracts.Payments;
 using DataAccessLayer.Contracts;
 using Domains;
 using Microsoft.Extensions.DependencyInjection;

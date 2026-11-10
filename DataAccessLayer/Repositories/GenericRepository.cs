@@ -60,7 +60,7 @@ namespace DataAccessLayer.Repositories
             try
             {
                 entity.CreatedDate = DateTime.UtcNow;
-                entity.UpdatedDate = null;
+                //entity.UpdatedDate = null;
 
                 await _dbSet.AddAsync(entity).ConfigureAwait(false);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -82,7 +82,7 @@ namespace DataAccessLayer.Repositories
 
             entity.CreatedDate = dbData.CreatedDate;
             entity.CreatedBy = dbData.CreatedBy;
-            entity.UpdatedDate = DateTime.UtcNow;
+            //entity.UpdatedDate = DateTime.UtcNow;
             entity.CurrentState = dbData.CurrentState;
 
             _context.Entry(dbData).CurrentValues.SetValues(entity);
@@ -179,8 +179,8 @@ namespace DataAccessLayer.Repositories
                 }
 
                 entity.CurrentState = status;
-                entity.UpdatedBy = userId;  
-                entity.UpdatedDate = DateTime.UtcNow;  // ✅ UTC time
+                //entity.UpdatedBy = userId;  
+                //entity.UpdatedDate = DateTime.UtcNow;  // ✅ UTC time
 
                 await _context.SaveChangesAsync().ConfigureAwait(false);
                 return true;

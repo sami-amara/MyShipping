@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using Business.Contracts;
+using Business.Contracts.Dashboard;
+using Business.Contracts.Logging;
+using Business.Contracts.Payments;
 using Business.Contracts.Shipment;
+using Business.Services.Logging;
 using Business.Mapping;
 using Business.Services;
 using Business.Services.Shipment;
@@ -16,6 +20,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Threading.RateLimiting;
@@ -104,7 +112,7 @@ namespace UI.Services
                     "Connection string 'ShippingConnection' is missing. " +
                     "Check appsettings.json / secrets / environment variables.");
 
-            Console.WriteLine($"ConnectionString: {conn}");
+           
 
             builder.Services.AddDbContext<ShippingContext>(options =>
                 options.UseSqlServer(conn)
@@ -178,9 +186,11 @@ namespace UI.Services
                             .Select(c => $"{c.Type}={c.Value.Substring(0, Math.Min(15, c.Value.Length))}")
                             .ToList();
 
-                        logger?.LogInformation("🔐 OnSigningIn: Claims={Claims}",
-                            string.Join(", ", claims ?? new List<string>()));
+                        //logger?.LogInformation("🔐 OnSigningIn: Claims={Claims}",
+                        //    string.Join(", ", claims ?? new List<string>()));
 
+                        logger?.LogDebug("🔐 OnSigningIn: Claims={Claims}",
+                              string.Join(", ", claims ?? new List<string>()));
                         return Task.CompletedTask;
                     },
                     OnValidatePrincipal = context =>
@@ -190,10 +200,15 @@ namespace UI.Services
                             ?.CreateLogger("CookieAuth");
 
                         var hasToken = context.Principal?.FindFirst("AccessToken") != null;
-                        logger?.LogInformation(
-                            "✅ ValidatePrincipal: User={Name}, HasToken={HasToken}",
-                            context.Principal?.Identity?.Name,
-                            hasToken);
+                        if (!hasToken)
+                        {
+                            logger?.LogDebug(
+                                "⚠️ ValidatePrincipal: User={Name} missing AccessToken",
+                                context.Principal?.Identity?.Name);
+
+                       
+                        }
+                      
 
                         return Task.CompletedTask;
                     },
@@ -271,7 +286,7 @@ namespace UI.Services
                             }));
                 options.OnRejected = async (context, cancellationToken) =>
                 {
-                    var retryAfterSeconds = 300; // Default 1 minute
+                    var retryAfterSeconds = 300; // Default 5 minutes
 
                     if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
                     {
@@ -280,7 +295,64 @@ namespace UI.Services
 
                     context.HttpContext.Response.StatusCode = 429;
 
-                    // ✅ IMPROVED: Better detection of AJAX/API calls
+                    // 🆕 Track rate limit breach count per IP in HttpContext
+                    var clientIdentifier = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+
+                    // Initialize or increment the counter for this request
+                    var counterKey = $"RateLimitCount_{clientIdentifier}";
+                    int requestsCount = 1;
+
+                    if (context.HttpContext.Items.ContainsKey(counterKey))
+                    {
+                        requestsCount = (int)context.HttpContext.Items[counterKey] + 1;
+                    }
+                    context.HttpContext.Items[counterKey] = requestsCount;
+
+                    // Extract Email and CorrelationId for audit logging
+                    string? email = null;
+                    string? correlationId = null;
+
+                    // Get CorrelationId from HttpContext.Items
+                    if (context.HttpContext.Items.TryGetValue("CorrelationId", out var corrId))
+                    {
+                        correlationId = corrId?.ToString();
+                    }
+
+                    // Try to extract email from login form (POST to /Account/Login)
+                    if (context.HttpContext.Request.Path == "/Account/Login" &&
+                        context.HttpContext.Request.Method == "POST" &&
+                        context.HttpContext.Request.ContentType?.Contains("application/x-www-form-urlencoded") == true)
+                    {
+                        try
+                        {
+                            context.HttpContext.Request.EnableBuffering();
+                            var form = await context.HttpContext.Request.ReadFormAsync(cancellationToken);
+                            email = form["Email"].FirstOrDefault() ?? form["email"].FirstOrDefault();
+                            context.HttpContext.Request.Body.Position = 0;
+                        }
+                        catch
+                        {
+                            // Silently fail
+                        }
+                    }
+
+                    // 🔒 Get rate limit logger and log the breach WITH dynamic requestsCount
+                    var rateLimitLogger = context.HttpContext.RequestServices
+                        .GetRequiredService<IRateLimitEventLogger>();
+
+                    var endpoint = context.HttpContext.Request.Path.ToString();
+
+                    // 🆕 PASS DYNAMIC requestsCount (increments per request)
+                    await rateLimitLogger.LogRateLimitBreachAsync(
+                        clientIdentifier,
+                        endpoint,
+                        requestsCount,  // 🆕 DYNAMIC - increments with each breach
+                        "5 minutes",
+                        email,
+                        correlationId
+                    );
+
+                    // 🔒 Handle response (API vs Form)
                     var request = context.HttpContext.Request;
                     var isApiCall =
                         request.Path.StartsWithSegments("/api") ||
@@ -289,7 +361,6 @@ namespace UI.Services
 
                     if (isApiCall)
                     {
-                        // ✅ Return JSON for API/AJAX calls
                         context.HttpContext.Response.ContentType = "application/json";
                         await context.HttpContext.Response.WriteAsJsonAsync(new
                         {
@@ -301,7 +372,7 @@ namespace UI.Services
                     }
                     else
                     {
-                        // ✅ Redirect for traditional form posts
+                        // Redirect for traditional form posts
                         var tempDataProvider = context.HttpContext.RequestServices
                             .GetRequiredService<ITempDataDictionaryFactory>();
                         var tempData = tempDataProvider.GetTempData(context.HttpContext);
@@ -320,7 +391,7 @@ namespace UI.Services
                         context.HttpContext.Response.Redirect(redirectUrl);
                     }
                 };
-                
+
             });
 
             // ═══════════════════════════════════════════════════════════════
@@ -356,8 +427,7 @@ namespace UI.Services
             builder.Services.AddScoped<IShipmentsStatus, ShipmentsStatusService>();
             builder.Services.AddScoped<ISubscriptionPackage, SbuscriptionPackageService>();
             builder.Services.AddScoped<IRefreshToken, RefreshTokenService>();
-            //builder.Services.AddScoped<IUserService, UserService>();
-            // ✅ CHANGED: Register as IUIUserService (UI-specific)
+            
             builder.Services.AddScoped<IUIUserService, UserService>();
 
             // ✅ ALSO register as IUserService for backward compatibility if needed
@@ -372,9 +442,31 @@ namespace UI.Services
             builder.Services.AddScoped<IShippingPackage, ShipingPackgingService>();
             builder.Services.AddScoped<IRefreshTokenRetriver, RefreshTokenRetriverService>();
             builder.Services.AddScoped<ICarrier, CarrierService>();
-            builder.Services.AddScoped<SecurityEventLogger>();
+            //builder.Services.AddScoped<ISecurityEventLogger, SecurityEventLogger>();
+            // Line 458-459: Update these registrations:
+            builder.Services.AddScoped<ISecurityEventLogger>(sp =>
+                new SecurityEventLogger(
+                    sp.GetRequiredService<ILogger<SecurityEventLogger>>(),
+                    sp.GetRequiredService<IHttpContextAccessor>(),
+                    sp));  // 🔴 Pass IServiceProvider
+            builder.Services.AddScoped<IShipmentAuditService, ShipmentAuditService>();
+            builder.Services.AddScoped<ISecurityAuditLogRepository, SecurityAuditLogRepository>();
+            
+            //builder.Services.AddScoped<IRateLimitEventLogger, RateLimitEventLogger>();
+            builder.Services.AddScoped<IRateLimitEventLogger>(sp =>
+            new RateLimitEventLogger(
+            sp.GetRequiredService<ILogger<RateLimitEventLogger>>(),
+            sp));  // 🔴 Pass IServiceProvider
+
+            // Add the background task queue
+            builder.Services.AddSingleton<SecurityAuditTaskQueue>();
+
+            // Add the background service
+            builder.Services.AddHostedService<SecurityAuditBackgroundService>();
+
             builder.Services.AddScoped<IEmailSender, EmailSenderService>();
             builder.Services.AddScoped<AccountAuditService>();
+            builder.Services.AddScoped<SecurityAuditService>();
 
             builder.Services.AddScoped<AccountHelper>();  // ✅ NEW: Add AccountHelper
             builder.Services.AddScoped<IShipmentStateHandlerFactory, ShipmentStateHandlerFactory>();
@@ -383,7 +475,12 @@ namespace UI.Services
             builder.Services.AddScoped<ReadyForShippingShipment>();
             builder.Services.AddScoped<ShippedShipment>();
             builder.Services.AddScoped<DelivredShipment>();
-            builder.Services.AddScoped<ReturnedShipment>();
+            builder.Services.AddScoped<RefundedShipment>();
+            builder.Services.AddScoped<ReturnedShipment>(); 
+
+
+    
+
 
             // ═══════════════════════════════════════════════════════════════
             // Payment Gateway Configuration & Services
@@ -393,9 +490,125 @@ namespace UI.Services
 
             builder.Services.AddScoped<Business.Services.PaymentGateways.StripePaymentGateway>();
             builder.Services.AddScoped<Business.Services.PaymentGateways.PayPalPaymentGateway>();
-            builder.Services.AddScoped<Business.Contracts.IPaymentGatewayFactory, 
+            builder.Services.AddScoped<IPaymentGatewayFactory, 
                 Business.Services.PaymentGateways.PaymentGatewayFactory>();
+
+            // ✅ Register all Business layer logging and security services
+            builder.Services.ConfigureBusinessLogging();
         }
+
+        /// <summary>
+        /// Configure Serilog for UI application with centralized security logging.
+        /// Mirrors WebApi configuration to ensure consistent audit trails across projects.
+        /// </summary>
+        /// 
+
+
+        public static void ConfigureSerilog(WebApplicationBuilder builder)
+        {
+            var configuration = builder.Configuration;
+            var env = builder.Environment;
+
+            var loggerConfig = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .Enrich.FromLogContext()
+                .Enrich.WithProperty("Application", "MyShipping.UI")
+                .Enrich.WithProperty("Environment", env.EnvironmentName);
+
+            // ✅ Apply per-namespace overrides
+            var perNamespaceLevels = configuration.GetSection("Logging:PerNamespaceLogLevels").GetChildren();
+            foreach (var levelConfig in perNamespaceLevels)
+            {
+                if (Enum.TryParse<LogEventLevel>(levelConfig.Value, out var level))
+                {
+                    loggerConfig = loggerConfig.MinimumLevel.Override(levelConfig.Key, level);
+                }
+            }
+
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            // SINK 1: Security Log File (security-.txt)
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            var securityLogPath = configuration.GetValue<string>("Logging:SecurityLogFilePath") ?? "Logs/security-.txt";
+            loggerConfig = loggerConfig.WriteTo.Logger(lc => lc
+                .Filter.With(new Business.Services.Logging.SecurityEventFilter())   // Only security events
+                .Filter.With(new EmailMaskingFilter())                     // Mask sensitive data
+                .WriteTo.File(
+                    securityLogPath,
+                    restrictedToMinimumLevel: LogEventLevel.Information,
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 30,
+                    fileSizeLimitBytes: 100_000_000,
+                    rollOnFileSizeLimit: true,
+                    outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] [{CorrelationId}] {Message:lj}{NewLine}{Exception}"
+                )
+            );
+
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            // SINK 2: Application Log File (app-.txt)
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            loggerConfig = loggerConfig.WriteTo.Logger(lc => lc
+                .Filter.With(new Business.Services.Logging.NonSecurityEventFilter())  // Block security events
+                .WriteTo.File(
+                    "Logs/app-.txt",
+                    restrictedToMinimumLevel: LogEventLevel.Information,
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 10,
+                    fileSizeLimitBytes: 50_000_000,
+                    rollOnFileSizeLimit: true,
+                    outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+                )
+            );
+
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            // SINK 3: SQL Server Database (ONLY security events with masking)
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            var sqlConnectionString = configuration.GetConnectionString("ShippingConnection");
+            if (!string.IsNullOrEmpty(sqlConnectionString))
+            {
+                try
+                {
+                    var sinkOptions = new MSSqlServerSinkOptions
+                    {
+                        TableName = "Log",
+                        //TableName = "SecurityAuditLogs",
+                        SchemaName = "dbo",
+                        AutoCreateSqlTable = false,
+                        BatchPostingLimit = 100,
+                        BatchPeriod = TimeSpan.FromSeconds(10),
+                        EagerlyEmitFirstEvent = true
+                    };
+
+                    // ✅ SINGLE database sink with proper filtering
+                    // Only writes security events (via SecurityEventFilter)
+                    // All emails are masked (via EmailMaskingFilter)
+                    loggerConfig = loggerConfig.WriteTo.Logger(lc => lc
+                        .Filter.With(new Business.Services.Logging.SecurityEventFilter())   // ✅ Only security events
+                        .Filter.With(new EmailMaskingFilter())                     // ✅ Mask all emails
+                        .WriteTo.MSSqlServer(
+                            connectionString: sqlConnectionString,
+                            sinkOptions: sinkOptions
+                        )
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Warning: Could not configure SQL Server logging: {ex.Message}");
+                }
+            }
+
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            // SINK 4: Console Output (Development only)
+            // ════════════════════════════════════════════════════════════════════════════════════════
+            if (env.IsDevelopment())
+            {
+                loggerConfig = loggerConfig.WriteTo.Console(
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+            }
+
+            Log.Logger = loggerConfig.CreateLogger();
+            builder.Host.UseSerilog();
+        }
+
     }
 }
 

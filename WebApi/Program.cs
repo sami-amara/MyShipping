@@ -1,10 +1,14 @@
-﻿using DataAccessLayer.DbContext;
+using DataAccessLayer.DbContext;
 using DataAccessLayer.UserModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
 using WebApi.Hubs;
 using WebApi.Services;
+using Business.Contracts;
+using Business.Services;
+using Business.Services.Logging.Middleware;
+using WebApi.Logging.Middleware;
 
 namespace WebApi
 {
@@ -22,7 +26,7 @@ namespace WebApi
             // Add controllers and API explorer (Swagger already configured in RegisterServciesHelper)
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
             //builder.Services.AddHttpClient();
 
             var app = builder.Build();
@@ -47,11 +51,35 @@ namespace WebApi
                 startupLogger.LogWarning("SendGrid:FromName is missing. Default sender name will be used.");
             }
 
-           
+            // ?? EARLY: Cache email from auth requests for rate limit logger (BEFORE buffering middleware)
+            app.UseBusinessLogging();
+
+            // ?? Enable request body buffering so rate limit logger can read email from login attempts
+            app.Use(async (context, next) =>
+            {
+                // Enable buffering for the request body so it can be read multiple times
+                if (context.Request.ContentType?.Contains("application/json") == true)
+                {
+                    context.Request.EnableBuffering();
+                }
+                await next();
+            });
+
+            // ? NEW: Correlation ID Middleware (must be early in pipeline)
+            app.UseCorrelationId();
+
+            // ? NEW: Request/Response Logging Middleware (logs HTTP method, path, status, response time)
+            // Using inline middleware to properly resolve scoped IUserService
+            app.Use(async (HttpContext context, Microsoft.AspNetCore.Http.RequestDelegate next) =>
+            {
+                var middleware = ActivatorUtilities.CreateInstance<RequestResponseLoggingMiddleware>(
+                    context.RequestServices, next);
+                await middleware.InvokeAsync(context, context.RequestServices.GetRequiredService<IUserService>());
+            });
 
             app.Use(async (context, next) =>
            {
-                // ✅ ADD THIS: API-focused security headers
+                // ? ADD THIS: API-focused security headers
                 context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
                 context.Response.Headers.Append("X-Frame-Options", "DENY");
                 context.Response.Headers.Append("X-XSS-Protection", "0");
@@ -85,7 +113,7 @@ namespace WebApi
             }
 
 
-            // 5. ✅ CORS (MUST BE AFTER UseRouting, BEFORE UseAuthentication)
+            // 5. ? CORS (MUST BE AFTER UseRouting, BEFORE UseAuthentication)
             //app.UseCors("AllowFrontend");
             // 2. HTTPS redirection
             app.UseHttpsRedirection();
@@ -99,7 +127,7 @@ namespace WebApi
             // 4. Routing (BEFORE CORS)
             app.UseRouting();
 
-            //// 5. ✅ CORS (MUST BE AFTER UseRouting, BEFORE UseAuthentication)
+            //// 5. ? CORS (MUST BE AFTER UseRouting, BEFORE UseAuthentication)
             app.UseCors("AllowFrontend");
 
             // 6. Rate limiting (BEFORE Authentication)
@@ -111,9 +139,9 @@ namespace WebApi
             // 8. Authorization
             app.UseAuthorization();
 
-            // 9. ✅ Map endpoints (SignalR hub MUST have CORS applied)
+            // 9. ? Map endpoints (SignalR hub MUST have CORS applied)
             app.MapHub<YourHub>("/hubs/yourHub")
-               .RequireCors("AllowFrontend");  // ✅ CRITICAL
+               .RequireCors("AllowFrontend");  // ? CRITICAL
 
             app.MapControllers();
 
@@ -125,6 +153,7 @@ namespace WebApi
         }
     }
 }
+
 
 
 

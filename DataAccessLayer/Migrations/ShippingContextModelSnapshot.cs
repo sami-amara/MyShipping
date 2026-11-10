@@ -67,6 +67,93 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AccountAuditLogs");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.SecurityAuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdminNotes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("CorrelationId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Endpoint")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<bool>("IsReviewed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Metadata")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ShipmentEventType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ShipmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("TrackingNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventType");
+
+                    b.HasIndex("IpAddress");
+
+                    b.HasIndex("IsReviewed");
+
+                    b.HasIndex("Severity");
+
+                    b.HasIndex("Timestamp");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SecurityAuditLogs");
+                });
+
             modelBuilder.Entity("DataAccessLayer.UserModels.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -831,6 +918,21 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("(newid())");
 
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ApprovedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CancelledBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("CarrierId")
                         .HasColumnType("uniqueidentifier");
 
@@ -849,8 +951,14 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DelivryDate")
+                    b.Property<DateTime?>("DeliveredAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeliveredBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DelivryDate")
+                        .HasColumnType("datetime");
 
                     b.Property<double>("Height")
                         .HasColumnType("float");
@@ -872,10 +980,34 @@ namespace DataAccessLayer.Migrations
                     b.Property<Guid?>("PaymentMethodId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("ReadyAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ReadyBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ReceiverId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ReferenceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RefundReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefundedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("RefundedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReturnReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReturnedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ReturnedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("RowVersion")
@@ -885,6 +1017,12 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ShipingPackgingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ShippedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ShippedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ShippingDate")
@@ -1541,6 +1679,16 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.SecurityAuditLog", b =>
+                {
+                    b.HasOne("DataAccessLayer.UserModels.ApplicationUser", "User")
+                        .WithMany("SecurityAuditLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domains.TbCity", b =>
                 {
                     b.HasOne("Domains.TbCountry", "Country")
@@ -1730,6 +1878,8 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.UserModels.ApplicationUser", b =>
                 {
                     b.Navigation("AuditLogs");
+
+                    b.Navigation("SecurityAuditLogs");
                 });
 
             modelBuilder.Entity("Domains.TbCarrier", b =>

@@ -1,4 +1,3 @@
-using Business.Contracts;
 using Business.Payments.Gateway;
 using Business.Payments.PayPal.Models;
 using Business.Payments.Shared;
@@ -11,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Business.Contracts.Payments;
 
 namespace Business.Services.PaymentGateways
 {

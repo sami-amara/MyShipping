@@ -1,0 +1,198 @@
+@using DataAccessLayer.Model
+@using Business.DTOS
+@using UI.Helpers
+@model UI.Models.AuditTimelineIndexViewModel
+@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Shipment Audit Timeline";
+    var paged = Model?.Paged ?? new PagedResult<ShipmentTimelineEventDto>();
+    var pager = Model?.Pager ?? new UI.Models.PaginationInfo();
+    var q = Model?.Search ?? string.Empty;
+}
+
+<div class="content-wrapper">
+
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary me-2">
+                <i class="mdi mdi-history"></i>
+            </span>
+            Shipment Audit Timeline
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Audit Timeline</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Search Audit Timeline</h4>
+
+                    @* Server-side search: tracking number, shipment id, event type, reason, username, email *@
+                    <form asp-action="Index" asp-controller="AuditTimeline" method="get" class="mb-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-md-8">
+                                <input type="text" name="q" class="form-control"
+                                       placeholder="Search by tracking number, shipment id, event type, reason, or username..."
+                                       value="@q" />
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-gradient-primary d-inline-flex align-items-center justify-content-center w-100">
+                                    <i class="mdi mdi-magnify me-1"></i> Search
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <a asp-action="Index" asp-controller="AuditTimeline"
+                                   class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center w-100">
+                                    <i class="mdi mdi-refresh me-1"></i> Clear
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Status</th>
+                                    <th>Severity</th>
+                                    <th>Time</th>
+                                    <th>Tracking #</th>
+                                    <th>User</th>
+                                    <th>IP Address</th>
+                                    <th>Reason</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int counter = (pager.Page - 1) * pager.PageSize + 1;
+                                }
+                                @if (!paged.Items.Any())
+                                {
+                                    <tr><td colspan="9" class="text-center">No records found</td></tr>
+                                }
+                                else
+                                {
+                                    foreach (var evt in paged.Items)
+                                    {
+                                        <tr>
+                                            <td>@counter</td>
+                                      
+                                            <td>@ShipmentHelpers.StatusBadge(evt.ShipmentEventType)</td>
+                                            <td>@ShipmentHelpers.SeverityBadge(evt.Severity)</td>
+
+                                            <td>
+                                                @evt.FormattedTime
+                                                <br />
+                                                <small class="text-muted">@evt.RelativeTime</small>
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(evt.TrackingNumber))
+                                                {
+                                                    <a asp-action="Index" asp-controller="AuditTimeline" asp-route-q="@evt.TrackingNumber" class="link-secondary">
+                                                        <code>@evt.TrackingNumber</code>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(evt.UserDisplayName) && evt.UserDisplayName != "System")
+                                                {
+                                                    <a asp-action="Index" asp-controller="AuditTimeline" asp-route-q="@evt.UserDisplayName" class="link-secondary">
+                                                        @evt.UserDisplayName
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    @evt.UserDisplayName
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(evt.IpAddress))
+                                                {
+                                                    <a asp-action="Index" asp-controller="AuditTimeline" asp-route-q="@evt.IpAddress" class="link-secondary">
+                                                        <code>@evt.IpAddress</code>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @if (string.IsNullOrEmpty(evt.Reason))
+                                                {
+                                                    @:-
+                                                }
+                                                else if (evt.Reason.Length > 30)
+                                                {
+                                                    <span title="@evt.Reason">@(evt.Reason.Substring(0, 30) + "...")</span>
+                                                }
+                                                else
+                                                {
+                                                    @evt.Reason
+                                                }
+                                            </td>
+
+                                            <td><em>@(string.IsNullOrEmpty(evt.Description) ? "-" : evt.Description)</em></td>
+                                        </tr>
+                                        counter++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <nav aria-label="Audit timeline pagination" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            @if (pager.HasPrevious)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@(pager.Page - 1)" asp-route-q="@q">Previous</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                            }
+
+                            @for (int i = pager.Start; i <= pager.End; i++)
+                            {
+                                <li class="page-item @(i == pager.Page ? "active" : "")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-q="@q">@i</a>
+                                </li>
+                            }
+
+                            @if (pager.HasNext)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@(pager.Page + 1)" asp-route-q="@q">Next</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                            }
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
