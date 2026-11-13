@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "necolas/normalize.css": "*"
-  },
-  "styles": [
-    "base.css",
-    "index.css"
-  ]
-}
