@@ -1,0 +1,1438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>الاجرائات</value>
+  </data>
+  <data name="Cities" xml:space="preserve">
+    <value>المدن</value>
+    <comment>Shipping types</comment>
+  </data>
+  <data name="Configrations" xml:space="preserve">
+    <value>اعدادات</value>
+  </data>
+  <data name="Countries" xml:space="preserve">
+    <value>الدول</value>
+  </data>
+  <data name="Factor" xml:space="preserve">
+    <value>المعامل</value>
+  </data>
+  <data name="firstlable" xml:space="preserve">
+    <value>اول ليبل</value>
+  </data>
+  <data name="firstlable1" xml:space="preserve">
+    <value>اول ليبل</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>الرئيسية</value>
+  </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>من نحن</value>
+  </data>
+  <data name="AboutUsHeading" xml:space="preserve">
+    <value>من نحن</value>
+  </data>
+  <data name="AboutUsDesc1" xml:space="preserve">
+    <value>نحن شركة شحن وخدمات لوجستية رائدة، نلتزم بتوصيل شحناتكم بأمان وفي الوقت المحدد. وبفضل سنوات من الخبرة في هذا المجال، بنينا سمعة قوية في الاعتمادية والتميز.</value>
+  </data>
+  <data name="AboutUsDesc2" xml:space="preserve">
+    <value>يعمل فريقنا من المتخصصين على مدار الساعة لضمان التعامل مع كل شحنة بأقصى درجات العناية. كما نوظف التقنيات الحديثة لتوفير التتبع الفوري والتواصل الواضح طوال عملية التسليم.</value>
+  </data>
+  <data name="AboutFeature1" xml:space="preserve">
+    <value>تسليم موثوق</value>
+  </data>
+  <data name="AboutFeature2" xml:space="preserve">
+    <value>تتبع فوري</value>
+  </data>
+  <data name="AboutFeature3" xml:space="preserve">
+    <value>تغطية عالمية</value>
+  </data>
+  <data name="AboutFeature4" xml:space="preserve">
+    <value>تغليف آمن</value>
+  </data>
+  <data name="StatShipments" xml:space="preserve">
+    <value>شحنة تم تسليمها</value>
+  </data>
+  <data name="StatCountries" xml:space="preserve">
+    <value>دولة مشمولة</value>
+  </data>
+  <data name="StatTeam" xml:space="preserve">
+    <value>عضو في الفريق</value>
+  </data>
+  <data name="StatYears" xml:space="preserve">
+    <value>سنوات من الخبرة</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
+  <data name="ServicesHeading" xml:space="preserve">
+    <value>ما الذي نقدمه</value>
+  </data>
+  <data name="ServicesSubHeading" xml:space="preserve">
+    <value>حلول شحن وخدمات لوجستية متكاملة مصممة لتلبية احتياجاتك.</value>
+  </data>
+  <data name="ServiceExpress" xml:space="preserve">
+    <value>التوصيل السريع</value>
+  </data>
+  <data name="ServiceExpressDesc" xml:space="preserve">
+    <value>خدمة شحن سريع موثوقة لتوصيل شحناتك في نفس اليوم أو اليوم التالي.</value>
+  </data>
+  <data name="ServiceInternational" xml:space="preserve">
+    <value>الشحن الدولي</value>
+  </data>
+  <data name="ServiceInternationalDesc" xml:space="preserve">
+    <value>خدمات شحن عالمية مع دعم كامل للجمارك وتوصيل من الباب إلى الباب لأكثر من 50 دولة.</value>
+  </data>
+  <data name="ServiceWarehouse" xml:space="preserve">
+    <value>التخزين</value>
+  </data>
+  <data name="ServiceWarehouseDesc" xml:space="preserve">
+    <value>حلول تخزين آمنة قصيرة وطويلة الأجل مع إدارة المخزون وتنفيذ الطلبات.</value>
+  </data>
+  <data name="ServiceTracking" xml:space="preserve">
+    <value>التتبع الفوري</value>
+  </data>
+  <data name="ServiceTrackingDesc" xml:space="preserve">
+    <value>تتبع شحناتك لحظيًا من خلال نظام التتبع المتقدم والتنبيهات الفورية.</value>
+  </data>
+  <data name="ServiceFreight" xml:space="preserve">
+    <value>خدمات الشحن الثقيل</value>
+  </data>
+  <data name="ServiceFreightDesc" xml:space="preserve">
+    <value>شحن البضائع الثقيلة والكميات الكبيرة برًا أو بحرًا أو جوًا بأسعار تنافسية وتغطية تأمينية كاملة.</value>
+  </data>
+  <data name="ServiceSupport" xml:space="preserve">
+    <value>دعم 24/7</value>
+  </data>
+  <data name="ServiceSupportDesc" xml:space="preserve">
+    <value>فريق دعم العملاء المتخصص لدينا متاح على مدار الساعة لمساعدتك في أي استفسار.</value>
+  </data>
+  <data name="GetStarted" xml:space="preserve">
+    <value>ابدأ الآن</value>
+  </data>
+  <data name="NameAr" xml:space="preserve">
+    <value>الاسم العربي</value>
+  </data>
+  <data name="NameEn" xml:space="preserve">
+    <value>الاسم الانجليزي</value>
+  </data>
+  <data name="ShippingTypes" xml:space="preserve">
+    <value>انواع الشحن</value>
+  </data>
+  <data name="CountryName" xml:space="preserve">
+    <value>اسم البلد</value>
+  </data>
+  <data name="PackageName" xml:space="preserve">
+    <value>اسم الحزمه</value>
+  </data>
+  <data name="NumberOfKiloMeters" xml:space="preserve">
+    <value>عد الكيلو مترات</value>
+  </data>
+  <data name="TotalWeight" xml:space="preserve">
+    <value>مجموع الوزن</value>
+  </data>
+  <data name="SubscriptionPackage" xml:space="preserve">
+    <value>حزمه الاشتراك</value>
+  </data>
+  <data name="ShippmentCount" xml:space="preserve">
+    <value>مجموع الشحنه</value>
+  </data>
+  <data name="Shipments" xml:space="preserve">
+    <value>الشحنات</value>
+  </data>
+  <data name="SelectCountry" xml:space="preserve">
+    <value>اختر اسم الدوله</value>
+  </data>
+  <data name="CreateNewShipping" xml:space="preserve">
+    <value>إنشاء شحنة جديدة</value>
+  </data>
+  <data name="WhereFrom" xml:space="preserve">
+    <value>من أين</value>
+  </data>
+  <data name="WhereGoing" xml:space="preserve">
+    <value>إلى أين</value>
+  </data>
+  <data name="What" xml:space="preserve">
+    <value>ماذا</value>
+  </data>
+  <data name="How" xml:space="preserve">
+    <value>كيف</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>الدفع</value>
+  </data>
+  <data name="Review" xml:space="preserve">
+    <value>مراجعة</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>اكتمل</value>
+  </data>
+  <data name="ShippingFromTitle" xml:space="preserve">
+    <value>مرحبًا. من أين سترسل الشحنة؟</value>
+  </data>
+  <data name="RequiredFieldNote" xml:space="preserve">
+    <value>* تشير إلى حقل مطلوب</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>البلد</value>
+  </data>
+  <data name="CompanyOrName" xml:space="preserve">
+    <value>الشركة أو الاسم</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>جهة الاتصال</value>
+  </data>
+  <data name="GetInTouch" xml:space="preserve">
+    <value>تواصل معنا</value>
+  </data>
+  <data name="OurAddress" xml:space="preserve">
+    <value>عنواننا</value>
+  </data>
+  <data name="AddressValue" xml:space="preserve">
+    <value>123 شارع الشحن، مدينة الخدمات اللوجستية</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="ContactPhoneValue" xml:space="preserve">
+    <value>+88 01xxx 8xxx04</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="ContactEmailValue" xml:space="preserve">
+    <value>info@@company.com</value>
+  </data>
+  <data name="BusinessHoursLabel" xml:space="preserve">
+    <value>ساعات العمل</value>
+  </data>
+  <data name="BusinessHours" xml:space="preserve">
+    <value>9:00 ص إلى 8:00 م</value>
+  </data>
+  <data name="SendUsMessage" xml:space="preserve">
+    <value>أرسل لنا رسالة</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>الاسم الكامل</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>الموضوع</value>
+  </data>
+  <data name="WriteYourMessage" xml:space="preserve">
+    <value>اكتب رسالتك هنا...</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>إرسال الرسالة</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="SenderAddress2" xml:space="preserve">
+    <value>الشقة، الطابق، إلخ</value>
+  </data>
+  <data name="SenderAddress3" xml:space="preserve">
+    <value>قسم، عناوين إضافية</value>
+  </data>
+  <data name="PostalCode" xml:space="preserve">
+    <value>الرمز البريدي</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>المدينة</value>
+  </data>
+  <data name="OtherAddressInformation" xml:space="preserve">
+    <value>معلومات عنوان أخرى</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>الهاتف</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>متابعة</value>
+  </data>
+  <data name="CancelShipmentMessage" xml:space="preserve">
+    <value>إلغاء رسالة الشحن</value>
+  </data>
+  <data name="ShippingGoingTitle" xml:space="preserve">
+    <value>إلى أين تُرسل الشحنة؟</value>
+  </data>
+  <data name="ShipFrom" xml:space="preserve">
+    <value>اشحن من</value>
+  </data>
+  <data name="ReturnTo" xml:space="preserve">
+    <value>إرجاع إلى</value>
+  </data>
+  <data name="PackagingTitle" xml:space="preserve">
+    <value>ما نوع التغليف الذي تستخدمه؟</value>
+  </data>
+  <data name="PackagingPackage" xml:space="preserve">
+    <value>نوع التعبئة</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>الوزن</value>
+  </data>
+  <data name="Length" xml:space="preserve">
+    <value>الطول</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>العرض</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>الارتفاع</value>
+  </data>
+  <data name="DeclaredValue" xml:space="preserve">
+    <value>القيمة المعلنة</value>
+  </data>
+  <data name="HowShipTitle" xml:space="preserve">
+    <value>كيف ترغب في الشحن؟</value>
+  </data>
+  <data name="PickupQuestion" xml:space="preserve">
+    <value>هل تريد منا استلام شحنتك؟</value>
+  </data>
+  <data name="NoDrop" xml:space="preserve">
+    <value>لا، سأوصّله بنفسي</value>
+  </data>
+  <data name="OrText" xml:space="preserve">
+    <value>--أو--</value>
+  </data>
+  <data name="YesPickUp" xml:space="preserve">
+    <value>نعم، التقط شحنتي</value>
+  </data>
+  <data name="DropoffDate" xml:space="preserve">
+    <value>تاريخ التسليم</value>
+  </data>
+  <data name="DeliveryQuestion" xml:space="preserve">
+    <value>متى تريد تسليمه؟</value>
+  </data>
+  <data name="DateAndDetails" xml:space="preserve">
+    <value>التاريخ وتفاصيل قصيرة</value>
+  </data>
+  <data name="ShippingType" xml:space="preserve">
+    <value>نوع الشحن</value>
+  </data>
+  <data name="Carrier" xml:space="preserve">
+    <value>شركة النقل</value>
+  </data>
+  <data name="PickupDate" xml:space="preserve">
+    <value>تاريخ الاستلام</value>
+  </data>
+  <data name="PickupAddress" xml:space="preserve">
+    <value>عنوان الاستلام</value>
+  </data>
+  <data name="PickupDetails" xml:space="preserve">
+    <value>تفاصيل الاستلام</value>
+  </data>
+  <data name="ReviewTitle" xml:space="preserve">
+    <value>دعنا نتأكد من أن كل شيء على ما يرام</value>
+  </data>
+  <data name="ThankYouMessage" xml:space="preserve">
+    <value>شكراً لإنشاء الشحنة</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="AsUserDefaultAddress" xml:space="preserve">
+    <value>عنوان المستخدم الافتراضي</value>
+  </data>
+  <data name="OtherAddressRequired" xml:space="preserve">
+    <value>العنوان الاخر مطلوب</value>
+  </data>
+  <data name="TrackingNumber" xml:space="preserve">
+    <value>رقم التتبع</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>تاريخ الطلب</value>
+  </data>
+  <data name="ShippingValue" xml:space="preserve">
+    <value>قيمة الشحنة</value>
+  </data>
+  <data name="SenderName" xml:space="preserve">
+    <value>اسم المرسل</value>
+  </data>
+  <data name="ReceiverName" xml:space="preserve">
+    <value>اسم المستلم</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>الإجراء</value>
+  </data>
+  <data name="SL" xml:space="preserve">
+    <value>الترتيب</value>
+  </data>
+  <data name="NoRecordsFound" xml:space="preserve">
+    <value>لم يتم العثور على أي سجلات</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>تفاصيل</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>يمسح</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>تأكيد الحذف</value>
+  </data>
+  <data name="ShipmentDetails" xml:space="preserve">
+    <value>تفاصيل الشحنة</value>
+  </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>تاريخ التسليم او الوصول</value>
+  </data>
+  <data name="TrackingReference" xml:space="preserve">
+    <value>مرجع التتبع</value>
+  </data>
+  <data name="CreatedOn" xml:space="preserve">
+    <value>تم الإنشاء</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>خلف</value>
+  </data>
+  <data name="ViewedOn" xml:space="preserve">
+    <value>تم المشاهدة في</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>يحرر</value>
+  </data>
+  <data name="ShipmentInfo" xml:space="preserve">
+    <value>معلومات الشحن</value>
+  </data>
+  <data name="ShippingRate" xml:space="preserve">
+    <value>معدل الشحن</value>
+  </data>
+  <data name="PackageDetails" xml:space="preserve">
+    <value>تفاصيل الحزمة</value>
+  </data>
+  <data name="Dimensions" xml:space="preserve">
+    <value>أبعاد</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>مرجع</value>
+  </data>
+  <data name="ShipmentDetailsDesc" xml:space="preserve">
+    <value>تفاصيل الشحنة</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>ملحوظات</value>
+  </data>
+  <data name="SenderInfo" xml:space="preserve">
+    <value>معلومات المرسل</value>
+  </data>
+  <data name="ReceiverInfo" xml:space="preserve">
+    <value>معلومات المتلقي</value>
+  </data>
+  <data name="ViewAllShipments" xml:space="preserve">
+    <value>عرض جميع الشحنات</value>
+  </data>
+  <data name="CreateShipment" xml:space="preserve">
+    <value>إنشاء شحنة</value>
+  </data>
+  <data name="DeleteShipment" xml:space="preserve">
+    <value>حذف الشحنة</value>
+  </data>
+  <data name="EditShipment" xml:space="preserve">
+    <value>تحرير الشحنة</value>
+  </data>
+  <data name="YesDelete" xml:space="preserve">
+    <value>نعم حذف</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  <data name="ConfirmDeleteMessage" xml:space="preserve">
+    <value>تأكيد حذف الرسالة</value>
+  </data>
+  <data name="ConfirmDeleteTitle" xml:space="preserve">
+    <value>تأكيد حذف العنوان</value>
+  </data>
+  <data name="DeleteSuccessTitle" xml:space="preserve">
+    <value>حذف عنوان النجاح</value>
+  </data>
+  <data name="DeleteFailedTitle" xml:space="preserve">
+    <value>فشل في حذف العنوان</value>
+  </data>
+  <data name="DeleteSucessMessage" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="DeleteFailedMessage" xml:space="preserve">
+    <value>فشل حذف الرسالة</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="EditShipmentDesc" xml:space="preserve">
+    <value>تعديل وصف الشحنة</value>
+  </data>
+  <data name="Cancell" xml:space="preserve">
+    <value>يلغي</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>سابق</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>نشيط</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>غير نشط</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>مجهول</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>يبحث</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>واضح</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>تم الحذف</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>مخلوق</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>موافقة</value>
+  </data>
+  <data name="ReadyForShipping" xml:space="preserve">
+    <value>جاهز للشحن</value>
+  </data>
+  <data name="Shipped" xml:space="preserve">
+    <value>تم الشحن</value>
+  </data>
+  <data name="Delivered" xml:space="preserve">
+    <value>تم التوصيل</value>
+  </data>
+  <data name="CancelSuccessTitle" xml:space="preserve">
+    <value>تم الإلغاء</value>
+  </data>
+  <data name="Returned" xml:space="preserve">
+    <value>عاد</value>
+  </data>
+  <data name="ShippingDate" xml:space="preserve">
+    <value>تاريخ الشحن</value>
+  </data>
+  <data name="PackageValue" xml:space="preserve">
+    <value>قيمة الحزمة</value>
+  </data>
+  <data name="ShipmentStatus" xml:space="preserve">
+    <value>حالة الشحن</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>ملخص</value>
+  </data>
+  <data name="AddNewShipment" xml:space="preserve">
+    <value>إضافة شحنة جديدة</value>
+  </data>
+  <data name="SelectCarrier" xml:space="preserve">
+    <value>حدد الناقل</value>
+  </data>
+  <data name="MarkReadyForShipping" xml:space="preserve">
+    <value>جاهز للشحن</value>
+  </data>
+  <data name="MarkReady" xml:space="preserve">
+    <value> جاهز</value>
+  </data>
+  <data name="MarkShipped" xml:space="preserve">
+    <value>تم شحن </value>
+  </data>
+  <data name="ApproveShipment" xml:space="preserve">
+    <value>الموافقة على الشحنة</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>تم التحديث</value>
+  </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>من نحن</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
+  <data name="Shipping" xml:space="preserve">
+    <value>الشحن</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>المدونة</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>التسجيل</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>الملف الشخصي</value>
+  </data>
+  <data name="SkipNavigation" xml:space="preserve">
+    <value>تخطي التنقل</value>
+  </data>
+  <data name="BusinessHours" xml:space="preserve">
+    <value>9:00 ص إلى 8:00 م</value>
+  </data>
+  <data name="FooterCompanyDescription" xml:space="preserve">
+    <value>تم نشره على نطاق واسع في الستينيات مع إصدار أوراق Letraset التي تحتوي على نصوص.</value>
+  </data>
+  <data name="WhyChooseUs" xml:space="preserve">
+    <value>لماذا تختارنا؟</value>
+  </data>
+  <data name="WhyChooseUsDesc" xml:space="preserve">
+    <value>لدينا العديد من المزايا التي تجعلنا الخيار الأفضل لخدمات الشحن.</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>اقرأ المزيد</value>
+  </data>
+  <data name="ServiceProcess" xml:space="preserve">
+    <value>عملية خدمتنا</value>
+  </data>
+  <data name="ServiceProcessDesc" xml:space="preserve">
+    <value>نقدم عملية شحن واضحة وسريعة من البداية إلى التسليم.</value>
+  </data>
+  <data name="LatestBlogPost" xml:space="preserve">
+    <value>أحدث مقالات المدونة</value>
+  </data>
+  <data name="LatestBlogPostDesc" xml:space="preserve">
+    <value>تابع آخر الأخبار والمقالات المتعلقة بالشحن والخدمات اللوجستية.</value>
+  </data>
+  <data name="LatestNews" xml:space="preserve">
+    <value>آخر الأخبار</value>
+  </data>
+  <data name="Testimonial" xml:space="preserve">
+    <value>آراء العملاء</value>
+  </data>
+  <data name="ValuableClient" xml:space="preserve">
+    <value>عملاؤنا المميزون</value>
+  </data>
+  <data name="WeProvide" xml:space="preserve">
+    <value>نحن نوفر</value>
+  </data>
+  <data name="BestSeaAirFreightServices" xml:space="preserve">
+    <value>أفضل خدمات الشحن البحري والجوي</value>
+  </data>
+  <data name="BookShippingFromAnyCountry" xml:space="preserve">
+    <value>احجز شحنتك من أي دولة</value>
+  </data>
+  <data name="SelectFreight" xml:space="preserve">
+    <value>اختر نوع الشحن</value>
+  </data>
+  <data name="CreateInvoice" xml:space="preserve">
+    <value>إنشاء الفاتورة</value>
+  </data>
+  <data name="SecurePayment" xml:space="preserve">
+    <value>دفع آمن</value>
+  </data>
+  <data name="FastDelivery" xml:space="preserve">
+    <value>توصيل سريع</value>
+  </data>
+  <data name="GetAQuote" xml:space="preserve">
+    <value>احصل على عرض سعر مجاني</value>
+  </data>
+  <data name="BestAndFastestFleets" xml:space="preserve">
+    <value>نستخدم دائمًا أفضل وأسرع الأساطيل</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>الاسم الكامل</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>الجوال</value>
+  </data>
+  <data name="DestinationFrom" xml:space="preserve">
+    <value>الوجهة من</value>
+  </data>
+  <data name="DestinationTo" xml:space="preserve">
+    <value>الوجهة إلى</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>الرسالة</value>
+  </data>
+  <data name="SendQuote" xml:space="preserve">
+    <value>أرسل طلب التسعير</value>
+  </data>
+  <data name="ProjectsDone" xml:space="preserve">
+    <value>مشروع مكتمل</value>
+  </data>
+  <data name="OwnedVehicles" xml:space="preserve">
+    <value>مركبات مملوكة</value>
+  </data>
+  <data name="SupportMembers" xml:space="preserve">
+    <value>أعضاء الدعم</value>
+  </data>
+  <data name="UnitedState" xml:space="preserve">
+    <value>الولايات المتحدة</value>
+  </data>
+  <data name="Canada" xml:space="preserve">
+    <value>كندا</value>
+  </data>
+  <data name="Mexico" xml:space="preserve">
+    <value>المكسيك</value>
+  </data>
+  <data name="China" xml:space="preserve">
+    <value>الصين</value>
+  </data>
+  <data name="NewsTitle" xml:space="preserve">
+    <value>عنوان الخبر</value>
+  </data>
+  <data name="By" xml:space="preserve">
+    <value>بواسطة</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>المدير</value>
+  </data>
+  <data name="Reviewer" xml:space="preserve">
+    <value>المراجع</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>العمليات</value>
+  </data>
+  <data name="OperationManager" xml:space="preserve">
+    <value>مدير العمليات</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>مستخدم</value>
+  </data>
+  <data name="NewsExcerpt" xml:space="preserve">
+    <value>هذا نص تجريبي يُستخدم لعرض شكل المحتوى.</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>مارس</value>
+  </data>
+  <data name="ByAdmin" xml:space="preserve">
+    <value>بواسطة المدير</value>
+  </data>
+  <data name="BlogTitle1" xml:space="preserve">
+    <value>شحن الحاويات للنقل الدولي</value>
+  </data>
+  <data name="BlogTitle2" xml:space="preserve">
+    <value>نص تجريبي يُستخدم في الطباعة</value>
+  </data>
+  <data name="BlogTitle3" xml:space="preserve">
+    <value>جميع شحنات الحاويات للنقل الدولي</value>
+  </data>
+  <data name="BlogExcerpt1" xml:space="preserve">
+    <value>هذا نص تجريبي يوضح شكل الفقرة ضمن محتوى المقال.</value>
+  </data>
+  <data name="BlogExcerpt2" xml:space="preserve">
+    <value>هذا نص تجريبي يوضح شكل الفقرة ضمن محتوى المقال.</value>
+  </data>
+  <data name="BlogExcerpt3" xml:space="preserve">
+    <value>هذا نص تجريبي يوضح شكل الفقرة ضمن محتوى المقال.</value>
+  </data>
+  <data name="TestimonialText1" xml:space="preserve">
+    <value>هذا نص تجريبي لعرض رأي عميل حول جودة الخدمة.</value>
+  </data>
+  <data name="TestimonialText2" xml:space="preserve">
+    <value>هذا نص تجريبي لعرض رأي عميل حول سرعة التسليم.</value>
+  </data>
+  <data name="OceanFreight" xml:space="preserve">
+    <value>الشحن البحري</value>
+  </data>
+  <data name="AirFreight" xml:space="preserve">
+    <value>الشحن الجوي</value>
+  </data>
+  <data name="CarShipping" xml:space="preserve">
+    <value>شحن السيارات</value>
+  </data>
+  <data name="ShippingDescription" xml:space="preserve">
+    <value>نوفر حلول شحن موثوقة وسريعة تناسب احتياجاتك.</value>
+  </data>
+  <data name="Trusted" xml:space="preserve">
+    <value>نحن محل ثقة</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>أفضل معايير الأمان</value>
+  </data>
+  <data name="Guarantee" xml:space="preserve">
+    <value>ضمان 100%</value>
+  </data>
+  <data name="QuickLocation" xml:space="preserve">
+    <value>تحديد موقع سريع</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>تحذير</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>تم الإلغاء</value>
+  </data>
+  <data name="CancelShipment" xml:space="preserve">
+    <value>إلغاء الشحنة</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>يلغي</value>
+  </data>
+  <data name="PaymentTransactions" xml:space="preserve">
+    <value>معاملات الدفع</value>
+  </data>
+  <data name="PaymentHistory" xml:space="preserve">
+    <value>تاريخ الدفع</value>
+  </data>
+  <data name="PaymentReceipt" xml:space="preserve">
+    <value>إيصال الدفع</value>
+  </data>
+  <data name="PaymentTransaction" xml:space="preserve">
+    <value>معاملة الدفع</value>
+  </data>
+  <data name="PaymentTransactionDetails" xml:space="preserve">
+    <value>تفاصيل معاملة الدفع</value>
+  </data>
+  <data name="AllPaymentTransactions" xml:space="preserve">
+    <value>جميع معاملات الدفع</value>
+  </data>
+  <data name="MyTransactions" xml:space="preserve">
+    <value>معاملاتي</value>
+  </data>
+  <data name="TransactionID" xml:space="preserve">
+    <value>معرف المعاملة</value>
+  </data>
+  <data name="DateTime" xml:space="preserve">
+    <value>التاريخ والوقت</value>
+  </data>
+  <data name="PaymentMethod" xml:space="preserve">
+    <value>طريقة الدفع</value>
+  </data>
+  <data name="PaymentMethodPayPal" xml:space="preserve">
+    <value>باي بال</value>
+  </data>
+  <data name="PaymentMethodStripe" xml:space="preserve">
+    <value>سترايب</value>
+  </data>
+  <data name="PaymentMethodCash" xml:space="preserve">
+    <value>نقدًا</value>
+  </data>
+  <data name="PaymentMethodCreditCard" xml:space="preserve">
+    <value>بطاقة ائتمان</value>
+  </data>
+  <data name="PartiallyRefunded" xml:space="preserve">
+    <value>استرداد جزئي</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>غير معروف</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>كمية</value>
+  </data>
+  <data name="TransactionReference" xml:space="preserve">
+    <value>مرجع المعاملة</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>قيد الانتظار</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>مكتمل</value>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>حدث خطأ أثناء تحديث الشحنة.</value>
+  </data>
+  <data name="Refunded" xml:space="preserve">
+    <value>ردها</value>
+  </data>
+  <data name="SearchByTrackingNumber" xml:space="preserve">
+    <value>البحث برقم التتبع</value>
+  </data>
+  <data name="AllStatuses" xml:space="preserve">
+    <value>جميع الحالات</value>
+  </data>
+  <data name="AllMethods" xml:space="preserve">
+    <value>جميع الطرق</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>تاريخ الانتهاء</value>
+  </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>عرض التفاصيل</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>ل</value>
+  </data>
+  <data name="TransactionInformation" xml:space="preserve">
+    <value>معلومات الصفقة</value>
+  </data>
+  <data name="ShipmentInformation" xml:space="preserve">
+    <value>معلومات الشحن</value>
+  </data>
+  <data name="PaymentBreakdown" xml:space="preserve">
+    <value>تفصيل الدفع</value>
+  </data>
+  <data name="Commission" xml:space="preserve">
+    <value>عمولة</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>المبلغ الإجمالي</value>
+  </data>
+  <data name="ShipmentID" xml:space="preserve">
+    <value>معرف الشحنة</value>
+  </data>
+  <data name="ViewReceipt" xml:space="preserve">
+    <value>عرض الإيصال</value>
+  </data>
+  <data name="BackToPaymentHistory" xml:space="preserve">
+    <value>العودة إلى تاريخ الدفع</value>
+  </data>
+  <data name="Dimensions" xml:space="preserve">
+    <value>الأبعاد</value>
+  </data>
+  <data name="PackageValueLabel" xml:space="preserve">
+    <value>قيمة الشحنة</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>نوع التغليف</value>
+  </data>
+  <data name="PoundsAbbreviation" xml:space="preserve">
+    <value>رطل</value>
+  </data>
+  <data name="EstimatedRate" xml:space="preserve">
+    <value>التكلفة التقديرية</value>
+  </data>
+  <data name="EstimatedDelivery" xml:space="preserve">
+    <value>التسليم المتوقع</value>
+  </data>
+  <data name="ToBeDetermined" xml:space="preserve">
+    <value>سيتم التحديد لاحقًا</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>غير متوفر</value>
+  </data>
+  <data name="PaymentReceipt" xml:space="preserve">
+    <value>إيصال الدفع</value>
+  </data>
+  <data name="ProcessingFee" xml:space="preserve">
+    <value>رسوم المعالجة</value>
+  </data>
+  <data name="TotalCharged" xml:space="preserve">
+    <value>إجمالي المبلغ المحصل</value>
+  </data>
+  <data name="SimulatedPaymentDisclaimer" xml:space="preserve">
+    <value>(هذه عملية دفع تجريبية لأغراض تعليمية - لم يتم تحصيل أموال حقيقية)</value>
+  </data>
+  <data name="ShipmentCreatedSuccessfully" xml:space="preserve">
+    <value>تم إنشاء الشحنة بنجاح!</value>
+  </data>
+  <data name="ShipmentCreatedAndPaymentProcessed" xml:space="preserve">
+    <value>وتمت معالجة الدفع</value>
+  </data>
+  <data name="ShipmentReadyForProcessing" xml:space="preserve">
+    <value>وهي جاهزة للمعالجة</value>
+  </data>
+  <data name="ShipmentSummary" xml:space="preserve">
+    <value>ملخص الشحنة</value>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>الخدمة</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>القيمة</value>
+  </data>
+  <data name="ConfirmationEmailNotice" xml:space="preserve">
+    <value>ستتلقى بريدًا إلكترونيًا للتأكيد يحتوي على رقم التتبع الخاص بك قريبًا.</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>العودة إلى القائمة</value>
+  </data>
+  <data name="ProcessRefund" xml:space="preserve">
+    <value>استرداد العملية</value>
+  </data>
+  <data name="ConfirmRefund" xml:space="preserve">
+    <value>تأكيد استرداد الأموال</value>
+  </data>
+  <data name="Refund" xml:space="preserve">
+    <value>استرداد</value>
+  </data>
+  <data name="RefundReason" xml:space="preserve">
+    <value>سبب استرداد الأموال</value>
+  </data>
+  <data name="RefundReasonRequired" xml:space="preserve">
+    <value>يلزم ذكر سبب الاسترداد</value>
+  </data>
+  <data name="RefundWarning" xml:space="preserve">
+    <value>سيؤدي هذا الإجراء إلى استرداد قيمة عملية الدفع ولا يمكن التراجع عنه.</value>
+  </data>
+  <data name="RefundReasonPlaceholder" xml:space="preserve">
+    <value>أدخل سبب الاسترداد (على سبيل المثال، طلب العميل، إلغاء الطلب، إلخ).</value>
+  </data>
+  <data name="TransactionSummary" xml:space="preserve">
+    <value>ملخص الصفقة</value>
+  </data>
+  <data name="NoTransactionsFound" xml:space="preserve">
+    <value>لم يتم العثور على أي معاملات دفع</value>
+  </data>
+  <data name="TransactionNotFound" xml:space="preserve">
+    <value>لم يتم العثور على المعاملة</value>
+  </data>
+  <data name="TransactionNotFoundMessage" xml:space="preserve">
+    <value>لم يتم العثور على عملية الدفع المطلوبة.</value>
+  </data>
+  <data name="ReturnToPaymentTransactions" xml:space="preserve">
+    <value>العودة إلى معاملات الدفع</value>
+  </data>
+  <data name="EducationalSystem" xml:space="preserve">
+    <value>النظام التعليمي</value>
+  </data>
+  <data name="EducationalPaymentDisclaimer" xml:space="preserve">
+    <value>هذه عملية دفع افتراضية لأغراض تعليمية فقط. لم يتم استخدام أي أموال حقيقية.</value>
+  </data>
+  <data name="ReceiptDetails" xml:space="preserve">
+    <value>تفاصيل الإيصال</value>
+  </data>
+  <data name="TransactionDetails" xml:space="preserve">
+    <value>تفاصيل المعاملة</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>كيف عنوان الشحن</value>
+  </data>
+  <data name="PaymentRefundSuccess" xml:space="preserve">
+    <value>تمت عملية استرداد المبلغ بنجاح. تم تحديث حالة المعاملة إلى "تم الاسترداد".</value>
+  </data>
+  <data name="PaymentRefundFailed" xml:space="preserve">
+    <value>فشلت عملية استرداد المبلغ. يرجى المحاولة مرة أخرى.</value>
+  </data>
+  <data name="PaymentTransactionNotFound" xml:space="preserve">
+    <value>لم يتم العثور على معاملة الدفع</value>
+  </data>
+  <data name="FailedToLoadPaymentTransactions" xml:space="preserve">
+    <value>فشل تحميل معاملات الدفع</value>
+  </data>
+  <data name="FailedToLoadTransactionDetails" xml:space="preserve">
+    <value>فشل تحميل تفاصيل المعاملة</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>مطلوب</value>
+  </data>
+  <data name="CreateYourFirstShipment" xml:space="preserve">
+    <value>سيظهر سجل مدفوعاتك هنا بمجرد إنشاء الشحنات.</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>ل</value>
+  </data>
+  <data name="PrintReceipt" xml:space="preserve">
+    <value>طباعة الإيصال</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>صفحة</value>
+  </data>
+  <data name="Showing" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>إدارة</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
+  <data name="LoadingSenderInformation" xml:space="preserve">
+    <value>جارٍ تحميل معلومات جهاز الاستقبال...</value>
+  </data>
+  <data name="LoadingReceiverInformation" xml:space="preserve">
+    <value>جارٍ تحميل معلومات الدفع...</value>
+  </data>
+  <data name="LoadingPackageInformation" xml:space="preserve">
+    <value>جارٍ تحميل معلومات الحزمة...</value>
+  </data>
+  <data name="LoadingShippingInformation" xml:space="preserve">
+    <value>جارٍ تحميل معلومات الشحن...</value>
+  </data>
+  <data name="LoadingPaymentInformation" xml:space="preserve">
+    <value>جارٍ تحميل معلومات الدفع...</value>
+  </data>
+  <data name="ProcessingPayment" xml:space="preserve">
+    <value>جارٍ معالجة الدفع...</value>
+  </data>
+  <data name="PleaseWaitProcessing" xml:space="preserve">
+    <value>يرجى الانتظار ريثما نقوم بمعالجة دفعتك بشكل آمن.</value>
+  </data>
+  <data name="SimulatedEducational" xml:space="preserve">
+    <value>(محاكاة لأغراض تعليمية)</value>
+  </data>
+  <data name="ShipmentNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الشحنة</value>
+  </data>
+  <data name="CannotDeleteShipmentStatus" xml:space="preserve">
+    <value>لا يمكن حذف الشحنة في حالة "{0}". لا يمكن حذف سوى الشحنات في حالة "تم الإنشاء".</value>
+  </data>
+  <data name="ShipmentDeletedSuccessfully" xml:space="preserve">
+    <value>تم حذف الشحنة بنجاح</value>
+  </data>
+  <data name="FailedToDeleteShipment" xml:space="preserve">
+    <value>فشل حذف الشحنة</value>
+  </data>
+  <data name="DatabaseError" xml:space="preserve">
+    <value>خطأ في قاعدة البيانات</value>
+  </data>
+  <data name="ErrorOccurredUpdating" xml:space="preserve">
+    <value>أ</value>
+  </data>
+  <data name="PermanentClients" xml:space="preserve">
+    <value>عملاء دائمون</value>
+  </data>
+  <data name="HasPaid" xml:space="preserve">
+    <value>تم الدفع</value>
+  </data>
+  <data name="Pay" xml:space="preserve">
+    <value>يدفع</value>
+  </data>
+  <data name="UnPaid" xml:space="preserve">
+    <value>غير مدفوعة الأجر</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>المرسل</value>
+  </data>
+  <data name="Receiver" xml:space="preserve">
+    <value>المستلم</value>
+  </data>
+  <data name="CurrentStatus" xml:space="preserve">
+    <value>الحالة الحالية</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>حالة الدفع</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>مدفوع</value>
+  </data>
+  <data name="CancellationReason" xml:space="preserve">
+    <value>سبب الإلغاء</value>
+  </data>
+  <data name="CancellationReasonPlaceholder" xml:space="preserve">
+    <value>أدخل سبب إلغاء هذه الشحنة</value>
+  </data>
+  <data name="CancelShipmentWarning" xml:space="preserve">
+    <value>سيؤدي النقر على "إلغاء الشحنة" إلى إتمام الإلغاء وإصدار استرداد كامل عبر PayPal وتحديد حالة الشحنة إلى "مُستردّة". لا يمكن التراجع عن هذا الإجراء.</value>
+  </data>
+  <data name="CancelShipmentButton" xml:space="preserve">
+    <value>إلغاء الشحنة</value>
+  </data>
+  <data name="CancelSuccessMessage" xml:space="preserve">
+    <value>تم إلغاء الشحنة واسترداد الدفعة بنجاح.</value>
+  </data>
+  <data name="CancelErrorTitle" xml:space="preserve">
+    <value>خطأ في الإلغاء</value>
+  </data>
+  <data name="CancelMissingId" xml:space="preserve">
+    <value>معرّف الشحنة مفقود.</value>
+  </data>
+  <data name="CancelReasonRequired" xml:space="preserve">
+    <value>سبب الإلغاء مطلوب.</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>لوحة التحكم</value>
+  </data>
+  <data name="ShipmentsThisMonth" xml:space="preserve">
+    <value>الشحنات هذا الشهر</value>
+  </data>
+  <data name="RevenueThisMonth" xml:space="preserve">
+    <value>الإيرادات هذا الشهر</value>
+  </data>
+  <data name="TotalUsers" xml:space="preserve">
+    <value>إجمالي المستخدمين</value>
+  </data>
+  <data name="ActiveShipments" xml:space="preserve">
+    <value>الشحنات النشطة</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>المستخدمون</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>الاسم الأول</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>اسم العائلة</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>الدور</value>
+  </data>
+  <data name="SelectRole" xml:space="preserve">
+    <value>اختر الدور</value>
+  </data>
+  <data name="CreateNewUser" xml:space="preserve">
+    <value>إنشاء مستخدم جديد</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>تعديل المستخدم</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>مقفل</value>
+  </data>
+  <data name="Lock" xml:space="preserve">
+    <value>قفل</value>
+  </data>
+  <data name="Unlock" xml:space="preserve">
+    <value>فتح القفل</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور</value>
+  </data>
+  <data name="PasswordPolicyHint" xml:space="preserve">
+    <value>يجب أن تتكون كلمة المرور من 8 أحرف على الأقل وتحتوي على حرف كبير وحرف صغير ورقم ورمز خاص.</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>الإعدادات</value>
+  </data>
+  <data name="AccountSettings" xml:space="preserve">
+    <value>إعدادات الحساب</value>
+  </data>
+  <data name="AccountSettingsDescription" xml:space="preserve">
+    <value>حدّث رقم الهاتف وتفضيلات اللغة الخاصة بك.</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="LanguageChangeHint" xml:space="preserve">
+    <value>يتم تطبيق تغيير اللغة فورًا.</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>الاسم الأول</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>اسم العائلة</value>
+  </data>
+  <data name="SettingsPhase1Title" xml:space="preserve">
+    <value>المرحلة 1: التواصل واللغة</value>
+  </data>
+  <data name="SettingsPhase2Title" xml:space="preserve">
+    <value>المرحلة 2: بيانات الملف الشخصي الأساسية</value>
+  </data>
+  <data name="UpcomingSettingsPhases" xml:space="preserve">
+    <value>مراحل الإعدادات القادمة</value>
+  </data>
+  <data name="SettingsPhase3Title" xml:space="preserve">
+    <value>المرحلة 3: الأمان</value>
+  </data>
+  <data name="SettingsPhase4Title" xml:space="preserve">
+    <value>المرحلة 4: الإشعارات</value>
+  </data>
+  <data name="SettingsPhase5Title" xml:space="preserve">
+    <value>المرحلة 5: تفضيلات الشحن</value>
+  </data>
+  <data name="SettingsPhase6Title" xml:space="preserve">
+    <value>المرحلة 6: الخصوصية</value>
+  </data>
+  <data name="SecuritySettingsDescription" xml:space="preserve">
+    <value>غيّر كلمة المرور وتحكم في الجلسات النشطة.</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>كلمة المرور الحالية</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="SignOutOtherDevices" xml:space="preserve">
+    <value>تسجيل الخروج من الأجهزة الأخرى</value>
+  </data>
+  <data name="NotificationSettingsDescription" xml:space="preserve">
+    <value>اختر الطريقة التي تريد بها استلام تحديثات الحساب والشحنات.</value>
+  </data>
+  <data name="NotifyByEmail" xml:space="preserve">
+    <value>إشعارات البريد الإلكتروني</value>
+  </data>
+  <data name="NotifyBySms" xml:space="preserve">
+    <value>إشعارات الرسائل النصية</value>
+  </data>
+  <data name="NotifyShipmentStatusUpdates" xml:space="preserve">
+    <value>تحديثات حالة الشحنة</value>
+  </data>
+  <data name="NotifyMarketing" xml:space="preserve">
+    <value>تحديثات تسويقية</value>
+  </data>
+  <data name="SaveNotificationPreferences" xml:space="preserve">
+    <value>حفظ تفضيلات الإشعارات</value>
+  </data>
+  <data name="ShippingPreferencesDescription" xml:space="preserve">
+    <value>حدّد خيارات الشحن الافتراضية لتسريع عملية الدفع.</value>
+  </data>
+  <data name="DefaultCarrier" xml:space="preserve">
+    <value>شركة الشحن الافتراضية</value>
+  </data>
+  <data name="DefaultShippingPackage" xml:space="preserve">
+    <value>باقة الشحن الافتراضية</value>
+  </data>
+  <data name="DefaultPaymentMethod" xml:space="preserve">
+    <value>طريقة الدفع الافتراضية</value>
+  </data>
+  <data name="SelectCarrier" xml:space="preserve">
+    <value>اختر شركة الشحن</value>
+  </data>
+  <data name="SelectShippingPackage" xml:space="preserve">
+    <value>اختر باقة الشحن</value>
+  </data>
+  <data name="SelectPaymentMethod" xml:space="preserve">
+    <value>اختر طريقة الدفع</value>
+  </data>
+  <data name="SaveShippingPreferences" xml:space="preserve">
+    <value>حفظ تفضيلات الشحن</value>
+  </data>
+  <data name="PrivacySettingsDescription" xml:space="preserve">
+    <value>إدارة بياناتك الشخصية ودورة حياة الحساب.</value>
+  </data>
+  <data name="DownloadMyData" xml:space="preserve">
+    <value>تنزيل بياناتي</value>
+  </data>
+  <data name="ConfirmDeactivateAccount" xml:space="preserve">
+    <value>أفهم أن هذا الحساب سيتم تعطيله</value>
+  </data>
+  <data name="DeactivateAccount" xml:space="preserve">
+    <value>تعطيل الحساب</value>
+  </data>
+  <data name="ShipmentsRevenue30Days" xml:space="preserve">
+    <value>الشحنات والإيرادات (30 يوماً)</value>
+  </data>
+  <data name="ShipmentsByStatus" xml:space="preserve">
+    <value>حسب الحالة</value>
+  </data>
+  <data name="TopDestinationCities" xml:space="preserve">
+    <value>أهم المدن</value>
+  </data>
+  <data name="RecentShipments" xml:space="preserve">
+    <value>الشحنات الأخيرة</value>
+  </data>
+  <data name="RecentUsers" xml:space="preserve">
+    <value>المستخدمون الجدد</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>من</value>
+  </data>
+  <data name="NoRecentShipments" xml:space="preserve">
+    <value>لا توجد شحنات حديثة</value>
+  </data>
+  <data name="NoRecentUsers" xml:space="preserve">
+    <value>لا يوجد مستخدمون جدد</value>
+  </data>
+  <data name="Revenue" xml:space="preserve">
+    <value>الإيرادات ($)</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+</root>
