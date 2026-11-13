@@ -1,36 +1,34 @@
-# Visual Studio and Build Results  
-.vs/  
-bin/  
-obj/  
-**/bin/  
-**/obj/  
-*.user  
-*.suo  
-*.cache  
-.vscode/  
-"[Dd]ebug/"  
-"[Rr]elease/"  
-"[Oo]ut/"  
-# Node and Nuget Dependencies  
-node_modules/  
-**/node_modules/  
-*.nupkg  
-*.snupkg  
-.nuget/  
-.vsidx  
-# Secrets and Environment  
-appsettings.local.json  
-appsettings.Development.json  
-*.env  
-secrets.json  
-# Logs and Docs  
-*.log  
-logs/  
-/WebApi/Logs/  
-*.txt  
-*.md  
-"!README.md"  
-# IDEs  
-.idea/  
-*.swp  
-*.swo 
+# Visual Studio / build output
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+[Dd]ebug/
+[Rr]elease/
+[Oo]ut/
+TestResults/
+
+# Node / NuGet / generated
+node_modules/
+UI/dist/
+*.nupkg
+*.snupkg
+.nuget/
+
+# Secrets and local config
+appsettings.local.json
+appsettings.Development.json
+*.env
+secrets.json
+
+# Logs
+*.log
+Logs/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shipping1\AppResource\AppResource.csproj" />
+    <ProjectReference Include="..\AppResource\AppResource.csproj" />
     <ProjectReference Include="..\Business\Business.csproj" />
   </ItemGroup>
 
