@@ -129,11 +129,12 @@ namespace UI
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ShippingContext>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                 await dbContext.Database.MigrateAsync();
-              // await ContextConfigruration.SeedDataAsync(dbContext, userManager, roleManager);
+                await IdentitySeeder.SeedAsync(scope.ServiceProvider, app.Configuration, app.Logger);
+
             }
 
 

@@ -202,6 +202,7 @@ namespace UI.Services
         /// </summary>
         /// <param name="registerDto">User registration data (email, password, name, role)</param>
         /// <returns>UserResultDto indicating success/failure and any validation errors</returns>
+        /// 
         public async Task<UserResultDto> RegisterAsync(UserDto registerDto)
         {
             var errors = new List<string>();
@@ -221,17 +222,15 @@ namespace UI.Services
             if (existingPhone != null)
                 errors.Add("Phone:Phone number is already in use.");
 
-
-            // Password validation (optional, usually handled by Identity)
-            if (registerDto.Password.Length < 6)
-                errors.Add("Password:Password must be at least 6 characters.");
+            // Password validation (Identity enforces the full policy; this gives an early, matching message)
+            if (registerDto.Password.Length < 8)
+                errors.Add("Password:Password must be at least 8 characters.");
 
             if (registerDto.Password != registerDto.ConfirmPassword)
                 errors.Add("ConfirmPassword:Password and confirmation password do not match");
 
             if (errors.Any())
             {
-
                 // Log failed registration with validation reason
                 var failureReason = errors.Count == 1
                     ? errors.First()
@@ -239,8 +238,9 @@ namespace UI.Services
 
                 _securityEventLogger.LogRegistrationFailed(registerDto.Email, failureReason);
                 return new UserResultDto
-                { 
-                    Success = false, Errors = errors 
+                {
+                    Success = false,
+                    Errors = errors
                 };
             }
 
@@ -258,53 +258,146 @@ namespace UI.Services
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                // Log successful registration with user ID
-                _securityEventLogger.LogRegistrationSuccess(user.Id.ToString(), registerDto.Email);
-
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return new UserResultDto { Success = true };
-            }
-
-            // ✅ Registration failed at user creation - log it
-            _securityEventLogger.LogRegistrationFailed(
-                registerDto.Email,
-                $"User creation failed: {string.Join("; ", result.Errors.Select(e => e.Description))}"
-            );
-
-
-            var roleName = (string.IsNullOrEmpty(registerDto.Role)) ? "User" : registerDto.Role;
-            var roleResult = await _userManager.AddToRoleAsync(user, roleName);
-
-            if (!roleResult.Succeeded)
-            {
-
-                // ✅ Role assignment failed - log it as registration failure
                 _securityEventLogger.LogRegistrationFailed(
                     registerDto.Email,
-                    $"Role assignment failed: {string.Join("; ", roleResult.Errors.Select(e => e.Description))}"
-                );
+                    $"User creation failed: {string.Join("; ", result.Errors.Select(e => e.Description))}");
+
+                // Map identity errors to the correct field where possible
+                var identityErrors = result.Errors.Select(e =>
+                    !string.IsNullOrEmpty(e.Code) && e.Code.Contains("Password", StringComparison.OrdinalIgnoreCase)
+                        ? $"Password:{e.Description}"
+                        : $"Email:{e.Description}");
+
+                return new UserResultDto { Success = false, Errors = identityErrors };
+            }
+
+            // Public registration always creates a standard user.
+            // Never use registerDto.Role here: privileged roles are assigned from the admin dashboard.
+            var roleResult = await _userManager.AddToRoleAsync(user, "User");
+            if (!roleResult.Succeeded)
+            {
+                _securityEventLogger.LogRegistrationFailed(
+                    registerDto.Email,
+                    $"Role assignment failed: {string.Join("; ", roleResult.Errors.Select(e => e.Description))}");
+
+                await _userManager.DeleteAsync(user); // don't leave a user without a role
                 return new UserResultDto
                 {
                     Success = false,
-                    Errors = roleResult.Errors?.Select(e => $"Role:{e.Description}")
+                    Errors = roleResult.Errors.Select(e => $"Role:{e.Description}")
                 };
             }
 
-            // Add identity errors to the correct property if possible, otherwise as model-level errors
-            var identityErrors = result.Errors?.Select(e =>
-                !string.IsNullOrEmpty(e.Code) && e.Code.Contains("Password", StringComparison.OrdinalIgnoreCase)
-                    ? $"Password:{e.Description}"
-                    : $"Email:{e.Description}"
-            );
-
-            return new UserResultDto
-            {
-                Success = result.Succeeded,
-                Errors = identityErrors
-            };
+            _securityEventLogger.LogRegistrationSuccess(user.Id.ToString(), registerDto.Email);
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return new UserResultDto { Success = true };
         }
+
+        //public async Task<UserResultDto> RegisterAsync(UserDto registerDto)
+        //{
+        //    var errors = new List<string>();
+
+        //    // Check if email exists
+        //    var existingEmail = await _userManager.FindByEmailAsync(registerDto.Email);
+        //    if (existingEmail != null)
+        //        errors.Add("Email:Email is already in use.");
+
+        //    // Check if username exists (assuming username is email)
+        //    var existingUserName = await _userManager.FindByNameAsync(registerDto.Email);
+        //    if (existingUserName != null)
+        //        errors.Add("Email:Username is already in use.");
+
+        //    // Check if phone exists
+        //    var existingPhone = _userManager.Users.FirstOrDefault(u => u.Phone == registerDto.Phone);
+        //    if (existingPhone != null)
+        //        errors.Add("Phone:Phone number is already in use.");
+
+
+        //    // Password validation (optional, usually handled by Identity)
+        //    if (registerDto.Password.Length < 6)
+        //        errors.Add("Password:Password must be at least 6 characters.");
+
+        //    if (registerDto.Password != registerDto.ConfirmPassword)
+        //        errors.Add("ConfirmPassword:Password and confirmation password do not match");
+
+        //    if (errors.Any())
+        //    {
+
+        //        // Log failed registration with validation reason
+        //        var failureReason = errors.Count == 1
+        //            ? errors.First()
+        //            : $"Multiple validation errors: {string.Join("; ", errors)}";
+
+        //        _securityEventLogger.LogRegistrationFailed(registerDto.Email, failureReason);
+        //        return new UserResultDto
+        //        { 
+        //            Success = false, Errors = errors 
+        //        };
+        //    }
+
+        //    var user = new ApplicationUser
+        //    {
+        //        UserName = registerDto.Email,
+        //        Email = registerDto.Email,
+        //        FirstName = registerDto.FirstName,
+        //        LastName = registerDto.LastName,
+        //        Phone = registerDto.Phone,
+        //        NotifyByEmail = registerDto.NotifyByEmail,
+        //        NotifyBySms = registerDto.NotifyBySms,
+        //        NotifyShipmentStatusUpdates = registerDto.NotifyShipmentStatusUpdates,
+        //        NotifyMarketing = registerDto.NotifyMarketing
+        //    };
+
+        //    var result = await _userManager.CreateAsync(user, registerDto.Password);
+        //    if (result.Succeeded)
+        //    {
+        //        // Log successful registration with user ID
+        //        _securityEventLogger.LogRegistrationSuccess(user.Id.ToString(), registerDto.Email);
+
+        //        await _signInManager.SignInAsync(user, isPersistent: false);
+        //        return new UserResultDto { Success = true };
+        //    }
+
+        //    // ✅ Registration failed at user creation - log it
+        //    _securityEventLogger.LogRegistrationFailed(
+        //        registerDto.Email,
+        //        $"User creation failed: {string.Join("; ", result.Errors.Select(e => e.Description))}"
+        //    );
+
+
+        //    var roleName = (string.IsNullOrEmpty(registerDto.Role)) ? "User" : registerDto.Role;
+        //    var roleResult = await _userManager.AddToRoleAsync(user, roleName);
+
+        //    if (!roleResult.Succeeded)
+        //    {
+
+        //        // ✅ Role assignment failed - log it as registration failure
+        //        _securityEventLogger.LogRegistrationFailed(
+        //            registerDto.Email,
+        //            $"Role assignment failed: {string.Join("; ", roleResult.Errors.Select(e => e.Description))}"
+        //        );
+        //        return new UserResultDto
+        //        {
+        //            Success = false,
+        //            Errors = roleResult.Errors?.Select(e => $"Role:{e.Description}")
+        //        };
+        //    }
+
+        //    // Add identity errors to the correct property if possible, otherwise as model-level errors
+        //    var identityErrors = result.Errors?.Select(e =>
+        //        !string.IsNullOrEmpty(e.Code) && e.Code.Contains("Password", StringComparison.OrdinalIgnoreCase)
+        //            ? $"Password:{e.Description}"
+        //            : $"Email:{e.Description}"
+        //    );
+
+        //    return new UserResultDto
+        //    {
+        //        Success = result.Succeeded,
+        //        Errors = identityErrors
+        //    };
+        //}
 
         /// <summary>
         /// Retrieves a user account by ID and returns it as a UserDto with role information.
