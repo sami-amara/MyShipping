@@ -120,26 +120,22 @@ dotnet user-secrets set "PaymentGateways:PayPal:ClientSecret" "<sandbox secret>"
 dotnet user-secrets set "PaymentGateways:PayPal:WebhookId" "<webhook id>" --project <project>
 ```
 
-### 3. Create the database
+> `UI` and `WebApi` must use the **same** `JwtSettings:SecretKey`.
+
+### 3. Run
+`UI` applies all database migrations at startup (`Database.MigrateAsync()`) and creates the `Shipping` database if needed. **Start `UI` first**, then `WebApi`.
+
+| Project | Default URL | Points to |
+|---|---|---|
+| `UI` | https://localhost:7065 | `ApiSettings:BaseUrl` → WebApi |
+| `WebApi` | https://localhost:7228 | `ClientApp:BaseUrl` → UI |
+
+### 4. First admin account
+On first start `UI` creates the roles (`User`, `Admin`, `Reviewer`, `Operation`, `OperationManager`).
+To create the first admin, set these secrets **before** the first run (the password must meet the Identity rules: 8+ characters, upper, lower, digit and symbol):
 ```bash
-dotnet ef database update --project DataAccessLayer --startup-project WebApi
+dotnet user-secrets set "SeedAdmin:Email" "<admin email>" --project UI
+dotnet user-secrets set "SeedAdmin:Password" "<strong password>" --project UI
 ```
+Sign in with it, then create other users and change roles from the Users dashboard.
 
-### 4. Run
-Start `WebApi` first, then `UI` (Visual Studio: multiple startup projects, or `dotnet run --project WebApi` and `dotnet run --project UI` in two terminals).
-
----
-
-## 🔗 Related Resources
-
-- [Portfolio Repository](https://github.com/sami-amara/Portfolio) – Overview of my skills, CV, and other projects.
-- [CV Repository](https://github.com/sami-amara/CV-SamiAmara) – Professional CV and career highlights.
-- [LinkedIn Profile](https://www.linkedin.com/in/sami-amara-032b70416/) - Overview LinkdIn 
-
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com
-   ```
