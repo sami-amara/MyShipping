@@ -89,8 +89,6 @@ graph TD
 
 ## ⚡ Getting Started
 
-## ⚡ Getting Started
-
 ### Prerequisites
 - .NET 9 SDK
 - SQL Server (LocalDB, Express or full instance)
@@ -139,3 +137,11 @@ dotnet user-secrets set "SeedAdmin:Password" "<strong password>" --project UI
 ```
 Sign in with it, then create other users and change roles from the Users dashboard.
 
+
+---
+
+## 🔗 Related Resources
+
+- [Portfolio Repository](https://github.com/sami-amara/Portfolio) – Overview of my skills, CV, and other projects.
+- [CV Repository](https://github.com/sami-amara/CV-SamiAmara) – Professional CV and career highlights.
+- [LinkedIn Profile](https://www.linkedin.com/in/sami-amara-032b70416/) – Professional background and contact.
