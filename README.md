@@ -6,7 +6,7 @@
 
 ## Overview
 
-MyShipping is an enterprise-grade shipping management system designed to streamline shipment tracking, payment processing, and user management. Built with **ASP.NET Core** and **Razor Views**, the platform provides a robust backend API and responsive web interface for shipping logistics management.
+MyShipping is a shipping management system designed to streamline shipment tracking, payment processing, and user management. Built with **ASP.NET Core** and **Razor Views**, the platform provides a robust backend API and responsive web interface for shipping logistics management.
 
 ### Key Capabilities
 
@@ -21,7 +21,7 @@ MyShipping is an enterprise-grade shipping management system designed to streaml
 
 ## 🏗️ Architecture & Project Structure
 
-The project follows an enterprise-grade **N-Tier Layered Architecture** pattern to enforce a strict separation of concerns, ensuring high scalability, maintainability, and testability.
+The project follows  **N-Tier Layered Architecture** pattern to enforce a strict separation of concerns, ensuring high scalability, maintainability, and testability.
 
 ### Architectural Blueprint
 
