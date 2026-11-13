@@ -89,12 +89,44 @@ graph TD
 
 ## ⚡ Getting Started
 
-### Prerequisites
+## ⚡ Getting Started
 
-- .NET 9.0 SDK or higher
-- Visual Studio 2022
-- SQL Server (LocalDB or remote instance)
-- API keys for payment gateways (optional for development)
+### Prerequisites
+- .NET 9 SDK
+- SQL Server (LocalDB, Express or full instance)
+- Optional: Stripe (test mode), PayPal (sandbox) and SendGrid accounts for payments and email
+
+### 1. Clone and build
+```bash
+git clone https://github.com/sami-amara/MyShipping.git
+cd MyShipping
+dotnet build MyShipping.sln
+```
+
+### 2. Configure secrets
+No credentials are stored in the repository. Set them with [User Secrets](https://learn.microsoft.com/aspnet/core/security/app-secrets) (development) or environment variables (use `__` instead of `:`, e.g. `PaymentGateways__Stripe__SecretKey`).
+
+Run these for both the `UI` and `WebApi` projects (replace `<project>` with `UI` or `WebApi`):
+
+```bash
+dotnet user-secrets set "ConnectionStrings:ShippingConnection" "Server=localhost;Database=Shipping;Trusted_Connection=True;TrustServerCertificate=True" --project <project>
+dotnet user-secrets set "JwtSettings:SecretKey" "<random string, 32+ characters>" --project <project>
+dotnet user-secrets set "SendGrid:ApiKey" "<your key>" --project <project>
+dotnet user-secrets set "PaymentGateways:Stripe:PublishableKey" "<pk_test_...>" --project <project>
+dotnet user-secrets set "PaymentGateways:Stripe:SecretKey" "<sk_test_...>" --project <project>
+dotnet user-secrets set "PaymentGateways:Stripe:WebhookSecret" "<whsec_...>" --project <project>
+dotnet user-secrets set "PaymentGateways:PayPal:ClientId" "<sandbox client id>" --project <project>
+dotnet user-secrets set "PaymentGateways:PayPal:ClientSecret" "<sandbox secret>" --project <project>
+dotnet user-secrets set "PaymentGateways:PayPal:WebhookId" "<webhook id>" --project <project>
+```
+
+### 3. Create the database
+```bash
+dotnet ef database update --project DataAccessLayer --startup-project WebApi
+```
+
+### 4. Run
+Start `WebApi` first, then `UI` (Visual Studio: multiple startup projects, or `dotnet run --project WebApi` and `dotnet run --project UI` in two terminals).
 
 ---
 
