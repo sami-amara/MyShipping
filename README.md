@@ -109,6 +109,8 @@ Run these for both the `UI` and `WebApi` projects (replace `<project>` with `UI`
 
 ```bash
 dotnet user-secrets set "ConnectionStrings:ShippingConnection" "Server=localhost;Database=Shipping;Trusted_Connection=True;TrustServerCertificate=True" --project <project>
+> The connection string above uses Windows Authentication (no password) and `TrustServerCertificate=True`, which is intended for **local development only**. For a remote or production server, remove it and use a trusted certificate.
+
 dotnet user-secrets set "JwtSettings:SecretKey" "<random string, 32+ characters>" --project <project>
 dotnet user-secrets set "SendGrid:ApiKey" "<your key>" --project <project>
 dotnet user-secrets set "PaymentGateways:Stripe:PublishableKey" "<pk_test_...>" --project <project>
