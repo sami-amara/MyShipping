@@ -8,7 +8,7 @@
 
 MyShipping is a shipping management system designed to streamline shipment tracking, payment processing, and user management. Built with **ASP.NET Core** and **Razor Views**, the platform provides a robust backend API and responsive web interface for shipping logistics management.
 
-> The connection string above uses Windows Authentication (no password) and `TrustServerCertificate=True`, which is intended for **local development only**. For a remote or production server, remove it and use a trusted certificate.
+
 ### Key Capabilities
 
 ✅ **User Management** - Secure authentication with ASP.NET Identity  
