@@ -19,7 +19,6 @@ UI/dist/
 
 # Secrets and local config
 appsettings.local.json
-appsettings.Development.json
 *.env
 secrets.json
 
