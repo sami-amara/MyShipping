@@ -123,8 +123,8 @@
   <data name="Cities" xml:space="preserve">
     <value>Cities</value>
   </data>
-  <data name="Configrations" xml:space="preserve">
-    <value>Configrations</value>
+  <data name="Configurations" xml:space="preserve">
+    <value>Configurations</value>
   </data>
   <data name="Countries" xml:space="preserve">
     <value>Countries</value>
@@ -322,7 +322,7 @@
     <value>Business Hours</value>
   </data>
   <data name="BusinessHours" xml:space="preserve">
-    <value>9:00AM to 8:00PM</value>
+    <value>Business Hours</value>
   </data>
   <data name="SendUsMessage" xml:space="preserve">
     <value>Send Us a Message</value>
@@ -646,7 +646,7 @@
     <value>Add New Shipment</value>
   </data>
   <data name="SelectCarrier" xml:space="preserve">
-    <value>Select Carrier</value>
+    <value>Select carrier</value>
   </data>
   <data name="MarkReadyForShipping" xml:space="preserve">
     <value>Mark Ready For Shipping</value>
@@ -662,12 +662,6 @@
   </data>
   <data name="Updated" xml:space="preserve">
     <value>Updated</value>
-  </data>
-  <data name="AboutUs" xml:space="preserve">
-    <value>About Us</value>
-  </data>
-  <data name="Services" xml:space="preserve">
-    <value>Services</value>
   </data>
   <data name="Shipping" xml:space="preserve">
     <value>Shipping</value>
@@ -686,9 +680,6 @@
   </data>
   <data name="SkipNavigation" xml:space="preserve">
     <value>Skip Navigation</value>
-  </data>
-  <data name="BusinessHours" xml:space="preserve">
-    <value>Business Hours</value>
   </data>
   <data name="FooterCompanyDescription" xml:space="preserve">
     <value>Footer Company Description</value>
@@ -749,9 +740,6 @@
   </data>
   <data name="BestAndFastestFleets" xml:space="preserve">
     <value>Best And Fastest Fleets</value>
-  </data>
-  <data name="FullName" xml:space="preserve">
-    <value>Full Name</value>
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>Mobile</value>
@@ -975,9 +963,6 @@
   <data name="BackToPaymentHistory" xml:space="preserve">
     <value>Back to Payment History</value>
   </data>
-  <data name="Dimensions" xml:space="preserve">
-    <value>Dimensions</value>
-  </data>
   <data name="PackageValueLabel" xml:space="preserve">
     <value>Package Value</value>
   </data>
@@ -998,9 +983,6 @@
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>N/A</value>
-  </data>
-  <data name="PaymentReceipt" xml:space="preserve">
-    <value>Payment Receipt</value>
   </data>
   <data name="ProcessingFee" xml:space="preserve">
     <value>Processing Fee</value>
@@ -1287,12 +1269,6 @@
   <data name="LanguageChangeHint" xml:space="preserve">
     <value>Language changes apply immediately.</value>
   </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>First Name</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>Last Name</value>
-  </data>
   <data name="SettingsPhase1Title" xml:space="preserve">
     <value>Phase 1: Contact &amp; Language</value>
   </data>
@@ -1362,9 +1338,6 @@
   <data name="DefaultPaymentMethod" xml:space="preserve">
     <value>Default Payment Method</value>
   </data>
-  <data name="SelectCarrier" xml:space="preserve">
-    <value>Select carrier</value>
-  </data>
   <data name="SelectShippingPackage" xml:space="preserve">
     <value>Select shipping package</value>
   </data>
@@ -1415,5 +1388,17 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="SecurityAudit" xml:space="preserve">
+    <value>Security Audit</value>
+  </data>
+  <data name="AuditTimeline" xml:space="preserve">
+    <value>Audit Timeline</value>
+  </data>
+  <data name="DeactivatedAccounts" xml:space="preserve">
+    <value>Deactivated Accounts</value>
+  </data>
+  <data name="AuditLogs" xml:space="preserve">
+    <value>Audit Logs</value>
   </data>
 </root>

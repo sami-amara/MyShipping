@@ -29,14 +29,6 @@
     <div class="container-scroller">
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
-            <!-- partial:partials/_settings-panel.html -->
-            <div class="right-sidebar-toggler-wrapper">
-                <div class="sidebar-toggler" id="settings-trigger"><i class="mdi mdi-palette"></i></div>
-                <div class="sidebar-toggler" id="layout-toggler"><i class="mdi mdi-settings"></i></div>
-                <div class="sidebar-toggler" id="chat-toggler"><i class="mdi mdi-chat-processing"></i></div>
-                <div class="sidebar-toggler"><a href="https://www.bootstrapdash.com/demo/majestic-admin-pro/docs/documentation.html" target="_blank"><i class="mdi mdi-file-document-outline"></i></a></div>
-                <div class="sidebar-toggler"><a href="https://www.bootstrapdash.com/product/majestic-admin-pro/" target="_blank"><i class="mdi mdi-cart"></i></a></div>
-            </div>
             <div class="theme-setting-wrapper">
                 <div id="theme-settings" class="settings-panel">
                     <i class="settings-close mdi mdi-close"></i>
@@ -247,42 +239,72 @@
             <!-- partial:partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
-         
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#apps" aria-expanded="false" aria-controls="apps">
-                            <span class="menu-title">@Labels.Configrations</span>
+                            <span class="menu-title">@Labels.Configurations</span>
                             <i class="menu-arrow"></i>
-                         
-
                             <i class="mdi mdi-cog-outline menu-icon"></i>
                         </a>
                         <div class="collapse" id="apps">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="/admin/Home/Index">@Labels.Home</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/ShippingTypes">@Labels.ShippingTypes</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/Countries">@Labels.Countries</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/Cities">@Labels.Cities</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/SubscriptionPackage">@Labels.SubscriptionPackage</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/Shipments/List">@Labels.Shipments</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/PaymentTransactions/Index">Payment Transactions</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/Users">Users</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/security-audit">SecurityAudit</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/admin/AuditTimeline">AuditTimeline</a></li>
-                            
-                               
-                        
-                                <!-- In your Admin Layout or Navigation partial -->
                                 <li class="nav-item">
-
-                                 
-                                    <a class="nav-link" href="@Url.Action("DeactivatedUsers", "Users", new { area = "admin" })">
-                                         Deactivated Accounts
+                                    <a class="nav-link" href="/admin/Home/Index">
+                                        <i class="mdi mdi-home-outline me-2"></i>@Labels.Home
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                  
+                                    <a class="nav-link" href="/admin/ShippingTypes">
+                                        <i class="mdi-truck"></i>@Labels.ShippingTypes
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/Countries">
+                                        <i class="mdi mdi-earth me-2"></i>@Labels.Countries
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/Cities">
+                                        <i class="mdi mdi-city me-2"></i>@Labels.Cities
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/SubscriptionPackage">
+                                        <i class="mdi mdi-package-variant-closed me-2"></i>@Labels.SubscriptionPackage
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/Shipments/List">
+                                        <i class="mdi mdi-package-variant me-2"></i>@Labels.Shipments
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/PaymentTransactions/Index">
+                                        <i class="mdi-credit-card"></i>@Labels.PaymentTransactions
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/Users">
+                                        <i class="mdi mdi-account-multiple-outline me-2"></i>@Labels.Users
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/security-audit">
+                                        <i class="mdi mdi-shield-check-outline me-2"></i>@Labels.SecurityAudit
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/AuditTimeline">
+                                        <i class="mdi mdi-history me-2"></i>@Labels.AuditTimeline
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("DeactivatedUsers", "Users", new { area = "admin" })">
+                                        <i class="mdi mdi-account-off-outline me-2"></i>@Labels.DeactivatedAccounts
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="@Url.Action("AuditLogs", "Users", new { area = "admin" })">
-                                       Audit Logs
+                                        <i class="mdi mdi-clipboard-text-outline me-2"></i>@Labels.AuditLogs
                                     </a>
                                 </li>
                             </ul>
@@ -290,7 +312,7 @@
                     </li>
                 </ul>
             </nav>
- 
+
             <!-- partial -->
             <div class="main-panel">
                         @RenderBody()

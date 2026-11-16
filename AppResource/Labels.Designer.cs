@@ -61,11 +61,92 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reliable Delivery.
+        /// </summary>
+        public static string AboutFeature1 {
+            get {
+                return ResourceManager.GetString("AboutFeature1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Real-Time Tracking.
+        /// </summary>
+        public static string AboutFeature2 {
+            get {
+                return ResourceManager.GetString("AboutFeature2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Worldwide Coverage.
+        /// </summary>
+        public static string AboutFeature3 {
+            get {
+                return ResourceManager.GetString("AboutFeature3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secure Packaging.
+        /// </summary>
+        public static string AboutFeature4 {
+            get {
+                return ResourceManager.GetString("AboutFeature4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About Us.
         /// </summary>
         public static string AboutUs {
             get {
                 return ResourceManager.GetString("AboutUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are a leading shipping and logistics company dedicated to delivering your packages safely and on time. With years of experience in the industry, we have built a reputation for reliability and excellence..
+        /// </summary>
+        public static string AboutUsDesc1 {
+            get {
+                return ResourceManager.GetString("AboutUsDesc1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Our team of professionals works around the clock to ensure that every shipment is handled with the utmost care. We leverage modern technology to provide real-time tracking and transparent communication throughout the delivery process..
+        /// </summary>
+        public static string AboutUsDesc2 {
+            get {
+                return ResourceManager.GetString("AboutUsDesc2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who We Are.
+        /// </summary>
+        public static string AboutUsHeading {
+            get {
+                return ResourceManager.GetString("AboutUsHeading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Settings.
+        /// </summary>
+        public static string AccountSettings {
+            get {
+                return ResourceManager.GetString("AccountSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update your phone number and language preferences..
+        /// </summary>
+        public static string AccountSettingsDescription {
+            get {
+                return ResourceManager.GetString("AccountSettingsDescription", resourceCulture);
             }
         }
         
@@ -97,6 +178,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active Shipments.
+        /// </summary>
+        public static string ActiveShipments {
+            get {
+                return ResourceManager.GetString("ActiveShipments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New Shipment.
         /// </summary>
         public static string AddNewShipment {
@@ -111,6 +201,15 @@ namespace AppResource {
         public static string Address {
             get {
                 return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 123 Shipping Street, Logistics City.
+        /// </summary>
+        public static string AddressValue {
+            get {
+                return ResourceManager.GetString("AddressValue", resourceCulture);
             }
         }
         
@@ -192,6 +291,24 @@ namespace AppResource {
         public static string AsUserDefaultAddress {
             get {
                 return ResourceManager.GetString("AsUserDefaultAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audit Logs.
+        /// </summary>
+        public static string AuditLogs {
+            get {
+                return ResourceManager.GetString("AuditLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audit Timeline.
+        /// </summary>
+        public static string AuditTimeline {
+            get {
+                return ResourceManager.GetString("AuditTimeline", resourceCulture);
             }
         }
         
@@ -322,6 +439,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Business Hours.
+        /// </summary>
+        public static string BusinessHoursLabel {
+            get {
+                return ResourceManager.GetString("BusinessHoursLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By.
         /// </summary>
         public static string By {
@@ -358,11 +484,38 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancellation Error.
+        /// </summary>
+        public static string CancelErrorTitle {
+            get {
+                return ResourceManager.GetString("CancelErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancell.
         /// </summary>
         public static string Cancell {
             get {
                 return ResourceManager.GetString("Cancell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancellation Reason.
+        /// </summary>
+        public static string CancellationReason {
+            get {
+                return ResourceManager.GetString("CancellationReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the reason for cancelling this shipment.
+        /// </summary>
+        public static string CancellationReasonPlaceholder {
+            get {
+                return ResourceManager.GetString("CancellationReasonPlaceholder", resourceCulture);
             }
         }
         
@@ -376,11 +529,38 @@ namespace AppResource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CancelShipment.
+        ///   Looks up a localized string similar to Shipment ID is missing..
+        /// </summary>
+        public static string CancelMissingId {
+            get {
+                return ResourceManager.GetString("CancelMissingId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancellation reason is required..
+        /// </summary>
+        public static string CancelReasonRequired {
+            get {
+                return ResourceManager.GetString("CancelReasonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel Shipment.
         /// </summary>
         public static string CancelShipment {
             get {
                 return ResourceManager.GetString("CancelShipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel Shipment.
+        /// </summary>
+        public static string CancelShipmentButton {
+            get {
+                return ResourceManager.GetString("CancelShipmentButton", resourceCulture);
             }
         }
         
@@ -390,6 +570,24 @@ namespace AppResource {
         public static string CancelShipmentMessage {
             get {
                 return ResourceManager.GetString("CancelShipmentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clicking &quot;Cancel Shipment&quot; will complete the cancellation, issue a full PayPal refund, and mark this shipment as Refunded. This action cannot be undone..
+        /// </summary>
+        public static string CancelShipmentWarning {
+            get {
+                return ResourceManager.GetString("CancelShipmentWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipment cancelled and payment refunded successfully..
+        /// </summary>
+        public static string CancelSuccessMessage {
+            get {
+                return ResourceManager.GetString("CancelSuccessMessage", resourceCulture);
             }
         }
         
@@ -426,6 +624,15 @@ namespace AppResource {
         public static string CarShipping {
             get {
                 return ResourceManager.GetString("CarShipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Password.
+        /// </summary>
+        public static string ChangePassword {
+            get {
+                return ResourceManager.GetString("ChangePassword", resourceCulture);
             }
         }
         
@@ -502,11 +709,29 @@ namespace AppResource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configrations.
+        ///   Looks up a localized string similar to Configurations.
         /// </summary>
-        public static string Configrations {
+        public static string Configurations {
             get {
-                return ResourceManager.GetString("Configrations", resourceCulture);
+                return ResourceManager.GetString("Configurations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You will receive a confirmation email with your tracking number shortly..
+        /// </summary>
+        public static string ConfirmationEmailNotice {
+            get {
+                return ResourceManager.GetString("ConfirmationEmailNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I understand this account will be deactivated.
+        /// </summary>
+        public static string ConfirmDeactivateAccount {
+            get {
+                return ResourceManager.GetString("ConfirmDeactivateAccount", resourceCulture);
             }
         }
         
@@ -538,6 +763,24 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm New Password.
+        /// </summary>
+        public static string ConfirmNewPassword {
+            get {
+                return ResourceManager.GetString("ConfirmNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Refund.
         /// </summary>
         public static string ConfirmRefund {
@@ -552,6 +795,24 @@ namespace AppResource {
         public static string Contact {
             get {
                 return ResourceManager.GetString("Contact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to info@@company.com.
+        /// </summary>
+        public static string ContactEmailValue {
+            get {
+                return ResourceManager.GetString("ContactEmailValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to +88 01xxx 8xxx04.
+        /// </summary>
+        public static string ContactPhoneValue {
+            get {
+                return ResourceManager.GetString("ContactPhoneValue", resourceCulture);
             }
         }
         
@@ -628,6 +889,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New User.
+        /// </summary>
+        public static string CreateNewUser {
+            get {
+                return ResourceManager.GetString("CreateNewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Shipment.
         /// </summary>
         public static string CreateShipment {
@@ -642,6 +912,33 @@ namespace AppResource {
         public static string CreateYourFirstShipment {
             get {
                 return ResourceManager.GetString("CreateYourFirstShipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Password.
+        /// </summary>
+        public static string CurrentPassword {
+            get {
+                return ResourceManager.GetString("CurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Status.
+        /// </summary>
+        public static string CurrentStatus {
+            get {
+                return ResourceManager.GetString("CurrentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        public static string Dashboard {
+            get {
+                return ResourceManager.GetString("Dashboard", resourceCulture);
             }
         }
         
@@ -682,11 +979,56 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deactivate account.
+        /// </summary>
+        public static string DeactivateAccount {
+            get {
+                return ResourceManager.GetString("DeactivateAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deactivated Accounts.
+        /// </summary>
+        public static string DeactivatedAccounts {
+            get {
+                return ResourceManager.GetString("DeactivatedAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Declared Value.
         /// </summary>
         public static string DeclaredValue {
             get {
                 return ResourceManager.GetString("DeclaredValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Carrier.
+        /// </summary>
+        public static string DefaultCarrier {
+            get {
+                return ResourceManager.GetString("DefaultCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Payment Method.
+        /// </summary>
+        public static string DefaultPaymentMethod {
+            get {
+                return ResourceManager.GetString("DefaultPaymentMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Shipping Package.
+        /// </summary>
+        public static string DefaultShippingPackage {
+            get {
+                return ResourceManager.GetString("DefaultShippingPackage", resourceCulture);
             }
         }
         
@@ -817,6 +1159,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download my data.
+        /// </summary>
+        public static string DownloadMyData {
+            get {
+                return ResourceManager.GetString("DownloadMyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dropoff Date.
         /// </summary>
         public static string DropoffDate {
@@ -853,6 +1204,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit User.
+        /// </summary>
+        public static string EditUser {
+            get {
+                return ResourceManager.GetString("EditUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is a simulated payment transaction for learning purposes only. No real money has been processed..
         /// </summary>
         public static string EducationalPaymentDisclaimer {
@@ -880,6 +1240,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        public static string EmailAddress {
+            get {
+                return ResourceManager.GetString("EmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string EndDate {
@@ -903,6 +1272,24 @@ namespace AppResource {
         public static string ErrorOccurredUpdating {
             get {
                 return ResourceManager.GetString("ErrorOccurredUpdating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated Delivery.
+        /// </summary>
+        public static string EstimatedDelivery {
+            get {
+                return ResourceManager.GetString("EstimatedDelivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated Rate.
+        /// </summary>
+        public static string EstimatedRate {
+            get {
+                return ResourceManager.GetString("EstimatedRate", resourceCulture);
             }
         }
         
@@ -979,11 +1366,29 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Footer Company Description.
         /// </summary>
         public static string FooterCompanyDescription {
             get {
                 return ResourceManager.GetString("FooterCompanyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string From {
+            get {
+                return ResourceManager.GetString("From", resourceCulture);
             }
         }
         
@@ -1002,6 +1407,24 @@ namespace AppResource {
         public static string GetAQuote {
             get {
                 return ResourceManager.GetString("GetAQuote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get In Touch.
+        /// </summary>
+        public static string GetInTouch {
+            get {
+                return ResourceManager.GetString("GetInTouch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Started.
+        /// </summary>
+        public static string GetStarted {
+            get {
+                return ResourceManager.GetString("GetStarted", resourceCulture);
             }
         }
         
@@ -1074,6 +1497,33 @@ namespace AppResource {
         public static string Inactive {
             get {
                 return ResourceManager.GetString("Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language changes apply immediately..
+        /// </summary>
+        public static string LanguageChangeHint {
+            get {
+                return ResourceManager.GetString("LanguageChangeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
             }
         }
         
@@ -1155,6 +1605,24 @@ namespace AppResource {
         public static string LoadingShippingInformation {
             get {
                 return ResourceManager.GetString("LoadingShippingInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lock.
+        /// </summary>
+        public static string Lock {
+            get {
+                return ResourceManager.GetString("Lock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked.
+        /// </summary>
+        public static string Locked {
+            get {
+                return ResourceManager.GetString("Locked", resourceCulture);
             }
         }
         
@@ -1258,6 +1726,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arabic Name.
         /// </summary>
         public static string NameAr {
@@ -1272,6 +1749,15 @@ namespace AppResource {
         public static string NameEn {
             get {
                 return ResourceManager.GetString("NameEn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Password.
+        /// </summary>
+        public static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
             }
         }
         
@@ -1321,6 +1807,24 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No recent shipments.
+        /// </summary>
+        public static string NoRecentShipments {
+            get {
+                return ResourceManager.GetString("NoRecentShipments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No recent users.
+        /// </summary>
+        public static string NoRecentUsers {
+            get {
+                return ResourceManager.GetString("NoRecentUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Records Found.
         /// </summary>
         public static string NoRecordsFound {
@@ -1330,11 +1834,65 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to N/A.
+        /// </summary>
+        public static string NotAvailable {
+            get {
+                return ResourceManager.GetString("NotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose how you want to receive account and shipment updates..
+        /// </summary>
+        public static string NotificationSettingsDescription {
+            get {
+                return ResourceManager.GetString("NotificationSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email notifications.
+        /// </summary>
+        public static string NotifyByEmail {
+            get {
+                return ResourceManager.GetString("NotifyByEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMS notifications.
+        /// </summary>
+        public static string NotifyBySms {
+            get {
+                return ResourceManager.GetString("NotifyBySms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marketing updates.
+        /// </summary>
+        public static string NotifyMarketing {
+            get {
+                return ResourceManager.GetString("NotifyMarketing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipment status updates.
+        /// </summary>
+        public static string NotifyShipmentStatusUpdates {
+            get {
+                return ResourceManager.GetString("NotifyShipmentStatusUpdates", resourceCulture);
             }
         }
         
@@ -1375,6 +1933,24 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation.
+        /// </summary>
+        public static string Operation {
+            get {
+                return ResourceManager.GetString("Operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation Manager.
+        /// </summary>
+        public static string OperationManager {
+            get {
+                return ResourceManager.GetString("OperationManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order Date.
         /// </summary>
         public static string OrderDate {
@@ -1407,6 +1983,15 @@ namespace AppResource {
         public static string OtherAddressRequired {
             get {
                 return ResourceManager.GetString("OtherAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Our Address.
+        /// </summary>
+        public static string OurAddress {
+            get {
+                return ResourceManager.GetString("OurAddress", resourceCulture);
             }
         }
         
@@ -1456,6 +2041,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Package Value.
+        /// </summary>
+        public static string PackageValueLabel {
+            get {
+                return ResourceManager.GetString("PackageValueLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Packaging Package.
         /// </summary>
         public static string PackagingPackage {
@@ -1474,11 +2068,47 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Packaging Type.
+        /// </summary>
+        public static string PackagingType {
+            get {
+                return ResourceManager.GetString("PackagingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Page.
         /// </summary>
         public static string Page {
             get {
                 return ResourceManager.GetString("Page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paid.
+        /// </summary>
+        public static string Paid {
+            get {
+                return ResourceManager.GetString("Paid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be at least 8 characters and include uppercase, lowercase, number, and special character..
+        /// </summary>
+        public static string PasswordPolicyHint {
+            get {
+                return ResourceManager.GetString("PasswordPolicyHint", resourceCulture);
             }
         }
         
@@ -1555,6 +2185,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment Status.
+        /// </summary>
+        public static string PaymentStatus {
+            get {
+                return ResourceManager.GetString("PaymentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment Transaction.
         /// </summary>
         public static string PaymentTransaction {
@@ -1618,6 +2257,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phone Number.
+        /// </summary>
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick up Address.
         /// </summary>
         public static string PickupAddress {
@@ -1672,6 +2320,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lbs.
+        /// </summary>
+        public static string PoundsAbbreviation {
+            get {
+                return ResourceManager.GetString("PoundsAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Previous.
         /// </summary>
         public static string Previous {
@@ -1686,6 +2343,24 @@ namespace AppResource {
         public static string PrintReceipt {
             get {
                 return ResourceManager.GetString("PrintReceipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage your personal data and account lifecycle..
+        /// </summary>
+        public static string PrivacySettingsDescription {
+            get {
+                return ResourceManager.GetString("PrivacySettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing Fee.
+        /// </summary>
+        public static string ProcessingFee {
+            get {
+                return ResourceManager.GetString("ProcessingFee", resourceCulture);
             }
         }
         
@@ -1762,6 +2437,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Receiver.
+        /// </summary>
+        public static string Receiver {
+            get {
+                return ResourceManager.GetString("Receiver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receiver Info.
         /// </summary>
         public static string ReceiverInfo {
@@ -1776,6 +2460,24 @@ namespace AppResource {
         public static string ReceiverName {
             get {
                 return ResourceManager.GetString("ReceiverName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recent Shipments.
+        /// </summary>
+        public static string RecentShipments {
+            get {
+                return ResourceManager.GetString("RecentShipments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recent Users.
+        /// </summary>
+        public static string RecentUsers {
+            get {
+                return ResourceManager.GetString("RecentUsers", resourceCulture);
             }
         }
         
@@ -1897,11 +2599,38 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revenue ($).
+        /// </summary>
+        public static string Revenue {
+            get {
+                return ResourceManager.GetString("Revenue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Revenue This Month.
+        /// </summary>
+        public static string RevenueThisMonth {
+            get {
+                return ResourceManager.GetString("RevenueThisMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Review.
         /// </summary>
         public static string Review {
             get {
                 return ResourceManager.GetString("Review", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reviewer.
+        /// </summary>
+        public static string Reviewer {
+            get {
+                return ResourceManager.GetString("Reviewer", resourceCulture);
             }
         }
         
@@ -1915,11 +2644,38 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string Role {
+            get {
+                return ResourceManager.GetString("Role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save notification preferences.
+        /// </summary>
+        public static string SaveNotificationPreferences {
+            get {
+                return ResourceManager.GetString("SaveNotificationPreferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save shipping preferences.
+        /// </summary>
+        public static string SaveShippingPreferences {
+            get {
+                return ResourceManager.GetString("SaveShippingPreferences", resourceCulture);
             }
         }
         
@@ -1960,7 +2716,25 @@ namespace AppResource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Carrier.
+        ///   Looks up a localized string similar to Security Audit.
+        /// </summary>
+        public static string SecurityAudit {
+            get {
+                return ResourceManager.GetString("SecurityAudit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change your password and control active sessions..
+        /// </summary>
+        public static string SecuritySettingsDescription {
+            get {
+                return ResourceManager.GetString("SecuritySettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select carrier.
         /// </summary>
         public static string SelectCarrier {
             get {
@@ -1983,6 +2757,42 @@ namespace AppResource {
         public static string SelectFreight {
             get {
                 return ResourceManager.GetString("SelectFreight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select payment method.
+        /// </summary>
+        public static string SelectPaymentMethod {
+            get {
+                return ResourceManager.GetString("SelectPaymentMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Role.
+        /// </summary>
+        public static string SelectRole {
+            get {
+                return ResourceManager.GetString("SelectRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select shipping package.
+        /// </summary>
+        public static string SelectShippingPackage {
+            get {
+                return ResourceManager.GetString("SelectShippingPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sender.
+        /// </summary>
+        public static string Sender {
+            get {
+                return ResourceManager.GetString("Sender", resourceCulture);
             }
         }
         
@@ -2023,11 +2833,92 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send Message.
+        /// </summary>
+        public static string SendMessage {
+            get {
+                return ResourceManager.GetString("SendMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Quote.
         /// </summary>
         public static string SendQuote {
             get {
                 return ResourceManager.GetString("SendQuote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Us a Message.
+        /// </summary>
+        public static string SendUsMessage {
+            get {
+                return ResourceManager.GetString("SendUsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service.
+        /// </summary>
+        public static string Service {
+            get {
+                return ResourceManager.GetString("Service", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Express Delivery.
+        /// </summary>
+        public static string ServiceExpress {
+            get {
+                return ResourceManager.GetString("ServiceExpress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fast and reliable express shipping to get your packages delivered the same day or next day..
+        /// </summary>
+        public static string ServiceExpressDesc {
+            get {
+                return ResourceManager.GetString("ServiceExpressDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Freight Services.
+        /// </summary>
+        public static string ServiceFreight {
+            get {
+                return ResourceManager.GetString("ServiceFreight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heavy and bulk cargo shipping by land, sea, or air with competitive rates and full insurance coverage..
+        /// </summary>
+        public static string ServiceFreightDesc {
+            get {
+                return ResourceManager.GetString("ServiceFreightDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to International Shipping.
+        /// </summary>
+        public static string ServiceInternational {
+            get {
+                return ResourceManager.GetString("ServiceInternational", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Global shipping services with full customs support and door-to-door delivery to over 50 countries..
+        /// </summary>
+        public static string ServiceInternationalDesc {
+            get {
+                return ResourceManager.GetString("ServiceInternationalDesc", resourceCulture);
             }
         }
         
@@ -2059,11 +2950,164 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to What We Offer.
+        /// </summary>
+        public static string ServicesHeading {
+            get {
+                return ResourceManager.GetString("ServicesHeading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comprehensive shipping and logistics solutions tailored to your needs..
+        /// </summary>
+        public static string ServicesSubHeading {
+            get {
+                return ResourceManager.GetString("ServicesSubHeading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 24/7 Support.
+        /// </summary>
+        public static string ServiceSupport {
+            get {
+                return ResourceManager.GetString("ServiceSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Our dedicated customer support team is available around the clock to assist you with any queries..
+        /// </summary>
+        public static string ServiceSupportDesc {
+            get {
+                return ResourceManager.GetString("ServiceSupportDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Real-Time Tracking.
+        /// </summary>
+        public static string ServiceTracking {
+            get {
+                return ResourceManager.GetString("ServiceTracking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track your shipments in real time with our advanced tracking system and instant notifications..
+        /// </summary>
+        public static string ServiceTrackingDesc {
+            get {
+                return ResourceManager.GetString("ServiceTrackingDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warehousing.
+        /// </summary>
+        public static string ServiceWarehouse {
+            get {
+                return ResourceManager.GetString("ServiceWarehouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secure short-term and long-term storage solutions with inventory management and order fulfillment..
+        /// </summary>
+        public static string ServiceWarehouseDesc {
+            get {
+                return ResourceManager.GetString("ServiceWarehouseDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase 1: Contact &amp; Language.
+        /// </summary>
+        public static string SettingsPhase1Title {
+            get {
+                return ResourceManager.GetString("SettingsPhase1Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase 2: Profile Basics.
+        /// </summary>
+        public static string SettingsPhase2Title {
+            get {
+                return ResourceManager.GetString("SettingsPhase2Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase 3: Security.
+        /// </summary>
+        public static string SettingsPhase3Title {
+            get {
+                return ResourceManager.GetString("SettingsPhase3Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase 4: Notifications.
+        /// </summary>
+        public static string SettingsPhase4Title {
+            get {
+                return ResourceManager.GetString("SettingsPhase4Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase 5: Shipping Preferences.
+        /// </summary>
+        public static string SettingsPhase5Title {
+            get {
+                return ResourceManager.GetString("SettingsPhase5Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase 6: Privacy.
+        /// </summary>
+        public static string SettingsPhase6Title {
+            get {
+                return ResourceManager.GetString("SettingsPhase6Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Ship From .
         /// </summary>
         public static string ShipFrom {
             get {
                 return ResourceManager.GetString("ShipFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to payment has been processed.
+        /// </summary>
+        public static string ShipmentCreatedAndPaymentProcessed {
+            get {
+                return ResourceManager.GetString("ShipmentCreatedAndPaymentProcessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipment Created Successfully!.
+        /// </summary>
+        public static string ShipmentCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("ShipmentCreatedSuccessfully", resourceCulture);
             }
         }
         
@@ -2131,6 +3175,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to is ready for processing.
+        /// </summary>
+        public static string ShipmentReadyForProcessing {
+            get {
+                return ResourceManager.GetString("ShipmentReadyForProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shipments.
         /// </summary>
         public static string Shipments {
@@ -2140,11 +3193,47 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By Status.
+        /// </summary>
+        public static string ShipmentsByStatus {
+            get {
+                return ResourceManager.GetString("ShipmentsByStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipments &amp; Revenue (30 Days).
+        /// </summary>
+        public static string ShipmentsRevenue30Days {
+            get {
+                return ResourceManager.GetString("ShipmentsRevenue30Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shipment Status.
         /// </summary>
         public static string ShipmentStatus {
             get {
                 return ResourceManager.GetString("ShipmentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipments This Month.
+        /// </summary>
+        public static string ShipmentsThisMonth {
+            get {
+                return ResourceManager.GetString("ShipmentsThisMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipment Summary.
+        /// </summary>
+        public static string ShipmentSummary {
+            get {
+                return ResourceManager.GetString("ShipmentSummary", resourceCulture);
             }
         }
         
@@ -2203,6 +3292,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set your default shipping options for faster checkout..
+        /// </summary>
+        public static string ShippingPreferencesDescription {
+            get {
+                return ResourceManager.GetString("ShippingPreferencesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shipping Rate.
         /// </summary>
         public static string ShippingRate {
@@ -2257,11 +3355,29 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sign out other devices.
+        /// </summary>
+        public static string SignOutOtherDevices {
+            get {
+                return ResourceManager.GetString("SignOutOtherDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (Simulated for educational purposes).
         /// </summary>
         public static string SimulatedEducational {
             get {
                 return ResourceManager.GetString("SimulatedEducational", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (This is a simulated payment for educational purposes - no real money was charged).
+        /// </summary>
+        public static string SimulatedPaymentDisclaimer {
+            get {
+                return ResourceManager.GetString("SimulatedPaymentDisclaimer", resourceCulture);
             }
         }
         
@@ -2293,11 +3409,56 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Countries Covered.
+        /// </summary>
+        public static string StatCountries {
+            get {
+                return ResourceManager.GetString("StatCountries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipments Delivered.
+        /// </summary>
+        public static string StatShipments {
+            get {
+                return ResourceManager.GetString("StatShipments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team Members.
+        /// </summary>
+        public static string StatTeam {
+            get {
+                return ResourceManager.GetString("StatTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Years Experience.
+        /// </summary>
+        public static string StatYears {
+            get {
+                return ResourceManager.GetString("StatYears", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject.
+        /// </summary>
+        public static string Subject {
+            get {
+                return ResourceManager.GetString("Subject", resourceCulture);
             }
         }
         
@@ -2374,11 +3535,47 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To be determined.
+        /// </summary>
+        public static string ToBeDetermined {
+            get {
+                return ResourceManager.GetString("ToBeDetermined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top Cities.
+        /// </summary>
+        public static string TopDestinationCities {
+            get {
+                return ResourceManager.GetString("TopDestinationCities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Amount.
         /// </summary>
         public static string TotalAmount {
             get {
                 return ResourceManager.GetString("TotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Charged.
+        /// </summary>
+        public static string TotalCharged {
+            get {
+                return ResourceManager.GetString("TotalCharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Users.
+        /// </summary>
+        public static string TotalUsers {
+            get {
+                return ResourceManager.GetString("TotalUsers", resourceCulture);
             }
         }
         
@@ -2500,11 +3697,29 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unlock.
+        /// </summary>
+        public static string Unlock {
+            get {
+                return ResourceManager.GetString("Unlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnPaid.
         /// </summary>
         public static string UnPaid {
             get {
                 return ResourceManager.GetString("UnPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upcoming settings phases.
+        /// </summary>
+        public static string UpcomingSettingsPhases {
+            get {
+                return ResourceManager.GetString("UpcomingSettingsPhases", resourceCulture);
             }
         }
         
@@ -2518,6 +3733,24 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string Users {
+            get {
+                return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Valuable Client.
         /// </summary>
         public static string ValuableClient {
@@ -2527,11 +3760,29 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View All Shipments.
         /// </summary>
         public static string ViewAllShipments {
             get {
                 return ResourceManager.GetString("ViewAllShipments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Details.
+        /// </summary>
+        public static string ViewDetails {
+            get {
+                return ResourceManager.GetString("ViewDetails", resourceCulture);
             }
         }
         
@@ -2635,6 +3886,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Write your message here....
+        /// </summary>
+        public static string WriteYourMessage {
+            get {
+                return ResourceManager.GetString("WriteYourMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes Delete.
         /// </summary>
         public static string YesDelete {
@@ -2649,258 +3909,6 @@ namespace AppResource {
         public static string YesPickUp {
             get {
                 return ResourceManager.GetString("YesPickUp", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Sender.
-        /// </summary>
-        public static string Sender {
-            get {
-                return ResourceManager.GetString("Sender", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Receiver.
-        /// </summary>
-        public static string Receiver {
-            get {
-                return ResourceManager.GetString("Receiver", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Current Status.
-        /// </summary>
-        public static string CurrentStatus {
-            get {
-                return ResourceManager.GetString("CurrentStatus", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Payment Status.
-        /// </summary>
-        public static string PaymentStatus {
-            get {
-                return ResourceManager.GetString("PaymentStatus", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Paid.
-        /// </summary>
-        public static string Paid {
-            get {
-                return ResourceManager.GetString("Paid", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Cancellation Reason.
-        /// </summary>
-        public static string CancellationReason {
-            get {
-                return ResourceManager.GetString("CancellationReason", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Enter the reason for cancelling this shipment.
-        /// </summary>
-        public static string CancellationReasonPlaceholder {
-            get {
-                return ResourceManager.GetString("CancellationReasonPlaceholder", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to the cancel shipment warning message.
-        /// </summary>
-        public static string CancelShipmentWarning {
-            get {
-                return ResourceManager.GetString("CancelShipmentWarning", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Cancel Shipment.
-        /// </summary>
-        public static string CancelShipmentButton {
-            get {
-                return ResourceManager.GetString("CancelShipmentButton", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Shipment cancelled and payment refunded successfully.
-        /// </summary>
-        public static string CancelSuccessMessage {
-            get {
-                return ResourceManager.GetString("CancelSuccessMessage", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Cancellation Error.
-        /// </summary>
-        public static string CancelErrorTitle {
-            get {
-                return ResourceManager.GetString("CancelErrorTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Shipment ID is missing.
-        /// </summary>
-        public static string CancelMissingId {
-            get {
-                return ResourceManager.GetString("CancelMissingId", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Cancellation reason is required.
-        /// </summary>
-        public static string CancelReasonRequired {
-            get {
-                return ResourceManager.GetString("CancelReasonRequired", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Dashboard.
-        /// </summary>
-        public static string Dashboard {
-            get {
-                return ResourceManager.GetString("Dashboard", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Shipments This Month.
-        /// </summary>
-        public static string ShipmentsThisMonth {
-            get {
-                return ResourceManager.GetString("ShipmentsThisMonth", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Revenue This Month.
-        /// </summary>
-        public static string RevenueThisMonth {
-            get {
-                return ResourceManager.GetString("RevenueThisMonth", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Total Users.
-        /// </summary>
-        public static string TotalUsers {
-            get {
-                return ResourceManager.GetString("TotalUsers", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Active Shipments.
-        /// </summary>
-        public static string ActiveShipments {
-            get {
-                return ResourceManager.GetString("ActiveShipments", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Shipments &amp; Revenue (30 Days).
-        /// </summary>
-        public static string ShipmentsRevenue30Days {
-            get {
-                return ResourceManager.GetString("ShipmentsRevenue30Days", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to By Status.
-        /// </summary>
-        public static string ShipmentsByStatus {
-            get {
-                return ResourceManager.GetString("ShipmentsByStatus", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Top Cities.
-        /// </summary>
-        public static string TopDestinationCities {
-            get {
-                return ResourceManager.GetString("TopDestinationCities", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Recent Shipments.
-        /// </summary>
-        public static string RecentShipments {
-            get {
-                return ResourceManager.GetString("RecentShipments", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Recent Users.
-        /// </summary>
-        public static string RecentUsers {
-            get {
-                return ResourceManager.GetString("RecentUsers", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to From.
-        /// </summary>
-        public static string From {
-            get {
-                return ResourceManager.GetString("From", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to No recent shipments.
-        /// </summary>
-        public static string NoRecentShipments {
-            get {
-                return ResourceManager.GetString("NoRecentShipments", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to No recent users.
-        /// </summary>
-        public static string NoRecentUsers {
-            get {
-                return ResourceManager.GetString("NoRecentUsers", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Revenue ($).
-        /// </summary>
-        public static string Revenue {
-            get {
-                return ResourceManager.GetString("Revenue", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
     }

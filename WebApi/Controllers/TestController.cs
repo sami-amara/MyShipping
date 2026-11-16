@@ -44,18 +44,5 @@ namespace WebApi.Controllers
                 });
             }
         }
-
-
-        //[HttpPost("tokenreuse")]
-        //public async Task<IActionResult> SimulateTokenReuse()
-        //{
-        //    // Call the logger base method, which internally queues the audit log
-        //    await _securityLogger.LogTokenReuseDetected(
-        //        userId: "test-user",
-        //        token: "FAKE-TOKEN-FOR-TESTING"
-        //    );
-
-        //    return Ok(new { message = "Simulated TokenReuse event logged and queued." });
-        //}
     }
 }

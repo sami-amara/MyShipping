@@ -124,7 +124,7 @@
     <value>المدن</value>
     <comment>Shipping types</comment>
   </data>
-  <data name="Configrations" xml:space="preserve">
+  <data name="Configurations" xml:space="preserve">
     <value>اعدادات</value>
   </data>
   <data name="Countries" xml:space="preserve">
@@ -524,7 +524,7 @@
     <value>تفاصيل الحزمة</value>
   </data>
   <data name="Dimensions" xml:space="preserve">
-    <value>أبعاد</value>
+    <value>الأبعاد</value>
   </data>
   <data name="Reference" xml:space="preserve">
     <value>مرجع</value>
@@ -596,7 +596,7 @@
     <value>غير نشط</value>
   </data>
   <data name="Unknown" xml:space="preserve">
-    <value>مجهول</value>
+    <value>غير معروف</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>يبحث</value>
@@ -647,7 +647,7 @@
     <value>إضافة شحنة جديدة</value>
   </data>
   <data name="SelectCarrier" xml:space="preserve">
-    <value>حدد الناقل</value>
+    <value>اختر شركة الشحن</value>
   </data>
   <data name="MarkReadyForShipping" xml:space="preserve">
     <value>جاهز للشحن</value>
@@ -663,12 +663,6 @@
   </data>
   <data name="Updated" xml:space="preserve">
     <value>تم التحديث</value>
-  </data>
-  <data name="AboutUs" xml:space="preserve">
-    <value>من نحن</value>
-  </data>
-  <data name="Services" xml:space="preserve">
-    <value>الخدمات</value>
   </data>
   <data name="Shipping" xml:space="preserve">
     <value>الشحن</value>
@@ -687,9 +681,6 @@
   </data>
   <data name="SkipNavigation" xml:space="preserve">
     <value>تخطي التنقل</value>
-  </data>
-  <data name="BusinessHours" xml:space="preserve">
-    <value>9:00 ص إلى 8:00 م</value>
   </data>
   <data name="FooterCompanyDescription" xml:space="preserve">
     <value>تم نشره على نطاق واسع في الستينيات مع إصدار أوراق Letraset التي تحتوي على نصوص.</value>
@@ -750,9 +741,6 @@
   </data>
   <data name="BestAndFastestFleets" xml:space="preserve">
     <value>نستخدم دائمًا أفضل وأسرع الأساطيل</value>
-  </data>
-  <data name="FullName" xml:space="preserve">
-    <value>الاسم الكامل</value>
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>الجوال</value>
@@ -913,24 +901,6 @@
   <data name="PaymentMethod" xml:space="preserve">
     <value>طريقة الدفع</value>
   </data>
-  <data name="PaymentMethodPayPal" xml:space="preserve">
-    <value>باي بال</value>
-  </data>
-  <data name="PaymentMethodStripe" xml:space="preserve">
-    <value>سترايب</value>
-  </data>
-  <data name="PaymentMethodCash" xml:space="preserve">
-    <value>نقدًا</value>
-  </data>
-  <data name="PaymentMethodCreditCard" xml:space="preserve">
-    <value>بطاقة ائتمان</value>
-  </data>
-  <data name="PartiallyRefunded" xml:space="preserve">
-    <value>استرداد جزئي</value>
-  </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>غير معروف</value>
-  </data>
   <data name="Amount" xml:space="preserve">
     <value>كمية</value>
   </data>
@@ -994,9 +964,6 @@
   <data name="BackToPaymentHistory" xml:space="preserve">
     <value>العودة إلى تاريخ الدفع</value>
   </data>
-  <data name="Dimensions" xml:space="preserve">
-    <value>الأبعاد</value>
-  </data>
   <data name="PackageValueLabel" xml:space="preserve">
     <value>قيمة الشحنة</value>
   </data>
@@ -1017,9 +984,6 @@
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>غير متوفر</value>
-  </data>
-  <data name="PaymentReceipt" xml:space="preserve">
-    <value>إيصال الدفع</value>
   </data>
   <data name="ProcessingFee" xml:space="preserve">
     <value>رسوم المعالجة</value>
@@ -1306,12 +1270,6 @@
   <data name="LanguageChangeHint" xml:space="preserve">
     <value>يتم تطبيق تغيير اللغة فورًا.</value>
   </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>الاسم الأول</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>اسم العائلة</value>
-  </data>
   <data name="SettingsPhase1Title" xml:space="preserve">
     <value>المرحلة 1: التواصل واللغة</value>
   </data>
@@ -1381,9 +1339,6 @@
   <data name="DefaultPaymentMethod" xml:space="preserve">
     <value>طريقة الدفع الافتراضية</value>
   </data>
-  <data name="SelectCarrier" xml:space="preserve">
-    <value>اختر شركة الشحن</value>
-  </data>
   <data name="SelectShippingPackage" xml:space="preserve">
     <value>اختر باقة الشحن</value>
   </data>
@@ -1434,5 +1389,32 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>الاسم</value>
+  </data>
+  <data name="SecurityAudit" xml:space="preserve">
+    <value>تدقيق الأمان</value>
+  </data>
+  <data name="AuditTimeline" xml:space="preserve">
+    <value>الجدول الزمني للتدقيق</value>
+  </data>
+  <data name="DeactivatedAccounts" xml:space="preserve">
+    <value>الحسابات المعطلة</value>
+  </data>
+  <data name="AuditLogs" xml:space="preserve">
+    <value>سجلات التدقيق</value>
+  </data>
+  <data name="PaymentMethodPayPal" xml:space="preserve">
+    <value>باي بال</value>
+  </data>
+  <data name="PaymentMethodStripe" xml:space="preserve">
+    <value>سترايب</value>
+  </data>
+  <data name="PaymentMethodCash" xml:space="preserve">
+    <value>نقدًا</value>
+  </data>
+  <data name="PaymentMethodCreditCard" xml:space="preserve">
+    <value>بطاقة ائتمان</value>
+  </data>
+  <data name="PartiallyRefunded" xml:space="preserve">
+    <value>استرداد جزئي</value>
   </data>
 </root>
