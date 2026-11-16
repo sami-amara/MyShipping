@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.SignalR;
 namespace WebApi.Hubs
 {
     [Authorize]  // ✅ Uses default scheme (Bearer)
-    public class YourHub : Hub
+    public class NotificationHub : Hub
     {
-        private readonly ILogger<YourHub> _logger;
-
-        public YourHub(ILogger<YourHub> logger)
+        private readonly ILogger<NotificationHub> _logger;
+        
+        public NotificationHub(ILogger<NotificationHub> logger)
         {
             _logger = logger;
         }

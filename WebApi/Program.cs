@@ -140,7 +140,7 @@ namespace WebApi
             app.UseAuthorization();
 
             // 9. ? Map endpoints (SignalR hub MUST have CORS applied)
-            app.MapHub<YourHub>("/hubs/yourHub")
+            app.MapHub<NotificationHub>("/hubs/yourHub")
                .RequireCors("AllowFrontend");  // ? CRITICAL
 
             app.MapControllers();

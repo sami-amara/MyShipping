@@ -41,7 +41,7 @@ namespace WebApi.Controllers
         private readonly IPaymentTransactionService _paymentTransactionService;
         private readonly PaymentGatewayOptions _paymentOptions;
         private readonly ILogger<PaymentController> _logger;
-        private readonly IHubContext<YourHub> _hubContext;
+        private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IShipmentCommand _shipmentCommand;
         private readonly IShipmentStateHandlerFactory _shipmentStateHandlerFactory;
         public PaymentController(
@@ -50,7 +50,7 @@ namespace WebApi.Controllers
             IPaymentTransactionService paymentTransactionService,
             IOptions<PaymentGatewayOptions> paymentOptions,
             ILogger<PaymentController> logger,
-            IHubContext<YourHub> hubContext,
+            IHubContext<NotificationHub> hubContext,
             IShipmentCommand shipmentCommand,
             IShipmentStateHandlerFactory shipmentStateHandlerFactory)
         {

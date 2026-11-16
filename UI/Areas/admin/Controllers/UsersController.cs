@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UI.Constants;
 using UI.Helpers;
+using UI.Models;
 using UI.Services;
 
 namespace UI.Areas.admin.Controllers
@@ -289,51 +290,75 @@ namespace UI.Areas.admin.Controllers
         /// <summary>
         /// Displays audit logs with filtering options.
         /// </summary>
+        /// 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AuditLogs(string action = null, string email = null, int limit = 100)
+        public async Task<IActionResult> AuditLogs(string? email = null, string? actionFilter = null, int page = 1, int pageSize = 20)
         {
-            try
+            var paged = await _auditService.SearchAuditLogsAsync(email, actionFilter, page, pageSize);
+
+            ViewBag.AvailableActions = new[]
             {
-                List<dynamic> auditLogs;
+        "SuccessfulLogin", "FailedLoginAttempt_InvalidPassword", "FailedLoginAttempt_LockedOut",
+        "FailedLoginAttempt_Deactivated", "Deactivated", "Reactivated",
+        "PasswordChanged", "LockedByAdmin", "UnlockedByAdmin"
+    };
 
-                if (!string.IsNullOrWhiteSpace(email))
-                {
-                    auditLogs = (await _auditService.GetAuditLogsByUserEmailAsync(email, limit)).ToList();
-                }
-                else if (!string.IsNullOrWhiteSpace(action))
-                {
-                    auditLogs = (await _auditService.GetAuditLogsByActionWithDetailsAsync(action, limit)).ToList();
-                }
-                else
-                {
-                    auditLogs = (await _auditService.GetAuditLogsWithUserInfoAsync(limit)).ToList();
-                }
-
-                ViewBag.SearchEmail = email;
-                ViewBag.SearchAction = action;
-                ViewBag.AvailableActions = new[]
-                {
-                    "SuccessfulLogin",
-                    "FailedLoginAttempt_InvalidPassword",
-                    "FailedLoginAttempt_LockedOut",
-                    "FailedLoginAttempt_Deactivated",
-                    "Deactivated",
-                    "Reactivated",
-                    "PasswordChanged",
-                    "LockedByAdmin",
-                    "UnlockedByAdmin"
-                };
-
-                return View(auditLogs);
-            }
-            catch (Exception ex)
+            return View(new AccountAuditLogsViewModel
             {
-                _logger.LogError(ex, "Error retrieving audit logs");
-                TempData["ErrorMessage"] = "Error loading audit logs: " + ex.Message;
-                return View(new List<dynamic>());
-            }
+                Paged = paged,
+                Pager = paged.ToPaginationInfo(windowSize: 7),
+                Email = email,
+                ActionFilter = actionFilter
+            });
         }
+
+        //[HttpGet]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> AuditLogs(string action = null, string email = null, int limit = 100)
+        //{
+        //    try
+        //    {
+        //        List<dynamic> auditLogs;
+
+        //        if (!string.IsNullOrWhiteSpace(email))
+        //        {
+        //            auditLogs = (await _auditService.GetAuditLogsByUserEmailAsync(email, limit)).ToList();
+        //            _logger.LogWarning("DEBUG action param = {A}", action);
+        //        }
+        //        else if (!string.IsNullOrWhiteSpace(action))
+        //        {
+        //            auditLogs = (await _auditService.GetAuditLogsByActionWithDetailsAsync(action, limit)).ToList();
+        //        }
+        //        else
+        //        {
+        //            auditLogs = (await _auditService.GetAuditLogsWithUserInfoAsync(limit)).ToList();
+        //        }
+
+        //        ViewBag.SearchEmail = email;
+        //        ViewBag.SearchAction = action;
+        //        ViewBag.AvailableActions = new[]
+        //        {
+        //            "SuccessfulLogin",
+        //            "FailedLoginAttempt_InvalidPassword",
+        //            "FailedLoginAttempt_LockedOut",
+        //            "FailedLoginAttempt_Deactivated",
+        //            "Deactivated",
+        //            "Reactivated",
+        //            "PasswordChanged",
+        //            "LockedByAdmin",
+        //            "UnlockedByAdmin"
+        //        };
+
+        //        return View(auditLogs);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error retrieving audit logs");
+        //        TempData["ErrorMessage"] = "Error loading audit logs: " + ex.Message;
+        //        return View(new List<dynamic>());
+        //    }
+        //}
 
     }
 }

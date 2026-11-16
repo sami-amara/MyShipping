@@ -173,7 +173,7 @@ namespace WebApi.Services
                             var path = context.HttpContext.Request.Path;
 
                             if (!string.IsNullOrEmpty(accessToken) &&
-                              (path.StartsWithSegments("/hubs") || path.StartsWithSegments("/yourHub")))
+                              (path.StartsWithSegments("/hubs") || path.StartsWithSegments("/NotificationHub")))
                             //path.StartsWithSegments("/hubs"))
                             {
                                 context.Token = accessToken;

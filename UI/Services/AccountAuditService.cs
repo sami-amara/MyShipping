@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Business.DTOS;
 using DataAccessLayer.DbContext;
+using DataAccessLayer.Model;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace UI.Services
 {
@@ -85,6 +87,26 @@ namespace UI.Services
         /// <summary>
         /// Retrieves all deactivation events.
         /// </summary>
+        /// 
+        /// <summary>
+        /// Gets all deactivated users (for admin dashboard).
+        /// </summary>
+        //public async Task<IEnumerable<dynamic>> GetDeactivatedUsersAsync(int limit = 100)
+        //{
+        //    return await _context.Users
+        //        .Where(u => u.IsDeactivated)
+        //        .OrderByDescending(u => u.DeactivatedAt)
+        //        .Take(limit)
+        //        .Select(u => new
+        //        {
+        //            u.Id,
+        //            u.Email,
+        //            u.FirstName,
+        //            u.LastName,
+        //            u.DeactivatedAt
+        //        })
+        //        .ToListAsync();
+        //}
         public async Task<IEnumerable<AccountAuditLog>> GetDeactivationLogsAsync(int limit = 100)
         {
             return await GetAuditLogsByActionAsync("Deactivated", limit);
@@ -168,7 +190,8 @@ namespace UI.Services
                     a.InitiatedBy,
                     a.IpAddress,
                     a.Timestamp,
-                    UserEmail = a.User != null ? a.User.Email : "Unknown"
+                    UserEmail = a.User != null ? a.User.Email : "Unknown",
+                    UserName = a.User != null ? $"{a.User.FirstName} {a.User.LastName}" : "Unknown"
                 })
                 .ToListAsync();
         }
@@ -192,6 +215,7 @@ namespace UI.Services
                     a.IpAddress,
                     a.Timestamp,
                     UserEmail = a.User != null ? a.User.Email : "Unknown",
+                    UserName = a.User != null ? $"{a.User.FirstName} {a.User.LastName}" : "Unknown",
                     UserPhoneNumber = a.User != null ? a.User.PhoneNumber : null
                 })
                 .ToListAsync();
@@ -216,6 +240,7 @@ namespace UI.Services
                     a.Timestamp,
                     UserEmail = a.User != null ? a.User.Email : "Unknown",
                     UserPhoneNumber = a.User != null ? a.User.PhoneNumber : null,
+                    UserName = a.User != null ? $"{a.User.FirstName} {a.User.LastName}" : "Unknown",
                     UserIsDeactivated = a.User != null ? a.User.IsDeactivated : false
                 })
                 .ToListAsync();
@@ -247,7 +272,58 @@ namespace UI.Services
                 UniqueUsersAffected = recentAudits.Select(a => a.UserId).Distinct().Count()
             };
         }
+
+        public async Task<PagedResult<AccountAuditLogRowDto>> SearchAuditLogsAsync(
+        string? email, string? action, int page = 1, int pageSize = 20)
+        {
+            pageSize = pageSize is > 0 and <= 100 ? pageSize : 20;
+
+            var query = _context.AccountAuditLogs.AsNoTracking().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(email))
+                query = query.Where(a => a.InitiatedBy.Contains(email)
+                                      || (a.User != null && a.User.Email.Contains(email)));
+
+            if (!string.IsNullOrWhiteSpace(action))
+                query = query.Where(a => a.Action == action);
+
+            var total = await query.CountAsync();
+            var totalPages = Math.Max(1, (int)Math.Ceiling(total / (double)pageSize));
+            page = Math.Clamp(page, 1, totalPages);
+
+            var items = await query
+                .OrderByDescending(a => a.Timestamp)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(a => new AccountAuditLogRowDto
+                {
+                    Id = a.Id,
+                    UserId = a.UserId,
+                    Action = a.Action,
+                    Reason = a.Reason,
+                    InitiatedBy = a.InitiatedBy,
+                    IpAddress = a.IpAddress,
+                    Timestamp = a.Timestamp,
+                    UserEmail = a.User != null ? a.User.Email : "Unknown",
+                    UserName = a.User != null ? (a.User.FirstName ?? "") + " " + (a.User.LastName ?? "") : "Unknown"
+                })
+                .ToListAsync();
+
+            return new PagedResult<AccountAuditLogRowDto>
+            {
+                Items = items,
+                Page = page,
+                PageNumber = page,
+                PageSize = pageSize,
+                TotalCount = total
+            };
+        }
+
+
     }
+
+
+
 
     /// <summary>
     /// Account audit statistics for admin dashboard.
