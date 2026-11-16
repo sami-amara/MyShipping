@@ -54,7 +54,8 @@ namespace Business.Contracts
 
         Task<IdentityResult> ReactivateUserAsync(string userId, string adminEmail, string? reason = null);
 
+        Task<IdentityResult> LockUserAsync(string userId, string adminEmail, string? reason = null);
+        Task<IdentityResult> UnlockUserAsync(string userId, string adminEmail, string? reason = null);
 
-        
     }
 }

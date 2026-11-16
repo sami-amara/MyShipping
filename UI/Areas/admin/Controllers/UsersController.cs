@@ -164,6 +164,7 @@ namespace UI.Areas.admin.Controllers
         /// <summary>
         /// Lock user account
         /// </summary>
+        /// 
         [HttpPost]
         public async Task<IActionResult> Lock(string id)
         {
@@ -171,7 +172,8 @@ namespace UI.Areas.admin.Controllers
 
             try
             {
-                var result = await _userService.LockUserAsync(id);
+                var adminEmail = User?.Identity?.Name ?? "unknown";
+                var result = await _userService.LockUserAsync(id, adminEmail);
 
                 if (result.Succeeded)
                 {
@@ -200,7 +202,8 @@ namespace UI.Areas.admin.Controllers
 
             try
             {
-                var result = await _userService.UnlockUserAsync(id);
+                var adminEmail = User?.Identity?.Name ?? "unknown";
+                var result = await _userService.UnlockUserAsync(id, adminEmail);
 
                 if (result.Succeeded)
                 {
@@ -218,6 +221,60 @@ namespace UI.Areas.admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        //[HttpPost]
+        //public async Task<IActionResult> Lock(string id)
+        //{
+        //    TempData["MessageType"] = null;
+
+        //    try
+        //    {
+        //        var result = await _userService.LockUserAsync(id);
+
+        //        if (result.Succeeded)
+        //        {
+        //            TempData["MessageType"] = MessageType.LockedSuccess;
+        //        }
+        //        else
+        //        {
+        //            TempData["MessageType"] = MessageType.LockedFaild;
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["MessageType"] = MessageType.LockedFaild;
+        //    }
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        ///// <summary>
+        ///// Unlock user account
+        ///// </summary>
+        //[HttpPost]
+        //public async Task<IActionResult> Unlock(string id)
+        //{
+        //    TempData["MessageType"] = null;
+
+        //    try
+        //    {
+        //        var result = await _userService.UnlockUserAsync(id);
+
+        //        if (result.Succeeded)
+        //        {
+        //            TempData["MessageType"] = MessageType.UnlockedSuccess;
+        //        }
+        //        else
+        //        {
+        //            TempData["MessageType"] = MessageType.UnlockedFaild;
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["MessageType"] = MessageType.UnlockedFaild;
+        //    }
+
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         /// <summary>
         /// Load available roles into ViewBag for dropdown
@@ -312,53 +369,6 @@ namespace UI.Areas.admin.Controllers
                 ActionFilter = actionFilter
             });
         }
-
-        //[HttpGet]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<IActionResult> AuditLogs(string action = null, string email = null, int limit = 100)
-        //{
-        //    try
-        //    {
-        //        List<dynamic> auditLogs;
-
-        //        if (!string.IsNullOrWhiteSpace(email))
-        //        {
-        //            auditLogs = (await _auditService.GetAuditLogsByUserEmailAsync(email, limit)).ToList();
-        //            _logger.LogWarning("DEBUG action param = {A}", action);
-        //        }
-        //        else if (!string.IsNullOrWhiteSpace(action))
-        //        {
-        //            auditLogs = (await _auditService.GetAuditLogsByActionWithDetailsAsync(action, limit)).ToList();
-        //        }
-        //        else
-        //        {
-        //            auditLogs = (await _auditService.GetAuditLogsWithUserInfoAsync(limit)).ToList();
-        //        }
-
-        //        ViewBag.SearchEmail = email;
-        //        ViewBag.SearchAction = action;
-        //        ViewBag.AvailableActions = new[]
-        //        {
-        //            "SuccessfulLogin",
-        //            "FailedLoginAttempt_InvalidPassword",
-        //            "FailedLoginAttempt_LockedOut",
-        //            "FailedLoginAttempt_Deactivated",
-        //            "Deactivated",
-        //            "Reactivated",
-        //            "PasswordChanged",
-        //            "LockedByAdmin",
-        //            "UnlockedByAdmin"
-        //        };
-
-        //        return View(auditLogs);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error retrieving audit logs");
-        //        TempData["ErrorMessage"] = "Error loading audit logs: " + ex.Message;
-        //        return View(new List<dynamic>());
-        //    }
-        //}
 
     }
 }
