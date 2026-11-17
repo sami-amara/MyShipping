@@ -1357,9 +1357,6 @@
   <data name="ConfirmDeactivateAccount" xml:space="preserve">
     <value>أفهم أن هذا الحساب سيتم تعطيله</value>
   </data>
-  <data name="DeactivateAccount" xml:space="preserve">
-    <value>تعطيل الحساب</value>
-  </data>
   <data name="ShipmentsRevenue30Days" xml:space="preserve">
     <value>الشحنات والإيرادات (30 يوماً)</value>
   </data>
@@ -1396,9 +1393,6 @@
   <data name="AuditTimeline" xml:space="preserve">
     <value>الجدول الزمني للتدقيق</value>
   </data>
-  <data name="DeactivatedAccounts" xml:space="preserve">
-    <value>الحسابات المعطلة</value>
-  </data>
   <data name="AuditLogs" xml:space="preserve">
     <value>سجلات التدقيق</value>
   </data>
@@ -1416,5 +1410,38 @@
   </data>
   <data name="PartiallyRefunded" xml:space="preserve">
     <value>استرداد جزئي</value>
+  </data>
+  <data name="DeactivatedUserAccounts" xml:space="preserve">
+    <value>حسابات المستخدمين المعطلة</value>
+  </data>
+  <data name="DeactivatedAccountsSubtitle" xml:space="preserve">
+    <value>إدارة المستخدمين الذين عطّلوا حساباتهم</value>
+  </data>
+  <data name="DeactivatedAccounts" xml:space="preserve">
+    <value>حسابات معطلة</value>
+  </data>
+  <data name="DeactivatedOn" xml:space="preserve">
+    <value>تاريخ التعطيل (UTC)</value>
+  </data>
+  <data name="Deactivated" xml:space="preserve">
+    <value>معطّل</value>
+  </data>
+  <data name="Reactivate" xml:space="preserve">
+    <value>إعادة التفعيل</value>
+  </data>
+  <data name="ReactivateConfirmTitle" xml:space="preserve">
+    <value>إعادة تفعيل حساب المستخدم؟</value>
+  </data>
+  <data name="ReactivateConfirmText" xml:space="preserve">
+    <value>هل أنت متأكد من إعادة تفعيل {0}؟ سيتمكن المستخدم من تسجيل الدخول مرة أخرى</value>
+  </data>
+  <data name="ReactivateConfirmButton" xml:space="preserve">
+    <value>نعم، أعد التفعيل</value>
+  </data>
+  <data name="NoDeactivatedAccounts" xml:space="preserve">
+    <value>لا توجد حسابات معطلة</value>
+  </data>
+  <data name="AllAccountsActive" xml:space="preserve">
+    <value>جميع حسابات المستخدمين نشطة حاليا</value>
   </data>
 </root>

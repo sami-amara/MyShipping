@@ -13,7 +13,7 @@ namespace Business.DTOS
         //public string[] Errors { get; set; }
         public IEnumerable<string> Errors { get; set; }
 
-
+        public bool WasReactivated { get; set; }
         // ✅ ADD THESE PROPERTIES
         public bool IsLockedOut { get; set; }
         public bool IsAdminLocked { get; set; }

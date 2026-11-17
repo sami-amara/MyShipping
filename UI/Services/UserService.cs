@@ -76,6 +76,136 @@ namespace UI.Services
         /// <param name="model">Login credentials (email, password, remember me flag)</param>
         /// <returns>UserResultDto indicating success/failure and any validation errors</returns>
         /// 
+
+        /// <summary>
+        /// Authenticates a user by email and password.
+        /// A deactivated account is reactivated automatically, but only after the password has been
+        /// verified, so nothing reveals the account's state to someone who doesn't know the password.
+        /// Every outcome is written to the account audit trail.
+        /// </summary>
+        /// <param name="model">Login credentials (email, password, remember me flag)</param>
+        /// <returns>UserResultDto indicating success/failure, lockout flags, and whether the account was reactivated</returns>
+        //public async Task<UserResultDto> LoginAsync(LoginDto model)
+        //{
+        //    // Find user by email
+        //    var user = await _userManager.FindByEmailAsync(model.Email);
+        //    if (user == null)
+        //    {
+        //        await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
+        //        return new UserResultDto
+        //        {
+        //            Success = false,
+        //            Errors = new[] { "Email:Invalid credentials" }
+        //        };
+        //    }
+
+        //    // Self-service reactivation: only after the password is verified.
+        //    var wasReactivated = false;
+        //    if (user.IsDeactivated)
+        //    {
+        //        // Verify the password without signing in. lockoutOnFailure is false because the normal
+        //        // sign-in below counts failed attempts, so a wrong password is not counted twice.
+        //        // A locked-out user fails this check too, so a lock cannot be bypassed by reactivating.
+        //        var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+
+        //        if (passwordCheck.Succeeded)
+        //        {
+        //            user.IsDeactivated = false;
+        //            user.DeactivatedAt = null;
+
+        //            var update = await _userManager.UpdateAsync(user);
+        //            if (!update.Succeeded)
+        //            {
+        //                _logger.LogError("❌ Failed to reactivate {Email} at login. Errors: {Errors}",
+        //                    model.Email, string.Join(", ", update.Errors.Select(e => e.Description)));
+
+        //                return new UserResultDto
+        //                {
+        //                    Success = false,
+        //                    Errors = new[] { "Email:We could not reactivate your account. Please try again." }
+        //                };
+        //            }
+
+        //            await _auditService.LogAccountActionAsync(
+        //                userId: user.Id,
+        //                action: "Reactivated",
+        //                initiatedBy: model.Email,
+        //                reason: "Self-service reactivation at login",
+        //                ipAddress: GetClientIpAddress()
+        //            );
+
+        //            wasReactivated = true;
+        //        }
+        //        // Wrong password or locked out: continue. The normal sign-in below fails and is logged
+        //        // as usual, and the response does not say the account is deactivated.
+        //    }
+
+        //    // Attempt sign-in with password, lockout enabled after failed attempts
+        //    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
+        //    if (result.Succeeded)
+        //    {
+        //        // Log successful login to audit trail (full email for auditing)
+        //        await _auditService.LogAccountActionAsync(
+        //            userId: user.Id,
+        //            action: "SuccessfulLogin",
+        //            initiatedBy: model.Email,
+        //            ipAddress: GetClientIpAddress()
+        //        );
+
+        //        return new UserResultDto { Success = true, WasReactivated = wasReactivated };
+        //    }
+
+        //    // Handle lockout scenario - check if it's admin lock or temporary lockout
+        //    if (result.IsLockedOut)
+        //    {
+        //        // Refresh user data to get current lockout status
+        //        user = await _userManager.FindByEmailAsync(model.Email);
+
+        //        // Admin locks are set to 100 years, temp lockouts are 15 minutes
+        //        // So anything > 1 hour is definitely an admin lock
+        //        var oneHourFromNow = DateTimeOffset.UtcNow.AddHours(1);
+        //        var isAdminLock = user.LockoutEnd.HasValue && user.LockoutEnd.Value > oneHourFromNow;
+
+        //        await _auditService.LogAccountActionAsync(
+        //            userId: user.Id,
+        //            action: "FailedLoginAttempt_LockedOut",
+        //            initiatedBy: model.Email,
+        //            reason: isAdminLock ? "Admin lockout" : "Temporary lockout after failed attempts",
+        //            ipAddress: GetClientIpAddress()
+        //        );
+
+        //        await _securityEventLogger.LogFailedLogin(model.Email, isAdminLock ? "Admin lockout" : "Account temporarily locked");
+
+        //        // AccountController uses these flags to choose the message
+        //        return new UserResultDto
+        //        {
+        //            Success = false,
+        //            IsLockedOut = true,
+        //            IsAdminLocked = isAdminLock
+        //        };
+        //    }
+
+        //    // Log failed password attempt to audit trail
+        //    await _auditService.LogAccountActionAsync(
+        //        userId: user.Id,
+        //        action: "FailedLoginAttempt_InvalidPassword",
+        //        initiatedBy: model.Email,
+        //        ipAddress: GetClientIpAddress()
+        //    );
+
+        //    await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
+
+        //    return new UserResultDto
+        //    {
+        //        Success = false,
+        //        Errors = new[] { "Password:Invalid credentials" }
+        //    };
+        //}
+
+
+
+
+
         public async Task<UserResultDto> LoginAsync(LoginDto model)
         {
             // Find user by email
@@ -92,7 +222,7 @@ namespace UI.Services
 
             // ✅ Check if user has deactivated their account
             if (user.IsDeactivated)
-            {  
+            {
                 // Log the failed login attempt
                 await _auditService.LogAccountActionAsync(
                     userId: user.Id,
@@ -124,11 +254,11 @@ namespace UI.Services
                     ipAddress: GetClientIpAddress()
                 );
 
-         
+
 
                 return new UserResultDto { Success = true };
             }
-      
+
             // Handle lockout scenario - check if it's admin lock or temporary lockout
             if (result.IsLockedOut)
             {
@@ -171,7 +301,7 @@ namespace UI.Services
             );
 
             // ✅ Log security event
-             await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
+            await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
 
             return new UserResultDto
             {
@@ -180,7 +310,7 @@ namespace UI.Services
             };
         }
 
-    
+
         /// <summary>
         /// Signs out the current user by clearing the authentication cookie.
         /// Called by AccountController.LogoutConfirmed() after the user confirms logout.

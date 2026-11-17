@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UI.Models;
 
 namespace UI.Services
 {
@@ -91,22 +92,7 @@ namespace UI.Services
         /// <summary>
         /// Gets all deactivated users (for admin dashboard).
         /// </summary>
-        //public async Task<IEnumerable<dynamic>> GetDeactivatedUsersAsync(int limit = 100)
-        //{
-        //    return await _context.Users
-        //        .Where(u => u.IsDeactivated)
-        //        .OrderByDescending(u => u.DeactivatedAt)
-        //        .Take(limit)
-        //        .Select(u => new
-        //        {
-        //            u.Id,
-        //            u.Email,
-        //            u.FirstName,
-        //            u.LastName,
-        //            u.DeactivatedAt
-        //        })
-        //        .ToListAsync();
-        //}
+      
         public async Task<IEnumerable<AccountAuditLog>> GetDeactivationLogsAsync(int limit = 100)
         {
             return await GetAuditLogsByActionAsync("Deactivated", limit);
@@ -162,16 +148,34 @@ namespace UI.Services
         /// <summary>
         /// Gets all deactivated users (for admin dashboard).
         /// </summary>
-        public async Task<IEnumerable<AccountAuditLog>> GetDeactivatedUsersAsync(int limit = 100)
+        //public async Task<IEnumerable<AccountAuditLog>> GetDeactivatedUsersAsync(int limit = 100)
+        //{
+        //    return await _context.AccountAuditLogs
+        //        .Where(a => a.Action == "Deactivated")
+        //        .OrderByDescending(a => a.Timestamp)
+        //        .Distinct()
+        //        .Take(limit)
+        //        .ToListAsync();
+        //}
+        public async Task<List<DeactivatedUserDto>> GetDeactivatedUsersAsync(int limit = 100)
         {
-            return await _context.AccountAuditLogs
-                .Where(a => a.Action == "Deactivated")
-                .OrderByDescending(a => a.Timestamp)
-                .Distinct()
+            return await _context.Users
+                .AsNoTracking()
+                .Where(u => u.IsDeactivated)
+                .OrderByDescending(u => u.DeactivatedAt)
                 .Take(limit)
+                .Select(u => new DeactivatedUserDto
+                {
+                    Id = u.Id,
+                    Email = u.Email ?? "",
+                    FirstName = u.FirstName ?? "",
+                    LastName = u.LastName ?? "",
+                    DeactivatedAt = u.DeactivatedAt,
+                    
+                
+                })
                 .ToListAsync();
         }
-
         /// <summary>
         /// Gets audit logs filtered by user email (with user details).
         /// </summary>

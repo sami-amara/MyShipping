@@ -1,149 +1,79 @@
-﻿(function () {
+﻿
+
+
+(function () {
     'use strict';
 
-    /**
-     * DeactivatedUsers - Handles reactivation of deactivated user accounts
-     */
+    // Handles the admin "Reactivate" button on the Deactivated Accounts page.
+    // Texts and the POST url come from data-* attributes on #deactivatedUsersTable,
+    // so nothing is hard-coded here and the dialog follows the page language.
     const DeactivatedUsers = {
-        /**
-         * Initialize event handlers
-         */
         init: function () {
-            // Attach click handler to all reactivate buttons
             $(document).on('click', '.reactivate-user', this.onReactivateClick.bind(this));
-            console.log('✅ DeactivatedUsers initialized');
         },
 
-        /**
-         * Handle reactivate button click
-         */
         onReactivateClick: function (e) {
             e.preventDefault();
 
             const button = $(e.currentTarget);
             const userId = button.data('user-id');
-            const userEmail = button.data('user-email');
+            const userEmail = button.attr('data-user-email');
+            const table = $('#deactivatedUsersTable');
+            const url = table.attr('data-reactivate-url');
 
-            if (!userId || !userEmail) {
-                console.error('❌ Missing userId or userEmail');
-                alert('Error: Unable to identify user');
+            if (!userId || !userEmail || !url) {
+                console.error('Reactivate: missing user id, email or url.');
                 return;
             }
 
-            // Show confirmation dialog
-            this.showReactivationConfirmation(userId, userEmail);
-        },
+            // attr() instead of data(): data() tries to parse values that look like JSON
+            const title = table.attr('data-confirm-title') || 'Reactivate user account?';
+            const text = (table.attr('data-confirm-text') || 'Are you sure you want to reactivate {0}?')
+                .replace('{0}', userEmail);
+            const confirmButton = table.attr('data-confirm-button') || 'Yes, reactivate';
 
-        /**
-         * Show confirmation dialog using SweetAlert2
-         */
-        showReactivationConfirmation: function (userId, userEmail) {
-            showAlert.Confirm(
-                'Reactivate User Account?',
-                `Are you sure you want to reactivate <strong>${this.escapeHtml(userEmail)}</strong>?<br>
-                 This user will be able to login again.`,
-                'Yes, Reactivate',
-                (result) => {
-                    // ✅ FIXED: Properly check SweetAlert2 result
-                    if (result && result.isConfirmed) {
-                        this.submitReactivationRequest(userId);
-                    }
+            // showAlert.Confirm renders plain text (not HTML), so no markup in the message
+            showAlert.Confirm(title, text, confirmButton, (result) => {
+                if (result && result.isConfirmed) {
+                    this.submit(userId, url);
                 }
-            );
-        },
-
-
-        /**
-      * Submit POST request to reactivate user
-      */
-        submitReactivationRequest: function (userId) {
-            // ✅ FIXED: Use correct hardcoded URL: /admin/Users/ReactivateUser
-            const form = $('<form>', {
-                'method': 'POST',
-                'action': '/admin/Users/ReactivateUser'
             });
+        },
 
+        submit: function (userId, url) {
+            const token = $('input[name="__RequestVerificationToken"]').first().val();
 
-        // /**
-        //  * Submit POST request to reactivate user
-        //  */
-        // submitReactivationRequest: function (userId) {
-        //     const form = $('<form>', {
-        //         'method': 'POST',
-        //         'action': '@Url.Action("ReactivateUser", "Users", new { area = "admin" })'
-        //     });
+            const form = $('<form>', { method: 'POST', action: url });
+            form.append($('<input>', { type: 'hidden', name: 'userId', value: userId }));
 
-            // Add form fields
-            form.append($('<input>', {
-                'type': 'hidden',
-                'name': 'userId',
-                'value': userId
-            }));
-
-            form.append($('<input>', {
-                'type': 'hidden',
-                'name': 'reason',
-                'value': 'Admin reactivation'
-            }));
-
-            // ✅ FIXED: Get CSRF token from cookie or page
-            const csrfToken = this.getAntiForgeryToken();
-            if (csrfToken) {
-                form.append($('<input>', {
-                    'type': 'hidden',
-                    'name': '__RequestVerificationToken',
-                    'value': csrfToken
-                }));
+            if (token) {
+                form.append($('<input>', { type: 'hidden', name: '__RequestVerificationToken', value: token }));
+            } else {
+                console.warn('Reactivate: antiforgery token not found, the request will be rejected.');
             }
 
-            // Submit form
             $('body').append(form);
-            form.submit();
-        },
-
-        /**
-         * Get CSRF token from page
-         */
-        getAntiForgeryToken: function () {
-            // Try to get from input field first
-            let token = $('input[name="__RequestVerificationToken"]').val();
-
-            if (!token) {
-                // Try to get from cookie
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.startsWith('XSRF-TOKEN=')) {
-                        token = cookie.substring('XSRF-TOKEN='.length);
-                        break;
-                    }
-                }
-            }
-
-            if (!token) {
-                console.warn('⚠️ CSRF token not found - form submission may fail');
-            }
-
-            return token;
-        },
-
-        /**
-         * Escape HTML to prevent XSS
-         */
-        escapeHtml: function (text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return text.replace(/[&<>"']/g, m => map[m]);
+            form.get(0).submit();
         }
     };
 
-    // Initialize when document is ready
-    $(document).ready(function () {
-        DeactivatedUsers.init();
-    });
+    $(function () { DeactivatedUsers.init(); });
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

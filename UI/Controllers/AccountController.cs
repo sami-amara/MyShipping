@@ -35,6 +35,7 @@ namespace UI.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly ISecurityEventLogger _securityEventLogger;
         private readonly AccountHelper _accountHelper;
+        private readonly AccountAuditService _auditService;
         public AccountController(
              IUIUserService userService,
             SignInManager<ApplicationUser> signInManager,
@@ -42,7 +43,7 @@ namespace UI.Controllers
             IEmailSender emailSender,
             ILogger<AccountController> logger,
             ISecurityEventLogger securityEventLogger,
-            AccountHelper accountHelper)
+            AccountHelper accountHelper, AccountAuditService auditService)
         {
            // _userManager = signInManager.UserManager;
             _signInManager = signInManager;
@@ -52,6 +53,7 @@ namespace UI.Controllers
             _logger = logger;
             _securityEventLogger = securityEventLogger;
             _accountHelper = accountHelper;
+            _auditService = auditService;
         }
 
 
@@ -222,11 +224,7 @@ namespace UI.Controllers
                 // When the browser navigates to the redirect URL, it will include this cookie in the request.
                 // The next page load will have full authentication context, allowing JavaScript to call
                 // /Account/GetAccessToken successfully and populate dropdowns via ManagePageControlls.
-                //if (!string.IsNullOrEmpty(dbUser.Role) && dbUser.Role.Equals("admin", StringComparison.OrdinalIgnoreCase))
-                //{
-                //    _logger.LogInformation("Redirecting Admin user {Email} to admin dashboard", model.Email);
-                //    return RedirectToAction("Index", "Home", new { area = "admin" });
-                //}
+      
                 // ✅ STEP 4: Redirect based on role
                 if (!string.IsNullOrEmpty(dbUser.Role))
                 {
@@ -847,7 +845,11 @@ namespace UI.Controllers
             }
         }
 
-
+        public async Task<IActionResult> DeactivatedUsers()
+        {
+            var users = await _auditService.GetDeactivatedUsersAsync();
+            return View(users);
+        }
 
         [HttpPost]
         [Authorize]

@@ -232,6 +232,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All user accounts are currently active..
+        /// </summary>
+        public static string AllAccountsActive {
+            get {
+                return ResourceManager.GetString("AllAccountsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Methods.
         /// </summary>
         public static string AllMethods {
@@ -979,11 +988,11 @@ namespace AppResource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deactivate account.
+        ///   Looks up a localized string similar to Deactivated.
         /// </summary>
-        public static string DeactivateAccount {
+        public static string Deactivated {
             get {
-                return ResourceManager.GetString("DeactivateAccount", resourceCulture);
+                return ResourceManager.GetString("Deactivated", resourceCulture);
             }
         }
         
@@ -993,6 +1002,33 @@ namespace AppResource {
         public static string DeactivatedAccounts {
             get {
                 return ResourceManager.GetString("DeactivatedAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage users who have deactivated their accounts.
+        /// </summary>
+        public static string DeactivatedAccountsSubtitle {
+            get {
+                return ResourceManager.GetString("DeactivatedAccountsSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deactivated On (UTC).
+        /// </summary>
+        public static string DeactivatedOn {
+            get {
+                return ResourceManager.GetString("DeactivatedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deactivated User Accounts.
+        /// </summary>
+        public static string DeactivatedUserAccounts {
+            get {
+                return ResourceManager.GetString("DeactivatedUserAccounts", resourceCulture);
             }
         }
         
@@ -1798,6 +1834,15 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Deactivated Accounts.
+        /// </summary>
+        public static string NoDeactivatedAccounts {
+            get {
+                return ResourceManager.GetString("NoDeactivatedAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Drop.
         /// </summary>
         public static string NoDrop {
@@ -2406,6 +2451,42 @@ namespace AppResource {
         public static string QuickLocation {
             get {
                 return ResourceManager.GetString("QuickLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reactivate.
+        /// </summary>
+        public static string Reactivate {
+            get {
+                return ResourceManager.GetString("Reactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes, reactivate.
+        /// </summary>
+        public static string ReactivateConfirmButton {
+            get {
+                return ResourceManager.GetString("ReactivateConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reactivate {0}? The user will be able to log in again..
+        /// </summary>
+        public static string ReactivateConfirmText {
+            get {
+                return ResourceManager.GetString("ReactivateConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reactivate user account? .
+        /// </summary>
+        public static string ReactivateConfirmTitle {
+            get {
+                return ResourceManager.GetString("ReactivateConfirmTitle", resourceCulture);
             }
         }
         
