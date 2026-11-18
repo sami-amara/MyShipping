@@ -464,7 +464,18 @@ namespace UI.Services
             // Add the background service
             builder.Services.AddHostedService<SecurityAuditBackgroundService>();
 
-            builder.Services.AddScoped<IEmailSender, EmailSenderService>();
+            //builder.Services.AddScoped<IEmailSender, EmailSenderService>();
+            var useLogSender = builder.Environment.IsDevelopment() &&
+            (string.Equals(builder.Configuration["Email:Provider"], "Log", StringComparison.OrdinalIgnoreCase)
+             || string.IsNullOrWhiteSpace(builder.Configuration["SendGrid:ApiKey"]));
+
+            if (useLogSender)
+                builder.Services.AddScoped<IEmailSender, LoggingEmailSender>();
+            else
+                builder.Services.AddScoped<IEmailSender, EmailSenderService>();
+
+
+
             builder.Services.AddScoped<AccountAuditService>();
             builder.Services.AddScoped<SecurityAuditService>();
 
@@ -491,7 +502,8 @@ namespace UI.Services
             builder.Services.AddScoped<Business.Services.PaymentGateways.StripePaymentGateway>();
             builder.Services.AddScoped<Business.Services.PaymentGateways.PayPalPaymentGateway>();
             builder.Services.AddScoped<IPaymentGatewayFactory, 
-                Business.Services.PaymentGateways.PaymentGatewayFactory>();
+            Business.Services.PaymentGateways.PaymentGatewayFactory>();
+
 
             // ✅ Register all Business layer logging and security services
             builder.Services.ConfigureBusinessLogging();
@@ -607,6 +619,10 @@ namespace UI.Services
 
             Log.Logger = loggerConfig.CreateLogger();
             builder.Host.UseSerilog();
+
+
+
+
         }
 
     }

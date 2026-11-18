@@ -1428,4 +1428,16 @@
   <data name="AllAccountsActive" xml:space="preserve">
     <value>All user accounts are currently active.</value>
   </data>
+  <data name="InitiatedBy" xml:space="preserve">
+    <value>Initiated By</value>
+  </data>
+  <data name="IPAddress" xml:space="preserve">
+    <value>IP Address</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
 </root>

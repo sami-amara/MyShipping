@@ -108,6 +108,18 @@ namespace Business.Contracts.Logging
         /// </summary>
         void LogPasswordChangeFailed(string email, string reason);
 
+
+        /// <summary>Logs that a reactivation code was emailed. The code itself must never be passed in.</summary>
+        void LogReactivationCodeSent(string userId, string email);
+
+        /// <summary>Logs a wrong or expired reactivation code.</summary>
+        void LogReactivationCodeFailed(string email, string reason);
+
+        /// <summary>Logs a reactivated account (self-service or by an admin).</summary>
+        void LogAccountReactivated(string userId, string email, string initiatedBy);
+
+
+
         /// <summary>
         /// Logs a failed email confirmation attempt.
         /// </summary>

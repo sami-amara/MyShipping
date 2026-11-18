@@ -126,51 +126,55 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         [EnableRateLimiting("login")]
         public async Task<IActionResult> Login(LoginDto model, string? returnUrl = null)
-        { 
+        {
             ViewData["ReturnUrl"] = returnUrl;
 
-            // ✅ STEP 0: Validate model state
             if (!ModelState.IsValid)
             {
-                // Optional: diagnostic logging, NOT security
                 _logger.LogWarning("Login attempt with invalid ModelState: {ValidationErrors}",
                     string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
                 return View(model);
             }
-
+         
             try
             {
-                // ✅ STEP 1: Validate credentials via UserService (uses ASP.NET Core Identity)
-                // This checks password, handles lockout, and validates the user exists
+                // Validates credentials via ASP.NET Core Identity (password, lockout, deactivated state)
                 var result = await _userService.LoginAsync(model);
-
                 if (!result.Success)
                 {
-                    if (result.IsLockedOut)
+                    if (result.ReactivationCodeSent)
                     {
-                        if (result.IsAdminLocked)
-                        {
-                            //_securityEventLogger.LogFailedLogin(model.Email, "Account permanently locked by admin From AcountController");
-                            TempData["MessageType"] = MessageType.AdminLocked;
-                                
-                            return View(model);
-                        }
-                        else
-                        {
-                            //_securityEventLogger.LogFailedLogin(model.Email, "Account locked due to failed login attempts From AcountController");
-                            TempData["MessageType"] = MessageType.TempLocked;
-                            return View(model);
-                        }
+                        TempData["ReactivateEmail"] = model.Email;
+                        return RedirectToAction(nameof(ReactivateAccount));
                     }
 
-                   // _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials From AcountController");
-                    //AddErrorsToModelState(result.Errors);
                     _accountHelper.AddErrorsToModelState(ModelState, result.Errors);
                     return View(model);
                 }
+                //if (!result.Success)
+                //{
+                //    // Correct password on a deactivated account: a code was emailed, go to the code page.
+                //    // The email travels in TempData (not the URL) so it is not stored in history or logs.
+                //    if (result.ReactivationCodeSent)
+                //    {
+                //        TempData["ReactivateEmail"] = model.Email;
+                //        return RedirectToAction(nameof(ReactivateAccount));
+                //    }
 
-                // ✅ STEP 2: Obtain JWT access token from Web API
-                // UI calls the WebApi /api/auth/login endpoint to get tokens for API operations
+                //    if (result.IsLockedOut)
+                //    {
+                //        TempData["MessageType"] = result.IsAdminLocked
+                //            ? MessageType.AdminLocked
+                //            : MessageType.TempLocked;
+                //        return View(model);
+                //    }
+
+                //    _accountHelper.AddErrorsToModelState(ModelState, result.Errors);
+                //    return View(model);
+                //}
+
+
+                // Obtain JWT access token from the Web API
                 var loginResponse = await _genericApiClient.PostAsync<LoginResponse>("api/auth/login", model);
                 if (loginResponse == null || string.IsNullOrEmpty(loginResponse.AccessToken))
                 {
@@ -178,92 +182,72 @@ namespace UI.Controllers
                     ModelState.AddModelError(string.Empty, "An error occurred during login. Please try again.");
                     return View(model);
                 }
-
-                // ✅ Store refresh token in HttpOnly cookie (secure - JavaScript can't access it)
-                // Used to obtain new access tokens when the current one expires
+          
+                // Refresh token in an HttpOnly cookie (JavaScript cannot read it)
                 Response.Cookies.Append("RefreshToken", loginResponse.RefreshToken, new CookieOptions
                 {
-                    HttpOnly = true,                  // ✅ XSS protection - JavaScript can't read it
-                    Secure = true,                    // ✅ HTTPS only
-                    SameSite = SameSiteMode.None,    // ✅ Allows cross-site (UI → WebApi)
-                    Expires = DateTime.UtcNow.AddDays(7) // 7-day lifetime
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddDays(7)
                 });
-
-                // ✅ Step 3: Sign in with cookie authentication
-                // Store access token in claims so it's available via User.Claims in subsequent requests
+             
+                // Cookie sign-in; the access token is stored in the claims
                 var dbUser = await _userService.GetUserByEmailAsync(model.Email);
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, dbUser.Email),
-                    new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
-                    new Claim(ClaimTypes.Role, dbUser.Role ?? "User"),
-                    new Claim("AccessToken", loginResponse.AccessToken)  // ✅ Token stored in claims
-                };
-
+                
+     
+            {
+            new Claim(ClaimTypes.Name, dbUser.Email),
+            new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
+            new Claim(ClaimTypes.Role, dbUser.Role ?? "User"),
+            new Claim("AccessToken", loginResponse.AccessToken)
+            };
+              
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
-
-                //// ✅ Await SignInAsync to ensure cookie is written before redirect
+               
                 await HttpContext.SignInAsync(
-                    IdentityConstants.ApplicationScheme,  // ✅ Use Identity's scheme
+                    IdentityConstants.ApplicationScheme,
                     principal,
                     new AuthenticationProperties
                     {
-                        IsPersistent = model.RememberMe,       // Remember me checkbox
+                        IsPersistent = model.RememberMe,
                         ExpiresUtc = model.RememberMe
-                            ? DateTimeOffset.UtcNow.AddDays(1) // 1 day if remembered
-                            : DateTimeOffset.UtcNow.AddHours(20), // 20 hours otherwise
-                        AllowRefresh = true,                    // Allow sliding expiration
+                            ? DateTimeOffset.UtcNow.AddDays(1)
+                            : DateTimeOffset.UtcNow.AddHours(20),
+                        AllowRefresh = true,
                         IssuedUtc = DateTimeOffset.UtcNow
                     });
-
-                //_securityEventLogger.LogSuccessfulLogin(dbUser.Id.ToString(), model.Email);
-
-                // ✅ STEP 4: Redirect based on role
-                // At this point, the authentication cookie is fully committed to the HTTP response.
-                // When the browser navigates to the redirect URL, it will include this cookie in the request.
-                // The next page load will have full authentication context, allowing JavaScript to call
-                // /Account/GetAccessToken successfully and populate dropdowns via ManagePageControlls.
-      
-                // ✅ STEP 4: Redirect based on role
+            
+                // Redirect based on role
                 if (!string.IsNullOrEmpty(dbUser.Role))
                 {
-
-
-                    switch (dbUser.Role?.ToLowerInvariant())
+                    switch (dbUser.Role.ToLowerInvariant())
                     {
                         case "admin":
                             _logger.LogInformation("Redirecting Admin user {Email} to admin dashboard", model.Email);
                             return RedirectToAction("Index", "Home", new { area = "admin" });
 
                         case "reviewer":
-                            _logger.LogInformation("Redirecting Reviewer user {Email} to Shipments List", model.Email);
-                            return RedirectToAction("List", "Shipments", new { area = "admin" });
-
                         case "operation":
-                            _logger.LogInformation("Redirecting Operation user {Email} to Shipments List", model.Email);
-                            return RedirectToAction("List", "Shipments", new { area = "admin" });
-
                         case "operationmanager":
-                            _logger.LogInformation("Redirecting OperationManager user {Email} to Shipments List", model.Email);
+                            _logger.LogInformation("Redirecting {Role} user {Email} to Shipments List", dbUser.Role, model.Email);
                             return RedirectToAction("List", "Shipments", new { area = "admin" });
 
                         default:
                             _logger.LogInformation("Redirecting user {Email} to home page", model.Email);
                             return RedirectToAction("Index", "Home");
                     }
-
-
                 }
-                // ✅ Redirect to returnUrl if valid and local (prevents open redirect vulnerability)
+
+                // Only local return URLs are followed (prevents open redirects)
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 {
                     _logger.LogInformation("Redirecting user {Email} to return URL: {ReturnUrl}", model.Email, returnUrl);
                     return Redirect(returnUrl);
                 }
 
-                // ✅ Default: redirect to home page
-                _logger.LogInformation("Redirecting user {Email} to home page", model.Email);
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
@@ -273,6 +257,7 @@ namespace UI.Controllers
                 return View(model);
             }
         }
+      
 
         /// <summary>
         /// GET: Displays the logout confirmation view.
@@ -888,6 +873,39 @@ namespace UI.Controllers
         }
 
 
+
+        // ============ New actions ============
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ReactivateAccount()
+        {
+            var email = TempData.Peek("ReactivateEmail") as string;
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction(nameof(Login));
+
+            return View(new ReactivateAccountViewModel { Email = email });
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [EnableRateLimiting("login")]
+        
+        public async Task<IActionResult> ReactivateAccount(ReactivateAccountViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _userService.ReactivateWithCodeAsync(model.Email, model.Code);
+            if (!result.Success)
+            {
+                ModelState.AddModelError(nameof(model.Code), result.Errors?.FirstOrDefault() ?? "The code is invalid or has expired.");
+                return View(model);
+            }
+
+            TempData.Remove("ReactivateEmail");
+            TempData["MessageType"] = MessageType.Reactivated;   // Login view shows it like your other messages
+            return RedirectToAction(nameof(Login));
+        }
 
         [HttpPost]
         [Authorize]

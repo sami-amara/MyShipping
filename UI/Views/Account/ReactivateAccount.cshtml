@@ -1,0 +1,36 @@
+﻿@model UI.Models.ReactivateAccountViewModel
+@{
+    ViewData["Title"] = "Reactivate Account";
+}
+
+<div class="wshipping-content-block">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <div class="customer-login-block">
+                    <h2>Reactivate Your Account</h2>
+                    <p>
+                        Your account is deactivated. We sent a 6-digit code to <strong>@Model.Email</strong>.
+                        Enter it below to reactivate your account.
+                    </p>
+
+                    <form asp-action="ReactivateAccount" method="post" autocomplete="off">
+                        <input type="hidden" asp-for="Email" />
+                        <div class="form-group mb-3">
+                            <label asp-for="Code">Security code</label>
+                            <input asp-for="Code" class="form-control" inputmode="numeric" maxlength="6" autofocus />
+                            <span asp-validation-for="Code" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Reactivate</button>
+                    </form>
+
+                    <p class="mt-3"><a asp-action="Login">Back to login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

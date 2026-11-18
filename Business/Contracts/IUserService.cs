@@ -139,23 +139,7 @@ namespace Business.Contracts
         /// <returns>UserResultDto indicating success/failure and validation errors</returns>
         Task<UserResultDto> UpdateUserAsync(string userId, UserDto userDto);
 
-        /// <summary>
-        /// Locks a user account, preventing them from logging in.
-        /// Sets LockoutEnd to a far future date (e.g., 100 years).
-        /// Used by administrators to disable problematic accounts.
-        /// </summary>
-        /// <param name="userId">User's ID (GUID as string)</param>
-        /// <returns>IdentityResult with success/failure</returns>
-        Task<IdentityResult> LockUserAsync(string userId);
-
-        /// <summary>
-        /// Unlocks a user account, allowing them to log in again.
-        /// Clears the LockoutEnd date.
-        /// Used by administrators to re-enable locked accounts.
-        /// </summary>
-        /// <param name="userId">User's ID (GUID as string)</param>
-        /// <returns>IdentityResult with success/failure</returns>
-        Task<IdentityResult> UnlockUserAsync(string userId);
+     
 
         /// <summary>
         /// Changes a user's role assignment.

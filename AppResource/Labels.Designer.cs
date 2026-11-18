@@ -1537,6 +1537,24 @@ namespace AppResource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initiated By.
+        /// </summary>
+        public static string InitiatedBy {
+            get {
+                return ResourceManager.GetString("InitiatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP Address.
+        /// </summary>
+        public static string IPAddress {
+            get {
+                return ResourceManager.GetString("IPAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
@@ -2505,6 +2523,15 @@ namespace AppResource {
         public static string ReadyForShipping {
             get {
                 return ResourceManager.GetString("ReadyForShipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        public static string Reason {
+            get {
+                return ResourceManager.GetString("Reason", resourceCulture);
             }
         }
         
@@ -3603,6 +3630,15 @@ namespace AppResource {
         public static string ThankYouMessage {
             get {
                 return ResourceManager.GetString("ThankYouMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        public static string Time {
+            get {
+                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
         

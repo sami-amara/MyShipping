@@ -1,6 +1,6 @@
 ﻿@model UI.Models.AccountAuditLogsViewModel
 @{
-    ViewData["Title"] = "Audit Logs";
+    ViewData["Title"] = Labels.AuditLogs;
     var pager = Model.Pager;
     var availableActions = ViewBag.AvailableActions as IEnumerable<string> ?? Array.Empty<string>();
 }
@@ -9,20 +9,20 @@
         height: 38px !important;
     }
 </style>
-<div class="container-fluid mt-5">
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <h2>📋 Account Audit Logs</h2>
-            <p class="text-muted">View all account activities for compliance and security monitoring</p>
-        </div>
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">📋 @Labels.AuditLogs</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">@Labels.Configurations</li>
+                <li class="breadcrumb-item active" aria-current="page">@Labels.AuditLogs</li>
+            </ol>
+        </nav>
     </div>
 
-    <!-- Search/Filter Form -->
-    <div class="card mb-4">
+    <div class="card">
         <div class="card-body">
-
-           
-
+            <p class="text-muted">View all account activities for compliance and security monitoring</p>
             <form method="get" asp-action="AuditLogs" class="row g-3 align-items-end">
 
                 <div class="col-md-4">
@@ -37,7 +37,7 @@
                 <div class="col-md-4">
                     <label class="form-label">Filter by Action</label>
                     <select name="actionFilter" class="form-select filter-control">
-                        <option value="">-- All Actions --</option>
+                        <option value=""> All Actions </option>
                         @foreach (var act in availableActions)
                         {
                             <option value="@act" selected="@(Model.ActionFilter == act)">@act</option>
@@ -54,91 +54,93 @@
 
             </form>
 
+            <!-- One row per event, the reason is a column -->
+            @if (Model.Paged.Items.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>@Labels.Time</th>
+                                <th>@Labels.User</th>
+                                <th>@Labels.Action</th>
+                                <th>@Labels.Status</th>
+                                <th>@Labels.InitiatedBy</th>
+                                <th>@Labels.IPAddress</th>
+                                <th>@Labels.Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var log in Model.Paged.Items)
+                            {
+                                <tr>
+                                    <td class="text-nowrap">
+                                        <small>@log.Timestamp.ToString("MMM dd yyyy HH:mm:ss")</small>
+                                    </td>
+                                    <td>
+                                        <strong>@log.UserEmail</strong><br />
+                                        <small class="text-muted">@log.UserName</small>
+                                    </td>
+                                    <td>@log.Action</td>
+                                    <td>
+                                        <span class="badge @GetActionBadgeColor(log.Action)">
+                                            @GetActionBadgeText(log.Action)
+                                        </span>
+                                    </td>
+                                    <td>@log.InitiatedBy</td>
+                                    <td>@log.IpAddress</td>
+                                    <td class="text-wrap">
+                                        @if (string.IsNullOrWhiteSpace(log.Reason))
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
+                                        else
+                                        {
+                                            <small class="text-muted">@log.Reason</small>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @if (pager.TotalPages > 1)
+                {
+                    <nav aria-label="Audit logs pagination" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @(pager.HasPrevious ? "" : "disabled")">
+                                <a class="page-link" asp-action="AuditLogs" asp-route-page="@pager.PrevPage"
+                                   asp-route-email="@Model.Email" asp-route-actionFilter="@Model.ActionFilter">Previous</a>
+                            </li>
+                            @for (var i = pager.Start; i <= pager.End; i++)
+                            {
+                                <li class="page-item @(i == pager.Page ? "active" : "")">
+                                    <a class="page-link" asp-action="AuditLogs" asp-route-page="@i"
+                                       asp-route-email="@Model.Email" asp-route-actionFilter="@Model.ActionFilter">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(pager.HasNext ? "" : "disabled")">
+                                <a class="page-link" asp-action="AuditLogs" asp-route-page="@pager.NextPage"
+                                   asp-route-email="@Model.Email" asp-route-actionFilter="@Model.ActionFilter">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+
+                <p class="text-center text-muted small mb-0">
+                    @pager.TotalCount records, page @pager.Page of @pager.TotalPages
+                </p>
+            }
+            else
+            {
+                <div class="alert alert-info mb-0">
+                    <strong>ℹ️ No Audit Logs Found</strong><br>
+                    No account activities match your search criteria.
+                </div>
+            }
         </div>
     </div>
-
-    <!-- Audit Logs Table -->
-    @if (Model.Paged.Items.Any())
-    {
-        <div class="table-responsive">
-            <table class="table table-sm table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Time</th>
-                        <th>User Email</th>
-                        <th>User Name</th>
-                        <th>Action</th>
-                        <th>Initiated By</th>
-                        <th>IP Address</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var log in Model.Paged.Items)
-                    {
-                        var actionColor = GetActionBadgeColor(log.Action);
-                        <tr>
-                            <td>
-                                <small>@log.Timestamp.ToString("MMM dd yyyy HH:mm:ss")</small>
-                            </td>
-                            <td><strong>@log.UserEmail</strong></td>
-                            <td>@log.UserName</td>
-                            <td>@log.Action</td>
-                            <td>@log.InitiatedBy</td>
-                            <td>@log.IpAddress</td>
-                            <td>
-                                <span class="badge @actionColor">
-                                    @GetActionBadgeText(log.Action)
-                                </span>
-                            </td>
-                        </tr>
-                        @if (!string.IsNullOrWhiteSpace(log.Reason))
-                        {
-                            <tr class="table-secondary">
-                                <td colspan="7">
-                                    <small class="text-muted">Reason: @log.Reason</small>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-
-        @if (pager.TotalPages > 1)
-        {
-            <nav aria-label="Audit logs pagination" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item @(pager.HasPrevious ? "" : "disabled")">
-                        <a class="page-link" asp-action="AuditLogs" asp-route-page="@pager.PrevPage"
-                           asp-route-email="@Model.Email" asp-route-actionFilter="@Model.ActionFilter">Previous</a>
-                    </li>
-                    @for (var i = pager.Start; i <= pager.End; i++)
-                    {
-                        <li class="page-item @(i == pager.Page ? "active" : "")">
-                            <a class="page-link" asp-action="AuditLogs" asp-route-page="@i"
-                               asp-route-email="@Model.Email" asp-route-actionFilter="@Model.ActionFilter">@i</a>
-                        </li>
-                    }
-                    <li class="page-item @(pager.HasNext ? "" : "disabled")">
-                        <a class="page-link" asp-action="AuditLogs" asp-route-page="@pager.NextPage"
-                           asp-route-email="@Model.Email" asp-route-actionFilter="@Model.ActionFilter">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        }
-
-        <p class="text-center text-muted small">
-            @pager.TotalCount records, page @pager.Page of @pager.TotalPages
-        </p>
-    }
-    else
-    {
-        <div class="alert alert-info">
-            <strong>ℹ️ No Audit Logs Found</strong><br>
-            No account activities match your search criteria.
-        </div>
-    }
 </div>
 
 @functions {
@@ -155,6 +157,8 @@
             "PasswordChanged" => "bg-info",
             "LockedByAdmin" => "bg-danger",
             "UnlockedByAdmin" => "bg-warning",
+            "ReactivationCodeSent" => "bg-info",      
+            "FailedReactivationCode" => "bg-warning",  
             _ => "bg-secondary"
         };
     }
@@ -165,17 +169,36 @@
         {
             "SuccessfulLogin" => "✅ Login",
             "FailedLoginAttempt_InvalidPassword" => "❌ Bad Password",
-            "FailedLoginAttempt_LockedOut" => "🔒 Locked",
-            "FailedLoginAttempt_Deactivated" => "⛔ Deactivated",
-            "Deactivated" => "🗑️ Deactivated",
+            "FailedLoginAttempt_LockedOut" => "🔒 Login While Locked",
+            "FailedLoginAttempt_Deactivated" => "⛔ Login While Deactivated",
+            "Deactivated" => "🗑️ Account Deactivated",
             "Reactivated" => "✅ Reactivated",
             "PasswordChanged" => "🔑 Password",
             "LockedByAdmin" => "👮 Admin Lock",
             "UnlockedByAdmin" => "👮 Admin Unlock",
+            "ReactivationCodeSent" => "📧 Reactivation Code Sent",  
+            "FailedReactivationCode" => "❌ Bad Reactivation Code",   
             _ => action
         };
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

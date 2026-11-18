@@ -929,7 +929,7 @@
     <value>جميع الطرق</value>
   </data>
   <data name="StartDate" xml:space="preserve">
-    <value>Start Date</value>
+    <value>تاريخ البدء</value>
   </data>
   <data name="EndDate" xml:space="preserve">
     <value>تاريخ الانتهاء</value>
@@ -1396,21 +1396,6 @@
   <data name="AuditLogs" xml:space="preserve">
     <value>سجلات التدقيق</value>
   </data>
-  <data name="PaymentMethodPayPal" xml:space="preserve">
-    <value>باي بال</value>
-  </data>
-  <data name="PaymentMethodStripe" xml:space="preserve">
-    <value>سترايب</value>
-  </data>
-  <data name="PaymentMethodCash" xml:space="preserve">
-    <value>نقدًا</value>
-  </data>
-  <data name="PaymentMethodCreditCard" xml:space="preserve">
-    <value>بطاقة ائتمان</value>
-  </data>
-  <data name="PartiallyRefunded" xml:space="preserve">
-    <value>استرداد جزئي</value>
-  </data>
   <data name="DeactivatedUserAccounts" xml:space="preserve">
     <value>حسابات المستخدمين المعطلة</value>
   </data>
@@ -1443,5 +1428,32 @@
   </data>
   <data name="AllAccountsActive" xml:space="preserve">
     <value>جميع حسابات المستخدمين نشطة حاليا</value>
+  </data>
+  <data name="InitiatedBy" xml:space="preserve">
+    <value>بواسطة</value>
+  </data>
+  <data name="IPAddress" xml:space="preserve">
+    <value>عنوان IP</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>السبب</value>
+  </data>
+  <data name="PaymentMethodPayPal" xml:space="preserve">
+    <value>باي بال</value>
+  </data>
+  <data name="PaymentMethodStripe" xml:space="preserve">
+    <value>سترايب</value>
+  </data>
+  <data name="PaymentMethodCash" xml:space="preserve">
+    <value>نقدًا</value>
+  </data>
+  <data name="PaymentMethodCreditCard" xml:space="preserve">
+    <value>بطاقة ائتمان</value>
+  </data>
+  <data name="PartiallyRefunded" xml:space="preserve">
+    <value>استرداد جزئي</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>وقت</value>
   </data>
 </root>

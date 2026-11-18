@@ -3,12 +3,15 @@
     ViewData["Title"] = Labels.DeactivatedAccounts;
 }
 
-<div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <h2>🔐 @Labels.DeactivatedUserAccounts</h2>
-            <p class="text-muted">@Labels.DeactivatedAccountsSubtitle</p>
-        </div>
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">🔐 @Labels.DeactivatedUserAccounts</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">@Labels.Configurations</li>
+                <li class="breadcrumb-item active" aria-current="page">@Labels.DeactivatedAccounts</li>
+            </ol>
+        </nav>
     </div>
 
     @* The reactivate script reads this token and sends it with the POST *@
@@ -16,58 +19,64 @@
         @Html.AntiForgeryToken()
     </div>
 
-    @if (Model.Any())
-    {
-        <div class="table-responsive">
-            <table class="table table-hover" id="deactivatedUsersTable"
-                   data-reactivate-url="@Url.Action("ReactivateUser", "Users", new { area = "admin" })"
-                   data-confirm-title="@Labels.ReactivateConfirmTitle"
-                   data-confirm-text="@Labels.ReactivateConfirmText"
-                   data-confirm-button="@Labels.ReactivateConfirmButton">
-                <thead class="table-light">
-                    <tr>
-                        <th>@Labels.Email</th>
-                        <th>@Labels.Name</th>
-                        <th>@Labels.DeactivatedOn</th>
-                        <th>@Labels.Status</th>
-                        <th>@Labels.Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var user in Model)
-                    {
-                        <tr>
-                            <td><strong>@user.Email</strong></td>
-                            <td>@user.FirstName @user.LastName</td>
-                            <td>
-                                <small class="text-muted">
-                                    @(user.DeactivatedAt?.ToString("MMM dd, yyyy HH:mm") ?? "—")
-                                </small>
-                            </td>
-                            <td>
-                                <label class="badge badge-secondary">@Labels.Deactivated</label>
-                            </td>
-                            <td>
-                                <button type="button"
-                                        class="btn btn-sm btn-success reactivate-user"
-                                        data-user-id="@user.Id"
-                                        data-user-email="@user.Email">
-                                    <i class="mdi mdi-account-check"></i> @Labels.Reactivate
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+    <div class="card">
+        <div class="card-body">
+            <p class="text-muted">@Labels.DeactivatedAccountsSubtitle</p>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover" id="deactivatedUsersTable"
+                           data-reactivate-url="@Url.Action("ReactivateUser", "Users", new { area = "admin" })"
+                           data-confirm-title="@Labels.ReactivateConfirmTitle"
+                           data-confirm-text="@Labels.ReactivateConfirmText"
+                           data-confirm-button="@Labels.ReactivateConfirmButton">
+                        <thead>
+                            <tr>
+                                <th>@Labels.Email</th>
+                                <th>@Labels.Name</th>
+                                <th>@Labels.DeactivatedOn</th>
+                                <th>@Labels.Status</th>
+                                <th>@Labels.Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td><strong>@user.Email</strong></td>
+                                    <td>@user.FirstName @user.LastName</td>
+                                    <td>
+                                        <small class="text-muted">
+                                            @(user.DeactivatedAt?.ToString("MMM dd, yyyy HH:mm") ?? "—")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <label class="badge badge-secondary">@Labels.Deactivated</label>
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-sm btn-success reactivate-user"
+                                                data-user-id="@user.Id"
+                                                data-user-email="@user.Email">
+                                            <i class="mdi mdi-account-check"></i> @Labels.Reactivate
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info mb-0">
+                    <strong>✅ @Labels.NoDeactivatedAccounts</strong><br>
+                    @Labels.AllAccountsActive
+                </div>
+            }
         </div>
-    }
-    else
-    {
-        <div class="alert alert-info">
-            <strong>✅ @Labels.NoDeactivatedAccounts</strong><br>
-            @Labels.AllAccountsActive
-        </div>
-    }
+    </div>
 </div>
 
 @await Html.PartialAsync("_AlertMessage")
@@ -105,119 +114,6 @@
 
 
 
-@* @model IEnumerable<UI.Models.DeactivatedUserDto>
-@{
-    ViewData["Title"] = "Deactivated Accounts";
-}
-
-<div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <h2>🔐 Deactivated User Accounts</h2>
-            <p class="text-muted">Manage users who have deactivated their accounts</p>
-        </div>
-    </div>
-
-    <div style="display: none;">
-        @Html.AntiForgeryToken()
-    </div>
-
-    @if (Model != null && Model.Any())
-    {
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Deactivated On</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="deactivatedUsersTable">
-                    @foreach (var user in Model)
-                    {
-                        <tr data-user-id="@user.Id">
-
-                            <td><strong>@user.Email</strong></td>
-
-                            <td>@user.FirstName @user.LastName</td>
-
-                            <td>
-                                <small class="text-muted">
-                                    @(user.DeactivatedAt?.ToString("MMM dd, yyyy HH:mm") ?? "—")
-                                </small>
-                            </td>
-
-                            <td>
-                                @if (user.IsDeactivated)
-                                {
-                                    <label class="badge badge-secondary">Deactivated</label>
-                                }
-                                else if (user.IsLockedOut)
-                                {
-                                    <label class="badge badge-danger">@ResourceTextHelper.L("Locked", "Locked")</label>
-                                }
-                                else
-                                {
-                                    <label class="badge badge-success">@Labels.Active</label>
-                                }
-                            </td>
-
-                            <td>
-                                @if (user.IsDeactivated)
-                                {
-                                    <a asp-area="admin"
-                                       asp-controller="Users"
-                                       asp-action="DeactivatedUsers"
-                                       class="btn btn-secondary btn-sm">
-                                        <i class="mdi mdi-account-off-outline"></i> Reactivate
-                                    </a>
-                                }
-                                else if (user.IsLockedOut)
-                                {
-                                    <form asp-action="Unlock" method="post" class="d-inline">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="id" value="@user.Id" />
-                                        <button type="submit" class="btn btn-sm btn-success">
-                                            <i class="mdi mdi-lock-open-outline"></i> Unlock
-                                        </button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <form asp-action="Lock" method="post" class="d-inline">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="id" value="@user.Id" />
-                                        <button type="submit" class="btn btn-sm btn-warning">
-                                            <i class="mdi mdi-lock-outline"></i> Lock
-                                        </button>
-                                    </form>
-                                }
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-info">
-            <strong>✅ No Deactivated Accounts</strong><br>
-            All user accounts are currently active.
-        </div>
-    }
-</div>
-
-@await Html.PartialAsync("_AlertMessage")
-
-@section Scripts {
-    <script src="~/Admin/assets/js/deactivated-users.js"></script>
-}
- *@
 
 
 
@@ -241,79 +137,6 @@
 
 
 
-@* @model IEnumerable<dynamic>
-@{
-    ViewData["Title"] = "Deactivated Accounts";
-}
-
-<div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <h2>🔐 Deactivated User Accounts</h2>
-            <p class="text-muted">Manage users who have deactivated their accounts</p>
-        </div>
-    </div>
-    <div style="display: none;">
-        @Html.AntiForgeryToken()
-    </div>
-    @if (Model != null && Model.Any())
-    {
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Deactivated On</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="deactivatedUsersTable">
-                    @foreach (var user in Model)
-                    {
-                        <tr data-user-id="@user.Id">
-                            <td><strong>@user.Email</strong></td>
-                            <td>@user.FirstName @user.LastName</td>
-                            <td>
-                                <small class="text-muted">
-                                    @((DateTime)user.DeactivatedAt)?.ToString("MMM dd, yyyy HH:mm")
-                                </small>
-                            </td>
-                            <td>
-                                <span class="badge bg-danger">Deactivated</span>
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-success reactivate-user"
-                                        data-user-id="@user.Id"
-                                        data-user-email="@user.Email"
-                                        type="button">
-                                    ✅ Reactivate
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-info">
-            <strong>✅ No Deactivated Accounts</strong><br>
-            All user accounts are currently active.
-        </div>
-    }
-</div>
 
 
-@await Html.PartialAsync("_AlertMessage")
-
-
-
-@section Scripts {
-
-    <script src="~/Admin/assets/js/deactivated-users.js"></script>
-   
-}
- *@
+ 

@@ -1,4 +1,5 @@
 using Business.Contracts;
+using Business.Contracts.Logging;
 using Business.DTOS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,16 @@ namespace UI.Areas.admin.Controllers
         private readonly IUIUserService _userService;
         private readonly ILogger<HomeController> _logger;
         private readonly AccountAuditService _auditService;
+
+        private readonly ISecurityEventLogger _securityEventLogger;
         public UsersController(IUIUserService userService,
             ILogger<HomeController> logger,
-            AccountAuditService auditService)
+            AccountAuditService auditService, ISecurityEventLogger securityEventLogger)
         {
             _userService = userService;
             _logger = logger;
             _auditService = auditService;
+            _securityEventLogger = securityEventLogger;
         }
 
         /// <summary>
@@ -221,60 +225,7 @@ namespace UI.Areas.admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Lock(string id)
-        //{
-        //    TempData["MessageType"] = null;
-
-        //    try
-        //    {
-        //        var result = await _userService.LockUserAsync(id);
-
-        //        if (result.Succeeded)
-        //        {
-        //            TempData["MessageType"] = MessageType.LockedSuccess;
-        //        }
-        //        else
-        //        {
-        //            TempData["MessageType"] = MessageType.LockedFaild;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData["MessageType"] = MessageType.LockedFaild;
-        //    }
-
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        ///// <summary>
-        ///// Unlock user account
-        ///// </summary>
-        //[HttpPost]
-        //public async Task<IActionResult> Unlock(string id)
-        //{
-        //    TempData["MessageType"] = null;
-
-        //    try
-        //    {
-        //        var result = await _userService.UnlockUserAsync(id);
-
-        //        if (result.Succeeded)
-        //        {
-        //            TempData["MessageType"] = MessageType.UnlockedSuccess;
-        //        }
-        //        else
-        //        {
-        //            TempData["MessageType"] = MessageType.UnlockedFaild;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData["MessageType"] = MessageType.UnlockedFaild;
-        //    }
-
-        //    return RedirectToAction(nameof(Index));
-        //}
+       
 
         /// <summary>
         /// Load available roles into ViewBag for dropdown
@@ -311,38 +262,39 @@ namespace UI.Areas.admin.Controllers
         /// Reactivates a deactivated user account (admin operation).
         /// Creates audit log for compliance.
         /// </summary>
+        /// 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReactivateUser(string userId, string reason = null)
+        public async Task<IActionResult> ReactivateUser(string userId, string? reason = null)
         {
             try
             {
-                var adminEmail = User?.Identity?.Name;
+                var adminEmail = User?.Identity?.Name ?? "unknown";
+
                 var result = await _userService.ReactivateUserAsync(
                     userId: userId,
                     adminEmail: adminEmail,
-                    reason: reason ?? "Admin reactivation"
-                );
+                    reason: reason ?? "Admin reactivation");
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("✅ Admin {Admin} reactivated user {UserId}", adminEmail, userId);
-                    
                     TempData["MessageType"] = MessageType.SaveSuccess;
-                    return RedirectToAction(nameof(DeactivatedUsers));
                 }
-
-                TempData["ErrorMessage"] = "Failed to reactivate user: " + string.Join(", ", result.Errors.Select(e => e.Description));
-                return RedirectToAction(nameof(DeactivatedUsers));
+                else
+                {
+                    TempData["ErrorMessage"] = string.Join(", ", result.Errors.Select(e => e.Description));
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error reactivating user {UserId}", userId);
-                TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
-                return RedirectToAction(nameof(DeactivatedUsers));
+                TempData["ErrorMessage"] = "Could not reactivate the account. Please try again.";
             }
+
+            return RedirectToAction(nameof(DeactivatedUsers));
         }
+       
 
         /// <summary>
         /// Displays audit logs with filtering options.
@@ -356,9 +308,11 @@ namespace UI.Areas.admin.Controllers
 
             ViewBag.AvailableActions = new[]
             {
-        "SuccessfulLogin", "FailedLoginAttempt_InvalidPassword", "FailedLoginAttempt_LockedOut",
-        "FailedLoginAttempt_Deactivated", "Deactivated", "Reactivated",
-        "PasswordChanged", "LockedByAdmin", "UnlockedByAdmin"
+                "SuccessfulLogin", "FailedLoginAttempt_InvalidPassword", "FailedLoginAttempt_LockedOut",
+                "FailedLoginAttempt_Deactivated", "Deactivated", "Reactivated",
+                "PasswordChanged", "LockedByAdmin", "UnlockedByAdmin",
+                "ReactivationCodeSent",      
+                "FailedReactivationCode"    
     };
 
             return View(new AccountAuditLogsViewModel

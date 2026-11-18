@@ -168,15 +168,15 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "LOGIN_SUCCESS");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("UserAgent", GetUserAgent());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "LOGIN_SUCCESS"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("UserAgent", GetUserAgent()))
 
-                _logger.LogInformation("LOGIN_SUCCESS From LoogSuccessFulLogin FOR | UserId: {UserId} | Email: {Email} | IP: {IP}",
-                    userId, email, GetClientIp());
+                    _logger.LogInformation("LOGIN_SUCCESS From LoogSuccessFulLogin FOR | UserId: {UserId} | Email: {Email} | IP: {IP}",
+                        userId, email, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging successful login: {ex.Message}"); }
         }
@@ -188,15 +188,15 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "LOGIN_FAILED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("FailureReason", reason);
-                LogContext.PushProperty("UserAgent", GetUserAgent());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "LOGIN_FAILED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("FailureReason", reason))
+                using (LogContext.PushProperty("UserAgent", GetUserAgent()))
 
-                _logger.LogWarning("LOGIN_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
-                    email, reason, GetClientIp());
+                    _logger.LogWarning("LOGIN_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
+                        email, reason, GetClientIp());
 
                 // 🆕 Queue to background service
                 await QueueAuditLogAsync("LOGIN_FAILED", "Warning", null, email, reason,
@@ -213,15 +213,15 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "ACCOUNT_LOCKED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("LockoutEnd", lockoutEnd);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "ACCOUNT_LOCKED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("LockoutEnd", lockoutEnd))
 
-                _logger.LogWarning("🔒 ACCOUNT_LOCKED | User: {Email} | UserId: {UserId} | LockedUntil: {LockoutEnd} | IP: {IP}",
-                    email, userId, lockoutEnd, GetClientIp());
+                    _logger.LogWarning("🔒 ACCOUNT_LOCKED | User: {Email} | UserId: {UserId} | LockedUntil: {LockoutEnd} | IP: {IP}",
+                        email, userId, lockoutEnd, GetClientIp());
 
                 // 🆕 Queue to background service
                 await QueueAuditLogAsync("ACCOUNT_LOCKED", "Critical", userId, email,
@@ -241,15 +241,15 @@ namespace Business.Services.Logging.SecurityLogger
             try
             {
                 var tokenPreview = string.IsNullOrEmpty(token) ? "N/A" : token.Substring(0, Math.Min(20, token.Length));
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("EventType", "TOKEN_REUSE_DETECTED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("TokenPreview", tokenPreview);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("EventType", "TOKEN_REUSE_DETECTED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("TokenPreview", tokenPreview))
 
-                _logger.LogError(
-                    "🚨 SECURITY_ALERT: TOKEN_REUSE_DETECTED | UserId: {UserId} | TokenPreview: {TokenPreview} | IP: {IP} | UserAgent: {UserAgent}",
-                    userId, tokenPreview, GetClientIp(), GetUserAgent());
+                    _logger.LogError(
+                        "🚨 SECURITY_ALERT: TOKEN_REUSE_DETECTED | UserId: {UserId} | TokenPreview: {TokenPreview} | IP: {IP} | UserAgent: {UserAgent}",
+                        userId, tokenPreview, GetClientIp(), GetUserAgent());
 
                 // 🆕 Queue to background service
                 await QueueAuditLogAsync("TOKEN_REUSE_DETECTED", "Critical", userId, null,
@@ -273,14 +273,14 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "REGISTRATION_SUCCESS");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "REGISTRATION_SUCCESS"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogInformation("✅ REGISTRATION_SUCCESS | User: {Email} | UserId: {UserId} | IP: {IP}",
-                    email, userId, GetClientIp());
+                    _logger.LogInformation("✅ REGISTRATION_SUCCESS | User: {Email} | UserId: {UserId} | IP: {IP}",
+                        email, userId, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging registration success: {ex.Message}"); }
         }
@@ -289,14 +289,14 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "REGISTRATION_FAILED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("FailureReason", reason);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "REGISTRATION_FAILED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("FailureReason", reason))
 
-                _logger.LogWarning("❌ REGISTRATION_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
-                    email, reason, GetClientIp());
+                    _logger.LogWarning("❌ REGISTRATION_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
+                        email, reason, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging registration failed: {ex.Message}"); }
         }
@@ -312,14 +312,14 @@ namespace Business.Services.Logging.SecurityLogger
             try
             {
                 // 🔧 Push all properties to LogContext FIRST
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("EventType", "TOKEN_ROTATED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("EventType", "TOKEN_ROTATED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogDebug(
-                    "🔄 TOKEN_ROTATED | UserId: {UserId} | IP: {IP}",
-                    userId, GetClientIp());
+                    _logger.LogDebug(
+                        "🔄 TOKEN_ROTATED | UserId: {UserId} | IP: {IP}",
+                        userId, GetClientIp());
             }
             catch (Exception ex)
             {
@@ -333,15 +333,15 @@ namespace Business.Services.Logging.SecurityLogger
             try
             {
                 // 🔧 Push all properties to LogContext FIRST
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("EventType", "ALL_TOKENS_REVOKED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("RevocationReason", reason);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("EventType", "ALL_TOKENS_REVOKED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("RevocationReason", reason))
 
-                _logger.LogWarning(
-                    "🔒 ALL_TOKENS_REVOKED | UserId: {UserId} | Reason: {Reason} | IP: {IP}",
-                    userId, reason, GetClientIp());
+                    _logger.LogWarning(
+                        "🔒 ALL_TOKENS_REVOKED | UserId: {UserId} | Reason: {Reason} | IP: {IP}",
+                        userId, reason, GetClientIp());
             }
             catch (Exception ex)
             {
@@ -354,14 +354,14 @@ namespace Business.Services.Logging.SecurityLogger
             try
             {
                 // 🔧 Push all properties to LogContext FIRST
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("EventType", "TOKEN_REFRESH_FAILED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("FailureReason", reason);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("EventType", "TOKEN_REFRESH_FAILED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("FailureReason", reason))
 
-                _logger.LogWarning(
-                    "⚠️ TOKEN_REFRESH_FAILED | Reason: {Reason} | IP: {IP}",
-                    reason, GetClientIp());
+                    _logger.LogWarning(
+                        "⚠️ TOKEN_REFRESH_FAILED | Reason: {Reason} | IP: {IP}",
+                        reason, GetClientIp());
             }
             catch (Exception ex)
             {
@@ -380,13 +380,13 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "PASSWORD_RESET_REQUESTED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "PASSWORD_RESET_REQUESTED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogInformation("🔑 PASSWORD_RESET_REQUESTED | Email: {Email} | IP: {IP}",
-                    email, GetClientIp());
+                    _logger.LogInformation("🔑 PASSWORD_RESET_REQUESTED | Email: {Email} | IP: {IP}",
+                        email, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging password reset requested: {ex.Message}"); }
         }
@@ -395,14 +395,14 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "PASSWORD_RESET_SUCCESS");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "PASSWORD_RESET_SUCCESS"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogInformation("✅ PASSWORD_RESET_SUCCESS | User: {Email} | UserId: {UserId} | IP: {IP}",
-                    email, userId, GetClientIp());
+                    _logger.LogInformation("✅ PASSWORD_RESET_SUCCESS | User: {Email} | UserId: {UserId} | IP: {IP}",
+                        email, userId, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging password reset success: {ex.Message}"); }
         }
@@ -411,14 +411,14 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "PASSWORD_RESET_FAILED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("FailureReason", reason);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "PASSWORD_RESET_FAILED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("FailureReason", reason))
 
-                _logger.LogWarning("❌ PASSWORD_RESET_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
-                    email, reason, GetClientIp());
+                    _logger.LogWarning("❌ PASSWORD_RESET_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
+                        email, reason, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging password reset failed: {ex.Message}"); }
         }
@@ -431,13 +431,13 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "EMAIL_CONFIRMATION_SENT");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "EMAIL_CONFIRMATION_SENT"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogInformation("📧 EMAIL_CONFIRMATION_SENT | Email: {Email} | IP: {IP}",
-                    email, GetClientIp());
+                    _logger.LogInformation("📧 EMAIL_CONFIRMATION_SENT | Email: {Email} | IP: {IP}",
+                        email, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging email confirmation sent: {ex.Message}"); }
         }
@@ -446,14 +446,14 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "EMAIL_CONFIRMED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "EMAIL_CONFIRMED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogInformation("✅ EMAIL_CONFIRMED | User: {Email} | UserId: {UserId} | IP: {IP}",
-                    email, userId, GetClientIp());
+                    _logger.LogInformation("✅ EMAIL_CONFIRMED | User: {Email} | UserId: {UserId} | IP: {IP}",
+                        email, userId, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging email confirmed: {ex.Message}"); }
 
@@ -469,12 +469,12 @@ namespace Business.Services.Logging.SecurityLogger
             try
             {
                 // 🔧 Push all properties to LogContext FIRST
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("EventType", "LOGOUT");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("EventType", "LOGOUT"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogInformation("🔓 LOGOUT | UserId: {UserId} | IP: {IP}",userId, GetClientIp());
+                    _logger.LogInformation("🔓 LOGOUT | UserId: {UserId} | IP: {IP}", userId, GetClientIp());
             }
             catch (Exception ex)
             {
@@ -490,14 +490,14 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "PASSWORD_CHANGE_SUCCESS");
-                LogContext.PushProperty("IpAddress", GetClientIp());
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "PASSWORD_CHANGE_SUCCESS"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
 
-                _logger.LogInformation("✅ PASSWORD_CHANGE_SUCCESS | User: {Email} | UserId: {UserId} | IP: {IP}",
-                    email, userId, GetClientIp());
+                    _logger.LogInformation("✅ PASSWORD_CHANGE_SUCCESS | User: {Email} | UserId: {UserId} | IP: {IP}",
+                        email, userId, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging password change success: {ex.Message}"); }
         }
@@ -509,14 +509,14 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("Email", email);
-                LogContext.PushProperty("EventType", "PASSWORD_CHANGE_FAILED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("FailureReason", reason);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "PASSWORD_CHANGE_FAILED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("FailureReason", reason))
 
-                _logger.LogWarning("❌ PASSWORD_CHANGE_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
-                    email, reason, GetClientIp());
+                    _logger.LogWarning("❌ PASSWORD_CHANGE_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
+                        email, reason, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging password change failed: {ex.Message}"); }
         }
@@ -528,17 +528,73 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", GetCorrelationId());
-                LogContext.PushProperty("UserId", userId);
-                LogContext.PushProperty("EventType", "EMAIL_CONFIRMATION_FAILED");
-                LogContext.PushProperty("IpAddress", GetClientIp());
-                LogContext.PushProperty("FailureReason", reason);
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("EventType", "EMAIL_CONFIRMATION_FAILED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("FailureReason", reason))
 
-                _logger.LogWarning("❌ EMAIL_CONFIRMATION_FAILED | UserId: {UserId} | Reason: {Reason} | IP: {IP}",
-                    userId, reason, GetClientIp());
+                    _logger.LogWarning("❌ EMAIL_CONFIRMATION_FAILED | UserId: {UserId} | Reason: {Reason} | IP: {IP}",
+                        userId, reason, GetClientIp());
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging email confirmation failed: {ex.Message}"); }
         }
+
+
+        // ============ 2) SecurityEventLoggerBase: add (same pattern as your other events) ============
+        public virtual void LogReactivationCodeSent(string userId, string email)
+        {
+            try
+            {
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "REACTIVATION_CODE_SENT"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                {
+                    _logger.LogInformation("📧 REACTIVATION_CODE_SENT | User: {Email} | UserId: {UserId} | IP: {IP}",
+                        email, userId, GetClientIp());
+                }
+            }
+            catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging reactivation code sent: {ex.Message}"); }
+        }
+
+        public virtual void LogReactivationCodeFailed(string email, string reason)
+        {
+            try
+            {
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "REACTIVATION_CODE_FAILED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                using (LogContext.PushProperty("FailureReason", reason))
+                {
+                    _logger.LogWarning("❌ REACTIVATION_CODE_FAILED | Email: {Email} | Reason: {Reason} | IP: {IP}",
+                        email, reason, GetClientIp());
+                }
+            }
+            catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging reactivation code failed: {ex.Message}"); }
+        }
+
+        public virtual void LogAccountReactivated(string userId, string email, string initiatedBy)
+        {
+            try
+            {
+                using (LogContext.PushProperty("CorrelationId", GetCorrelationId()))
+                using (LogContext.PushProperty("UserId", userId))
+                using (LogContext.PushProperty("Email", email))
+                using (LogContext.PushProperty("EventType", "ACCOUNT_REACTIVATED"))
+                using (LogContext.PushProperty("IpAddress", GetClientIp()))
+                {
+                    _logger.LogInformation("✅ ACCOUNT_REACTIVATED | User: {Email} | UserId: {UserId} | By: {InitiatedBy} | IP: {IP}",
+                        email, userId, initiatedBy, GetClientIp());
+                }
+            }
+            catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Error logging account reactivated: {ex.Message}"); }
+        }
+
+
+
 
         // ═══════════════════════════════════════════════════════════════
         // ✅ SHIPMENT AUDIT EVENTS
@@ -562,32 +618,32 @@ namespace Business.Services.Logging.SecurityLogger
 
                 var eventType = $"SHIPMENT_{status.ToUpper()}";
 
-                LogContext.PushProperty("CorrelationId", correlationId);
-                LogContext.PushProperty("UserId", userId);
+                using (LogContext.PushProperty("CorrelationId", correlationId))
+                using (LogContext.PushProperty("UserId", userId))
 
-                LogContext.PushProperty("ShipmentId", shipmentId);
-                LogContext.PushProperty("TrackingNumber", trackingNumber);
-                LogContext.PushProperty("ShipmentEventType", status);
+                using (LogContext.PushProperty("ShipmentId", shipmentId))
+                using (LogContext.PushProperty("TrackingNumber", trackingNumber))
+                using (LogContext.PushProperty("ShipmentEventType", status))
 
-               LogContext.PushProperty("EventType", eventType);
+                using (LogContext.PushProperty("EventType", eventType))
 
-                LogContext.PushProperty("IpAddress", ip);
-                LogContext.PushProperty("UserAgent", userAgent);
+                using (LogContext.PushProperty("IpAddress", ip))
+                using (LogContext.PushProperty("UserAgent", userAgent))
 
-                if (!string.IsNullOrWhiteSpace(reason))
-                    LogContext.PushProperty("Reason", reason);
+                    if (!string.IsNullOrWhiteSpace(reason))
+                        using (LogContext.PushProperty("Reason", reason))
 
-                if (!string.IsNullOrWhiteSpace(carrierId))
-                    LogContext.PushProperty("CarrierId", carrierId);
+                            if (!string.IsNullOrWhiteSpace(carrierId))
+                                using (LogContext.PushProperty("CarrierId", carrierId))
 
-                _logger.LogInformation(
-                    "Shipment status changed. ShipmentId={ShipmentId}, Tracking={TrackingNumber}, " +
-                    "Status={Status}, UserId={UserId}, Reason={Reason}",
-                    shipmentId,
-                    trackingNumber,
-                    status,
-                    userId,
-                    reason ?? "N/A");
+                                    _logger.LogInformation(
+                                        "Shipment status changed. ShipmentId={ShipmentId}, Tracking={TrackingNumber}, " +
+                                        "Status={Status}, UserId={UserId}, Reason={Reason}",
+                                        shipmentId,
+                                        trackingNumber,
+                                        status,
+                                        userId,
+                                        reason ?? "N/A");
 
                 await QueueAuditLogAsync(
                     eventType: eventType,
@@ -642,22 +698,22 @@ namespace Business.Services.Logging.SecurityLogger
         {
             try
             {
-                LogContext.PushProperty("CorrelationId", correlationId);
-                LogContext.PushProperty("UserId", userId ?? "unknown");
-                LogContext.PushProperty("Email", email ?? "unknown");
-                LogContext.PushProperty("IpAddress", ipAddress ?? "unknown");
-                LogContext.PushProperty("Path", path ?? "unknown");
-                LogContext.PushProperty("EventType", "SECURITY_EXCEPTION");
+                using (LogContext.PushProperty("CorrelationId", correlationId))
+                using (LogContext.PushProperty("UserId", userId ?? "unknown"))
+                using (LogContext.PushProperty("Email", email ?? "unknown"))
+                using (LogContext.PushProperty("IpAddress", ipAddress ?? "unknown"))
+                using (LogContext.PushProperty("Path", path ?? "unknown"))
+                using (LogContext.PushProperty("EventType", "SECURITY_EXCEPTION"))
 
-                _logger.LogError(
-                    exception,
-                    "SECURITY_EXCEPTION | Path={Path} | User={UserId} | Email={Email} | IP={IpAddress} | CorrelationId={CorrelationId} | Message={Message}",
-                    path,
-                    userId,
-                    email,
-                    ipAddress,
-                    correlationId,
-                    exception.Message);
+                    _logger.LogError(
+                        exception,
+                        "SECURITY_EXCEPTION | Path={Path} | User={UserId} | Email={Email} | IP={IpAddress} | CorrelationId={CorrelationId} | Message={Message}",
+                        path,
+                        userId,
+                        email,
+                        ipAddress,
+                        correlationId,
+                        exception.Message);
             }
             catch (Exception ex)
             {

@@ -107,6 +107,13 @@ namespace WebApi.Services
                 };
             }
 
+            // 👇 Paste right here, before any password check:
+            if (user.IsDeactivated)
+                return new UserResultDto { Success = false, Errors = new[] { "Invalid credentials" } };
+
+
+
+
             // ✅ STEP 1: Check lockout BEFORE password validation
             if (await _userManager.IsLockedOutAsync(user))
             {
@@ -882,50 +889,6 @@ namespace WebApi.Services
             return new UserResultDto { Success = true };
         }
 
-        /// <summary>
-        /// Locks a user account, preventing them from logging in (WebApi context).
-        /// Sets LockoutEnd to 100 years in the future (effectively permanent).
-        /// Used by administrators to disable problematic or inactive accounts.
-        /// </summary>
-        /// <param name="userId">User's ID (GUID as string)</param>
-        /// <returns>IdentityResult with success/failure</returns>
-        public async Task<IdentityResult> LockUserAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
-            }
-
-            var lockoutEnd = DateTimeOffset.UtcNow.AddYears(100);
-            var result = await _userManager.SetLockoutEndDateAsync(user, lockoutEnd);
-
-            if (result.Succeeded)
-            {
-                await _userManager.SetLockoutEnabledAsync(user, true);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Unlocks a user account, allowing them to log in again (WebApi context).
-        /// Clears the LockoutEnd date, restoring normal access.
-        /// Used by administrators to re-enable previously locked accounts.
-        /// </summary>
-        /// <param name="userId">User's ID (GUID as string)</param>
-        /// <returns>IdentityResult with success/failure</returns>
-        public async Task<IdentityResult> UnlockUserAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
-            }
-
-            var result = await _userManager.SetLockoutEndDateAsync(user, null);
-            return result;
-        }
 
         /// <summary>
         /// Changes a user's role assignment (WebApi context).

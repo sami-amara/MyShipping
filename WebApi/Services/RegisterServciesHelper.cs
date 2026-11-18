@@ -477,7 +477,7 @@ namespace WebApi.Services
             builder.Services.AddScoped<IPaymentGatewayFactory,
             Business.Services.PaymentGateways.PaymentGatewayFactory>();
 
-
+          
             // ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
             // Serilog Configuration
             // ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════

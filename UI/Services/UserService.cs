@@ -4,11 +4,13 @@ using Business.DTOS;
 using DataAccessLayer.UserModels;
 using Domains;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+
 
 
 namespace UI.Services 
@@ -33,6 +35,8 @@ namespace UI.Services
         private readonly ILogger<UserService> _logger;
         private readonly AccountAuditService _auditService;
 
+       
+        private readonly Business.Contracts.IEmailSender _emailSender;
         private readonly ISecurityEventLogger _securityEventLogger;
         /// <summary>
         /// Initializes the UI UserService with ASP.NET Core Identity managers.
@@ -48,7 +52,8 @@ namespace UI.Services
             GenericApiClient apiClient, 
             ILogger<UserService> logger,
             AccountAuditService auditService,
-            ISecurityEventLogger securityEventLogger)
+            ISecurityEventLogger securityEventLogger,
+            Business.Contracts.IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -57,6 +62,7 @@ namespace UI.Services
             _logger = logger;
             _auditService = auditService;
             _securityEventLogger = securityEventLogger;
+            _emailSender = emailSender;
 
         }
 
@@ -85,231 +91,152 @@ namespace UI.Services
         /// </summary>
         /// <param name="model">Login credentials (email, password, remember me flag)</param>
         /// <returns>UserResultDto indicating success/failure, lockout flags, and whether the account was reactivated</returns>
-        //public async Task<UserResultDto> LoginAsync(LoginDto model)
-        //{
-        //    // Find user by email
-        //    var user = await _userManager.FindByEmailAsync(model.Email);
-        //    if (user == null)
-        //    {
-        //        await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
-        //        return new UserResultDto
-        //        {
-        //            Success = false,
-        //            Errors = new[] { "Email:Invalid credentials" }
-        //        };
-        //    }
-
-        //    // Self-service reactivation: only after the password is verified.
-        //    var wasReactivated = false;
-        //    if (user.IsDeactivated)
-        //    {
-        //        // Verify the password without signing in. lockoutOnFailure is false because the normal
-        //        // sign-in below counts failed attempts, so a wrong password is not counted twice.
-        //        // A locked-out user fails this check too, so a lock cannot be bypassed by reactivating.
-        //        var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
-
-        //        if (passwordCheck.Succeeded)
-        //        {
-        //            user.IsDeactivated = false;
-        //            user.DeactivatedAt = null;
-
-        //            var update = await _userManager.UpdateAsync(user);
-        //            if (!update.Succeeded)
-        //            {
-        //                _logger.LogError("❌ Failed to reactivate {Email} at login. Errors: {Errors}",
-        //                    model.Email, string.Join(", ", update.Errors.Select(e => e.Description)));
-
-        //                return new UserResultDto
-        //                {
-        //                    Success = false,
-        //                    Errors = new[] { "Email:We could not reactivate your account. Please try again." }
-        //                };
-        //            }
-
-        //            await _auditService.LogAccountActionAsync(
-        //                userId: user.Id,
-        //                action: "Reactivated",
-        //                initiatedBy: model.Email,
-        //                reason: "Self-service reactivation at login",
-        //                ipAddress: GetClientIpAddress()
-        //            );
-
-        //            wasReactivated = true;
-        //        }
-        //        // Wrong password or locked out: continue. The normal sign-in below fails and is logged
-        //        // as usual, and the response does not say the account is deactivated.
-        //    }
-
-        //    // Attempt sign-in with password, lockout enabled after failed attempts
-        //    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-        //    if (result.Succeeded)
-        //    {
-        //        // Log successful login to audit trail (full email for auditing)
-        //        await _auditService.LogAccountActionAsync(
-        //            userId: user.Id,
-        //            action: "SuccessfulLogin",
-        //            initiatedBy: model.Email,
-        //            ipAddress: GetClientIpAddress()
-        //        );
-
-        //        return new UserResultDto { Success = true, WasReactivated = wasReactivated };
-        //    }
-
-        //    // Handle lockout scenario - check if it's admin lock or temporary lockout
-        //    if (result.IsLockedOut)
-        //    {
-        //        // Refresh user data to get current lockout status
-        //        user = await _userManager.FindByEmailAsync(model.Email);
-
-        //        // Admin locks are set to 100 years, temp lockouts are 15 minutes
-        //        // So anything > 1 hour is definitely an admin lock
-        //        var oneHourFromNow = DateTimeOffset.UtcNow.AddHours(1);
-        //        var isAdminLock = user.LockoutEnd.HasValue && user.LockoutEnd.Value > oneHourFromNow;
-
-        //        await _auditService.LogAccountActionAsync(
-        //            userId: user.Id,
-        //            action: "FailedLoginAttempt_LockedOut",
-        //            initiatedBy: model.Email,
-        //            reason: isAdminLock ? "Admin lockout" : "Temporary lockout after failed attempts",
-        //            ipAddress: GetClientIpAddress()
-        //        );
-
-        //        await _securityEventLogger.LogFailedLogin(model.Email, isAdminLock ? "Admin lockout" : "Account temporarily locked");
-
-        //        // AccountController uses these flags to choose the message
-        //        return new UserResultDto
-        //        {
-        //            Success = false,
-        //            IsLockedOut = true,
-        //            IsAdminLocked = isAdminLock
-        //        };
-        //    }
-
-        //    // Log failed password attempt to audit trail
-        //    await _auditService.LogAccountActionAsync(
-        //        userId: user.Id,
-        //        action: "FailedLoginAttempt_InvalidPassword",
-        //        initiatedBy: model.Email,
-        //        ipAddress: GetClientIpAddress()
-        //    );
-
-        //    await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
-
-        //    return new UserResultDto
-        //    {
-        //        Success = false,
-        //        Errors = new[] { "Password:Invalid credentials" }
-        //    };
-        //}
-
-
-
-
+        // ============ 2) LoginAsync: replace the whole method ============
 
         public async Task<UserResultDto> LoginAsync(LoginDto model)
         {
-            // Find user by email
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
-                return new UserResultDto
-                {
-                    Success = false,
-                    Errors = new[] { "Email:Invalid credentials" }
-                };
+                return new UserResultDto { Success = false, Errors = new[] { "Email:Invalid credentials" } };
             }
 
-            // ✅ Check if user has deactivated their account
+            // The deactivated state is revealed only after the password is verified,
+            // so the login form cannot be used to discover which emails have (deactivated) accounts.
             if (user.IsDeactivated)
             {
-                // Log the failed login attempt
-                await _auditService.LogAccountActionAsync(
-                    userId: user.Id,
-                    action: "FailedLoginAttempt_Deactivated",
-                    initiatedBy: model.Email,
-                    reason: "Account is deactivated",
-                    ipAddress: GetClientIpAddress()
-                );
-
-                // ✅ Log security event (will be filtered to security.txt with masked email)
-                await _securityEventLogger.LogFailedLogin(model.Email, "Account deactivated");
-
-                return new UserResultDto
+                var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+                if (passwordCheck.Succeeded)
                 {
-                    Success = false,
-                    Errors = new[] { "Email:This account has been deactivated and cannot be used." }
-                };
+                    await SendReactivationCodeAsync(user);
+                    return new UserResultDto { Success = false, ReactivationCodeSent = true };
+                }
+                // Wrong password or locked out: fall through, the normal sign-in below handles and logs it.
             }
 
-            // Attempt sign-in with password, lockout enabled after failed attempts
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
             if (result.Succeeded)
             {
-                // ✅ Log successful login to audit trail (full email for auditing)
-                await _auditService.LogAccountActionAsync(
-                    userId: user.Id,
-                    action: "SuccessfulLogin",
-                    initiatedBy: model.Email,
-                    ipAddress: GetClientIpAddress()
-                );
-
-
-
+                await _auditService.LogAccountActionAsync(user.Id, "SuccessfulLogin", initiatedBy: model.Email, ipAddress: GetClientIpAddress());
                 return new UserResultDto { Success = true };
             }
 
-            // Handle lockout scenario - check if it's admin lock or temporary lockout
             if (result.IsLockedOut)
             {
-                // Refresh user data to get current lockout status
                 user = await _userManager.FindByEmailAsync(model.Email);
 
-                // Admin locks are set to 100 years, temp lockouts are 15 minutes
-                // So anything > 1 hour is definitely an admin lock
-                var oneHourFromNow = DateTimeOffset.UtcNow.AddHours(1);
-                var isAdminLock = user.LockoutEnd.HasValue && user.LockoutEnd.Value > oneHourFromNow;
+                // Admin locks are set to 100 years, temporary lockouts to minutes
+                var isAdminLock = user!.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTimeOffset.UtcNow.AddHours(1);
 
-
-                // ✅ Log lockout attempt to audit trail
                 await _auditService.LogAccountActionAsync(
                     userId: user.Id,
                     action: "FailedLoginAttempt_LockedOut",
                     initiatedBy: model.Email,
                     reason: isAdminLock ? "Admin lockout" : "Temporary lockout after failed attempts",
-                    ipAddress: GetClientIpAddress()
-                );
+                    ipAddress: GetClientIpAddress());
 
-                // ✅ Log security event
                 await _securityEventLogger.LogFailedLogin(model.Email, isAdminLock ? "Admin lockout" : "Account temporarily locked");
 
-                // Return with proper flags - AccountController will set the appropriate message
+                // Identity reports "locked out" before it checks the password. The specific message is shown
+                // only when the password is correct, so the form cannot be used to find locked accounts.
+                string error;
+                if (await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    var minutes = Math.Max(1, (int)Math.Ceiling((user.LockoutEnd!.Value - DateTimeOffset.UtcNow).TotalMinutes));
+                    error = isAdminLock
+                        ? "Email:This account has been locked by an administrator. Please contact support."
+                        : $"Email:Too many failed attempts. Please try again in {minutes} minute(s).";
+                }
+                else
+                {
+                    error = "Password:Invalid credentials";
+                }
+
                 return new UserResultDto
                 {
                     Success = false,
                     IsLockedOut = true,
-                    IsAdminLocked = isAdminLock
+                    IsAdminLocked = isAdminLock,
+                    LockoutEnd = user.LockoutEnd,
+                    Errors = new[] { error }
                 };
             }
 
-            // ✅ Log failed password attempt to audit trail
-            await _auditService.LogAccountActionAsync(
-                userId: user.Id,
-                action: "FailedLoginAttempt_InvalidPassword",
-                initiatedBy: model.Email,
-                ipAddress: GetClientIpAddress()
-            );
-
-            // ✅ Log security event
+            await _auditService.LogAccountActionAsync(user.Id, "FailedLoginAttempt_InvalidPassword", initiatedBy: model.Email, ipAddress: GetClientIpAddress());
             await _securityEventLogger.LogFailedLogin(model.Email, "Invalid credentials");
 
-            return new UserResultDto
-            {
-                Success = false,
-                Errors = new[] { "Password:Invalid credentials" }
-            };
+            return new UserResultDto { Success = false, Errors = new[] { "Password:Invalid credentials" } };
+        }
+       
+        private const string ReactivationTokenPurpose = "ReactivateAccount";
+
+        /// <summary>
+        /// Emails a 6-digit code. Identity's email token provider derives it from the user's security stamp,
+        /// so nothing is stored in the database, it expires on its own (a few minutes) and
+        /// it stops working as soon as the stamp changes (we change it after a successful use).
+        /// </summary>
+        public async Task SendReactivationCodeAsync(ApplicationUser user)
+        {
+            var code = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultEmailProvider, ReactivationTokenPurpose);
+
+            await _emailSender.SendEmailAsync(
+                user.Email!,
+                "Reactivate your MyShipping account",
+                $"Your reactivation code is {code}. It expires in a few minutes. If you did not try to sign in, change your password.");
+
+
+
+            _securityEventLogger.LogReactivationCodeSent(user.Id.ToString(), user.Email!);
+
+            // The code itself is never written to the audit table
+            await _auditService.LogAccountActionAsync(
+                user.Id, "ReactivationCodeSent", initiatedBy: user.Email!,
+                reason: "Correct password on a deactivated account", ipAddress: GetClientIpAddress());
         }
 
+        public async Task<UserResultDto> ReactivateWithCodeAsync(string email, string code)
+        {
+            // One generic error for every failure, so the response reveals nothing about the account
+            var invalid = new UserResultDto { Success = false, Errors = new[] { "The code is invalid or has expired." } };
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !user.IsDeactivated || await _userManager.IsLockedOutAsync(user))
+                return invalid;
+
+            var isValid = await _userManager.VerifyUserTokenAsync(
+                user, TokenOptions.DefaultEmailProvider, ReactivationTokenPurpose, code?.Trim() ?? string.Empty);
+
+            if (!isValid)
+            {
+                // Counts toward Identity lockout, which limits guessing of the 6-digit code
+                await _userManager.AccessFailedAsync(user);
+                await _auditService.LogAccountActionAsync(
+                    user.Id, "FailedReactivationCode", initiatedBy: email,
+                    reason: "Wrong or expired code", ipAddress: GetClientIpAddress());
+                return invalid;
+            }
+
+            _securityEventLogger.LogReactivationCodeFailed(email, "Wrong or expired code");
+
+            user.IsDeactivated = false;
+            user.DeactivatedAt = null;
+            var update = await _userManager.UpdateAsync(user);
+            if (!update.Succeeded)
+                return new UserResultDto { Success = false, Errors = update.Errors.Select(e => e.Description) };
+
+            await _userManager.ResetAccessFailedCountAsync(user);
+            await _userManager.UpdateSecurityStampAsync(user);   // makes the code single-use
+
+            await _auditService.LogAccountActionAsync(
+                user.Id, "Reactivated", initiatedBy: email,
+                reason: "Self-service reactivation, email code verified", ipAddress: GetClientIpAddress());
+
+            _securityEventLogger.LogAccountReactivated(user.Id.ToString(), email, email);
+            return new UserResultDto { Success = true };
+        }
+
+ 
 
         /// <summary>
         /// Signs out the current user by clearing the authentication cookie.
@@ -735,90 +662,69 @@ namespace UI.Services
             return new UserResultDto { Success = true };
         }
 
-        /// <summary>
-        /// Locks a user account, preventing them from logging in.
-        /// Sets LockoutEnd to 100 years in the future (effectively permanent).
-        /// Used by administrators to disable problematic or inactive accounts.
-        /// </summary>
-        /// <param name="userId">User's ID (GUID as string)</param>
-        /// <returns>IdentityResult with success/failure</returns>
-        /// 
+   
+
         public async Task<IdentityResult> LockUserAsync(string userId, string adminEmail, string? reason = null)
         {
-            var result = await LockUserAsync(userId);
-
-            if (result.Succeeded)
-            {
-                await _auditService.LogAccountActionAsync(
-                    userId: userId,
-                    action: "LockedByAdmin",
-                    initiatedBy: adminEmail,
-                    reason: reason ?? "Admin locked the account",
-                    ipAddress: GetClientIpAddress());
-            }
-
-            return result;
-        }
-        public async Task<IdentityResult> LockUserAsync(string userId)
-        {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "User not found." });
             }
 
-            // Set lockout end to 100 years from now (effectively permanent)
-            var lockoutEnd = DateTimeOffset.UtcNow.AddYears(100);
-            var result = await _userManager.SetLockoutEndDateAsync(user, lockoutEnd);
-
-            if (result.Succeeded)
+            // Lockout must be enabled first, otherwise SetLockoutEndDateAsync refuses to set the end date
+            var enableResult = await _userManager.SetLockoutEnabledAsync(user, true);
+            if (!enableResult.Succeeded)
             {
-                // Ensure lockout is enabled for this user
-                await _userManager.SetLockoutEnabledAsync(user, true);
+                return enableResult;
             }
+
+            // 100 years from now is effectively permanent; LoginAsync treats anything over 1 hour as an admin lock
+            var result = await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddYears(100));
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            await _auditService.LogAccountActionAsync(
+                userId: userId,
+                action: "LockedByAdmin",
+                initiatedBy: adminEmail,
+                reason: reason ?? "Admin locked the account",
+                ipAddress: GetClientIpAddress());
 
             return result;
         }
 
-        /// <summary>
-        /// Unlocks a user account, allowing them to log in again.
-        /// Clears the LockoutEnd date, restoring normal access.
-        /// Used by administrators to re-enable previously locked accounts.
-        /// </summary>
-        /// <param name="userId">User's ID (GUID as string)</param>
-        /// <returns>IdentityResult with success/failure</returns>
-        public async Task<IdentityResult> UnlockUserAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
-            }
-
-            // Clear lockout by setting end date to null
-            var result = await _userManager.SetLockoutEndDateAsync(user, null);
-            return result;
-        }
         public async Task<IdentityResult> UnlockUserAsync(string userId, string adminEmail, string? reason = null)
         {
-            var result = await UnlockUserAsync(userId);
-
-            if (result.Succeeded)
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
             {
-                await _auditService.LogAccountActionAsync(
-                    userId: userId,
-                    action: "UnlockedByAdmin",
-                    initiatedBy: adminEmail,
-                    reason: reason ?? "Admin unlocked the account",
-                    ipAddress: GetClientIpAddress());
+                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
             }
+
+            // Clear the lockout and the failed-attempt counter, otherwise the next wrong password
+            // can lock the user again immediately
+            var result = await _userManager.SetLockoutEndDateAsync(user, null);
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            await _userManager.ResetAccessFailedCountAsync(user);
+
+            await _auditService.LogAccountActionAsync(
+                userId: userId,
+                action: "UnlockedByAdmin",
+                initiatedBy: adminEmail,
+                reason: reason ?? "Admin unlocked the account",
+                ipAddress: GetClientIpAddress());
 
             return result;
         }
 
-
-
-
+     
 
         /// <summary>
         /// Changes a user's role assignment.
@@ -1050,16 +956,16 @@ namespace UI.Services
             };
         }
 
-        /// <summary>
-        /// Helper to find and validate a user by email, handling null checks consistently.
-        /// </summary>
-        private async Task<ApplicationUser> FindUserByEmailOrThrowAsync(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-                throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+        ///// <summary>
+        ///// Helper to find and validate a user by email, handling null checks consistently.
+        ///// </summary>
+        //private async Task<ApplicationUser> FindUserByEmailOrThrowAsync(string email)
+        //{
+        //    if (string.IsNullOrWhiteSpace(email))
+        //        throw new ArgumentException("Email cannot be null or empty.", nameof(email));
 
-            return await _userManager.FindByEmailAsync(email);
-        }
+        //    return await _userManager.FindByEmailAsync(email);
+        //}
 
 
         /// <summary>
@@ -1196,7 +1102,7 @@ namespace UI.Services
                     ipAddress: ipAddress
                 );
 
-                _logger.LogWarning("✅ Admin {Admin} reactivated user {UserId} at {Time}",
+                _logger.LogDebug("✅ Admin {Admin} reactivated user {UserId} at {Time}",
                     adminEmail, userId, DateTime.UtcNow);
 
                 return IdentityResult.Success;
